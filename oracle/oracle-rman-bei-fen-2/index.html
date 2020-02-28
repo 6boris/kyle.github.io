@@ -1,0 +1,1185 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Oracle Rman 备份2, Gin Bar">
+    <meta name="description" content="这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Oracle Rman 备份2 | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Oracle Rman 备份2</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Oracle/">
+                                <span class="chip bg-color">Oracle</span>
+                            </a>
+                        
+                            <a href="/tags/RMAN/">
+                                <span class="chip bg-color">RMAN</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Oracle/" class="post-category">
+                                Oracle
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2018-10-04
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    5 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Oracle-Rman-的备份-（案列）"><a href="#Oracle-Rman-的备份-（案列）" class="headerlink" title="Oracle Rman 的备份 （案列）"></a>Oracle Rman 的备份 （案列）</h1><p><a href="https://docs.oracle.com/cd/E11882_01/index.htm" target="_blank" rel="noopener">Oracle 11G R2 官方文档</a></p>
+<h2 id="1-如何设计一个TB级数据库的RMAN备份策略"><a href="#1-如何设计一个TB级数据库的RMAN备份策略" class="headerlink" title="1.如何设计一个TB级数据库的RMAN备份策略"></a>1.如何设计一个TB级数据库的RMAN备份策略</h2><h3 id="1-1-TB以下"><a href="#1-1-TB以下" class="headerlink" title="1.1 TB以下"></a>1.1 TB以下</h3><ul>
+<li>用ORACLE即可实现（保存在磁盘上，5TB），也可以选择第三方备份软件 集中管理：</li>
+</ul>
+<blockquote>
+<p>1）RMAN全备：每周，每天；开归档模式<br>2）逻辑全导出：每周<br>3）归档备份（第三方管理）</p>
+</blockquote>
+<h3 id="1-2-TB以下"><a href="#1-2-TB以下" class="headerlink" title="1.2 TB以下"></a>1.2 TB以下</h3><ul>
+<li>用ORACLE+结合第三方软件（集中管理，带库，虚拟带库，大的备份存储，10TB）：</li>
+</ul>
+<blockquote>
+<p>1）RMAN全备：每周，开归档模式<br>2）归档备份：每天<br>3）逻辑导出：一个月只导一次结构就行了，或每天导一些重要的表。</p>
+</blockquote>
+<h3 id="1-3-2TB以上（集中管理，虚拟带库，第三方备份介质，几十TB，压缩功能，重复删除）："><a href="#1-3-2TB以上（集中管理，虚拟带库，第三方备份介质，几十TB，压缩功能，重复删除）：" class="headerlink" title="1.3 2TB以上（集中管理，虚拟带库，第三方备份介质，几十TB，压缩功能，重复删除）："></a>1.3 2TB以上（集中管理，虚拟带库，第三方备份介质，几十TB，压缩功能，重复删除）：</h3><blockquote>
+<p>1）RMAN全备：每周，开归档模式；每个月一次加每周增量。<br>2）归档备份：每天<br>3）逻辑导出：一个月只导一次结构就行了，或每天导一些重要的表。</p>
+</blockquote>
+<h3 id="1-4-备份案列"><a href="#1-4-备份案列" class="headerlink" title="1.4 备份案列"></a>1.4 备份案列</h3><ul>
+<li>环境</li>
+</ul>
+<blockquote>
+<p>ORACLE RMAN+存储备份（1TB）<br>数据库1TB，每天的归档量50GB</p>
+</blockquote>
+<ul>
+<li>备份策略</li>
+</ul>
+<blockquote>
+<p>每周5,20:00全备，保留2份。5TB<br>归档保留10天。 1TB<br>恢复，全备+归档。<br>逻辑全导出：每周 2TB</p>
+</blockquote>
+<ul>
+<li>备份脚本 rman_full_orcl.sh</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">rman target <span class="token operator">/</span> catalog rman<span class="token operator">/</span>rman<span class="token variable">@rman</span> msglog <span class="token string">'/u01/backup/logs/rman_full_itpux.log'</span> <span class="token operator">&lt;&lt;</span> EOF
+run {
+    CONFIGURE RETENTION POLICY <span class="token keyword">TO</span> REDUNDANCY <span class="token number">2</span><span class="token punctuation">;</span>
+    allocate channel <span class="token number">d1</span> <span class="token keyword">type</span> <span class="token keyword">disk</span><span class="token punctuation">;</span>
+    allocate channel <span class="token number">d2</span> <span class="token keyword">type</span> <span class="token keyword">disk</span><span class="token punctuation">;</span>
+
+    setlimit channel <span class="token number">d1</span> kbytes <span class="token number">102428750</span> maxopenfiles <span class="token number">32</span> readrate <span class="token number">200</span><span class="token punctuation">;</span>
+    setlimit channel <span class="token number">d2</span> kbytes <span class="token number">102428750</span> maxopenfiles <span class="token number">32</span> readrate <span class="token number">200</span><span class="token punctuation">;</span>
+    sql <span class="token string">'alter system archive log current'</span><span class="token punctuation">;</span>
+    <span class="token keyword">backup</span>
+        incremental level <span class="token number">0</span>
+        skip inaccessible
+        tag itpux_level0
+        filesperset <span class="token number">3</span>
+        format '<span class="token operator">/</span>u01<span class="token comment" spellcheck="true">//backup/datafile/orcl_rman_full_%s_%p_%t'</span>
+        <span class="token punctuation">(</span><span class="token keyword">database</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">release</span> channel <span class="token number">d1</span><span class="token punctuation">;</span>
+    <span class="token keyword">release</span> channel <span class="token number">d2</span><span class="token punctuation">;</span>
+
+    ALLOCATE CHANNEL <span class="token number">d3</span> <span class="token keyword">TYPE</span> <span class="token keyword">disk</span><span class="token punctuation">;</span>
+        <span class="token keyword">BACKUP</span>
+            <span class="token comment" spellcheck="true"># recommended format</span>
+            FORMAT '<span class="token operator">/</span>u01<span class="token comment" spellcheck="true">//backup/orcl_rman_cntrl_%s_%p_%t'</span>
+            <span class="token keyword">CURRENT</span> CONTROLFILE<span class="token punctuation">;</span>
+    <span class="token keyword">RELEASE</span> CHANNEL <span class="token number">d3</span><span class="token punctuation">;</span>
+
+    ALLOCATE CHANNEL <span class="token number">d4</span> <span class="token keyword">TYPE</span> <span class="token keyword">DISK</span><span class="token punctuation">;</span>
+        copy <span class="token keyword">current</span> controlfile <span class="token keyword">to</span> '<span class="token operator">/</span>u01<span class="token comment" spellcheck="true">//backup/datafile/control_itpux.bak';</span>
+    <span class="token keyword">RELEASE</span> CHANNEL <span class="token number">d4</span><span class="token punctuation">;</span>
+}
+
+ALLOCATE CHANNEL <span class="token keyword">FOR</span> MAINTENANCE DEVICE <span class="token keyword">TYPE</span> <span class="token keyword">DISK</span><span class="token punctuation">;</span>
+run
+{
+    report obsolete<span class="token punctuation">;</span>
+    <span class="token keyword">DELETE</span> noprompt EXPIRED <span class="token keyword">BACKUP</span><span class="token punctuation">;</span>
+    <span class="token keyword">DELETE</span> noprompt EXPIRED COPY<span class="token punctuation">;</span>
+    <span class="token keyword">delete</span> noprompt obsolete device <span class="token keyword">type</span> <span class="token keyword">disk</span><span class="token punctuation">;</span>
+}
+<span class="token keyword">exit</span>
+EOF
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>删除归档 rman_delarch_orcl.sh</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">rman target <span class="token operator">/</span> catalog rman<span class="token operator">/</span>rman<span class="token variable">@rman</span> msglog <span class="token string">'/u01/backup/logs/rman_delarch_itpux.log'</span> <span class="token operator">&lt;&lt;</span>EOF
+run{
+    crosscheck archivelog <span class="token keyword">all</span><span class="token punctuation">;</span>
+    <span class="token keyword">delete</span> noprompt archivelog until time <span class="token string">"sysdate-7"</span><span class="token punctuation">;</span>
+    <span class="token keyword">delete</span> noprompt expired archivelog <span class="token keyword">all</span><span class="token punctuation">;</span>
+}
+<span class="token keyword">exit</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>设置crontab</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token number">00</span> <span class="token number">5</span> <span class="token operator">*</span> <span class="token operator">*</span> <span class="token operator">*</span> su <span class="token operator">-</span> oracle <span class="token operator">-</span><span class="token number">c</span> <span class="token operator">/</span>u01<span class="token operator">/</span><span class="token keyword">backup</span><span class="token operator">/</span>scripts<span class="token operator">/</span>rman_delarch_orcl<span class="token punctuation">.</span>sh
+<span class="token number">00</span> <span class="token number">18</span> <span class="token operator">*</span> <span class="token operator">*</span> <span class="token number">5</span> su <span class="token operator">-</span> oracle <span class="token operator">-</span><span class="token number">c</span> <span class="token operator">/</span>u01<span class="token operator">/</span><span class="token keyword">backup</span><span class="token operator">/</span>scripts<span class="token operator">/</span>rman_full_orcl<span class="token punctuation">.</span>sh
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="2-在非归档模式的RMAN备份案例"><a href="#2-在非归档模式的RMAN备份案例" class="headerlink" title="2.在非归档模式的RMAN备份案例"></a>2.在非归档模式的RMAN备份案例</h2><blockquote>
+<p>&emsp;&emsp;备份分为一致性备份和不完全性备份，也就是我们所说的归档模式与非归档模式的备份.创建非归档备份可以是在非归档模式下创建，并且数据库必须处于mount状态下，而且恢复的时候值能恢复到最后一次备份的状态。也就说从备份到发生故障的这段时间都将丢失</p>
+</blockquote>
+<ul>
+<li>1.1. 检查归档状态</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">archive log list<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>1.2 将数据库启动到mount状态</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">shutdown</span> immediate
+startup mount<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>1.3 执行备份</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">rman target <span class="token operator">/</span>
+<span class="token keyword">backup</span> <span class="token keyword">database</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>2.1 非归档模式备份</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">shutdown</span> immediate<span class="token punctuation">;</span>
+startup mount<span class="token punctuation">;</span>
+
+rman target <span class="token operator">/</span>
+<span class="token keyword">backup</span> <span class="token keyword">database</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>3.1 归档模式</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">open</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="3-在归档模式的RMAN备份与恢复案例-丢失所有文件"><a href="#3-在归档模式的RMAN备份与恢复案例-丢失所有文件" class="headerlink" title="3.在归档模式的RMAN备份与恢复案例-丢失所有文件"></a>3.在归档模式的RMAN备份与恢复案例-丢失所有文件</h2><blockquote>
+<p> &emsp;&emsp;如果要创建正式库的备份，一般不建议用非归档模式备份，也不建议用很简单的命令来完成。而是更多的采用脚本实现归档模式备份，这样将可通过backup+archive log+redo有效的将数据恢复到最近一次改变的状态，可以达到数据的丢失最小化。</p>
+</blockquote>
+<ul>
+<li><p>创建归档模式备份</p>
+<blockquote>
+<p>&emsp;&emsp; 创建归档模式备份数据库必须处于归档(archivelog)模式，因为归档模式备份的数据库文件和控制文件的SCN号可能会不一致。<br>并且可以在数据库打开并不影响业务的情况下完成数据的备份工作；那么这样的备份将是归档模式的备份，那么如果要恢复可以通过backup+archive log+redo来恢复到最近一次日志切换时候的数据，而不是最后一次备份时候的数据。</p>
+</blockquote>
+</li>
+<li><p>寻找dbid</p>
+</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--1.可以在查看数据库警告日志</span>
+vim <span class="token operator">/</span>u01<span class="token operator">/</span>app<span class="token operator">/</span>oracle<span class="token operator">/</span>diag<span class="token operator">/</span>rdbms<span class="token operator">/</span>orcl<span class="token operator">/</span>orcl<span class="token operator">/</span>trace<span class="token operator">/</span>alert_orcl<span class="token punctuation">.</span>log
+<span class="token comment" spellcheck="true">--2.在备份的控制文件中查找</span>
+
+<span class="token comment" spellcheck="true">--3.用BBED在备份的文件中查找</span>
+
+<span class="token comment" spellcheck="true">--4.在备份日志中查找 </span>
+
+<span class="token comment" spellcheck="true">--5.配置控制文件强制启动数据库</span>
+<span class="token comment" spellcheck="true">--5.1 添加一个参数文件</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="4-RMAN恢复案例-丢失单个数据文件如何恢复"><a href="#4-RMAN恢复案例-丢失单个数据文件如何恢复" class="headerlink" title="4.RMAN恢复案例-丢失单个数据文件如何恢复"></a>4.RMAN恢复案例-丢失单个数据文件如何恢复</h2><h2 id="5-RMAN恢复案例-丢失整个数据表空间如何恢复"><a href="#5-RMAN恢复案例-丢失整个数据表空间如何恢复" class="headerlink" title="5.RMAN恢复案例-丢失整个数据表空间如何恢复"></a>5.RMAN恢复案例-丢失整个数据表空间如何恢复</h2><h2 id="6-RMAN恢复案例-丢失SYSTEM表空间如何恢复"><a href="#6-RMAN恢复案例-丢失SYSTEM表空间如何恢复" class="headerlink" title="6.RMAN恢复案例-丢失SYSTEM表空间如何恢复"></a>6.RMAN恢复案例-丢失SYSTEM表空间如何恢复</h2><h2 id="7-RMAN恢复案例-丢失控制文件如何恢复"><a href="#7-RMAN恢复案例-丢失控制文件如何恢复" class="headerlink" title="7.RMAN恢复案例-丢失控制文件如何恢复"></a>7.RMAN恢复案例-丢失控制文件如何恢复</h2><h2 id="8-RMAN恢复案例-丢失参数文件如何恢复"><a href="#8-RMAN恢复案例-丢失参数文件如何恢复" class="headerlink" title="8.RMAN恢复案例-丢失参数文件如何恢复"></a>8.RMAN恢复案例-丢失参数文件如何恢复</h2><h2 id="9-RMAN恢复案例-丢失重做日志文件如何恢复"><a href="#9-RMAN恢复案例-丢失重做日志文件如何恢复" class="headerlink" title="9.RMAN恢复案例-丢失重做日志文件如何恢复"></a>9.RMAN恢复案例-丢失重做日志文件如何恢复</h2><h2 id="10-RMAN恢复案例-存储损坏数据丢失如何恢复"><a href="#10-RMAN恢复案例-存储损坏数据丢失如何恢复" class="headerlink" title="10.RMAN恢复案例-存储损坏数据丢失如何恢复"></a>10.RMAN恢复案例-存储损坏数据丢失如何恢复</h2><h2 id="11-RMAN恢复案例-不完全恢复"><a href="#11-RMAN恢复案例-不完全恢复" class="headerlink" title="11.RMAN恢复案例-不完全恢复"></a>11.RMAN恢复案例-不完全恢复</h2><h2 id="12-RMAN基于时间点-time-的不完全恢复"><a href="#12-RMAN基于时间点-time-的不完全恢复" class="headerlink" title="12.RMAN基于时间点(time)的不完全恢复"></a>12.RMAN基于时间点(time)的不完全恢复</h2><h2 id="13-RMAN基于系统改变号-scn-的不完全恢复"><a href="#13-RMAN基于系统改变号-scn-的不完全恢复" class="headerlink" title="13.RMAN基于系统改变号(scn)的不完全恢复"></a>13.RMAN基于系统改变号(scn)的不完全恢复</h2><h2 id="14-RMAN基于部分数据文件与部分归档丢失的cancel不完全恢复"><a href="#14-RMAN基于部分数据文件与部分归档丢失的cancel不完全恢复" class="headerlink" title="14.RMAN基于部分数据文件与部分归档丢失的cancel不完全恢复"></a>14.RMAN基于部分数据文件与部分归档丢失的cancel不完全恢复</h2><h2 id="15-RMAN基于当前重做日志丢失的cancel不完全恢复"><a href="#15-RMAN基于当前重做日志丢失的cancel不完全恢复" class="headerlink" title="15.RMAN基于当前重做日志丢失的cancel不完全恢复"></a>15.RMAN基于当前重做日志丢失的cancel不完全恢复</h2><h2 id="16-RMAN基于备份控制文件不完全恢复"><a href="#16-RMAN基于备份控制文件不完全恢复" class="headerlink" title="16.RMAN基于备份控制文件不完全恢复"></a>16.RMAN基于备份控制文件不完全恢复</h2>
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/oracle/oracle-rman-bei-fen-2/">https://gin.sh/oracle/oracle-rman-bei-fen-2/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Oracle/">
+                                    <span class="chip bg-color">Oracle</span>
+                                </a>
+                            
+                                <a href="/tags/RMAN/">
+                                    <span class="chip bg-color">RMAN</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/oracle/oracle-rman-bei-fen-2/';
+        this.page.identifier = '/oracle/oracle-rman-bei-fen-2/';
+        this.page.title = 'Oracle Rman 备份2';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/oracle/oracle-rman-bei-fen-1/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/19.jpg" class="responsive-img" alt="Oracle Rman 备份1">
+                        
+                        <span class="card-title">Oracle Rman 备份1</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-10-04
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Oracle/" class="post-category">
+                                    Oracle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle/">
+                        <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                    <a href="/tags/RMAN/">
+                        <span class="chip bg-color">RMAN</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/oracle/oracle-sql-zhi-chang-yong-han-shu/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/22.jpg" class="responsive-img" alt="Oracle SQL之常用函数">
+                        
+                        <span class="card-title">Oracle SQL之常用函数</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-10-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Oracle/" class="post-category">
+                                    Oracle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle/">
+                        <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                    <a href="/tags/SQL/">
+                        <span class="chip bg-color">SQL</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

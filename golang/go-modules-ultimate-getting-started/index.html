@@ -1,0 +1,1470 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Golang, Go, go mod , Go Modules, vgo, goproxy">
+    <meta name="description" content="Go modules 是 Go 语言中正式官宣的项目依赖解决方案，Go modules（前身为vgo）于 Go1.11 正式发布，在 Go1.14 已经准备好，并且可以用在生产上（ready for production）了，Go 官方也鼓励所有用户从其他依赖项管理工具迁移到 Go modules。">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Go Modules 终极入门 | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/medias/featureimages/21.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Go Modules 终极入门</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Golang/">
+                                <span class="chip bg-color">Golang</span>
+                            </a>
+                        
+                            <a href="/tags/go-mod/">
+                                <span class="chip bg-color">go mod</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Golang/" class="post-category">
+                                Golang
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2020-02-29
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    27 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Go-Modules-终极入门"><a href="#Go-Modules-终极入门" class="headerlink" title="Go Modules 终极入门"></a>Go Modules 终极入门</h1><p><a href="https://mp.weixin.qq.com/s/fNMXfpBhBC3UWTbYCnwIMg" target="_blank" rel="noopener">原文链接</a></p>
+<p>&emsp;&emsp;Go modules 是 Go 语言中正式官宣的项目依赖解决方案，Go modules（前身为vgo）于 Go1.11 正式发布，在 Go1.14 已经准备好，并且可以用在生产上（ready for production）了，Go 官方也鼓励所有用户从其他依赖项管理工具迁移到 Go modules。</p>
+<p>而 Go1.14，在今天终于正式发布，Go 官方亲自 <strong><code>喊</code></strong> 你来用：</p>
+<p><img src="https://s.gin.sh/blog/golang/go_mod_1.14.png" alt="Go 1.14 Introduction"></p>
+<p>&emsp;&emsp;因此在今天这篇文章中，我将给大家带来 Go modules 的 “终极入门”，欢迎大家一起共同探讨。</p>
+<h2 id="什么是-Go-Modules"><a href="#什么是-Go-Modules" class="headerlink" title="什么是 Go Modules"></a>什么是 Go Modules</h2><p>&emsp;&emsp;Go modules 是 Go 语言的依赖解决方案，发布于 Go1.11，成长于 Go1.12，丰富于 Go1.13，正式于 Go1.14 推荐在生产上使用。</p>
+<p>&emsp;&emsp;Go moudles 目前集成在 Go 的工具链中，只要安装了 Go，自然而然也就可以使用 Go moudles 了，而 Go modules 的出现也解决了在 Go1.11 前的几个常见争议问题：</p>
+<ul>
+<li>Go 语言长久以来的依赖管理问题。</li>
+<li><code>淘汰</code>现有的 GOPATH 的使用模式。</li>
+<li>统一社区中的其它的依赖管理工具（提供迁移功能）。</li>
+</ul>
+<h2 id="GOPATH-的那些点点滴滴"><a href="#GOPATH-的那些点点滴滴" class="headerlink" title="GOPATH 的那些点点滴滴"></a>GOPATH 的那些点点滴滴</h2><p>&emsp;&emsp;我们有提到 Go modules 的解决的问题之一就是“淘汰”掉 GOPATH，但是 GOPATH 又是什么呢，为什么在 Go1.11 前就使用 GOPATH，而 Go1.11 后就开始逐步建议使用 Go modules，不再推荐 GOPATH 的模式了呢？</p>
+<h3 id="GOPATH-是什么"><a href="#GOPATH-是什么" class="headerlink" title="GOPATH 是什么"></a>GOPATH 是什么</h3><p>&emsp;&emsp;我们先看看第一个问题，GOPATH 是什么，我们可以输入如下命令查看：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ go env
+GOPATH="/Users/eddycjy/go"
+...
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;我们输入go env命令行后可以查看到 GOPATH 变量的结果，我们进入到该目录下进行查看，如下：</p>
+<pre><code>go
+├── bin
+├── pkg
+└── src
+    ├── github.com
+    ├── golang.org
+    ├── google.golang.org
+    ├── gopkg.in
+    ....
+</code></pre><p>&emsp;&emsp;GOPATH目录下一共包含了三个子目录，分别是：</p>
+<ul>
+<li>bin：存储所编译生成的二进制文件。</li>
+<li>pkg：存储预编译的目标文件，以加快程序的后续编译速度。</li>
+<li>src：存储所有 <code>.go</code> 文件或源代码。在编写 Go 应用程序，程序包和库时，一般会以 <code>$GOPATH/src/github.com/foo/bar</code> 的路径进行存放。</li>
+</ul>
+<p>&emsp;&emsp;因此在使用 GOPATH 模式下，我们需要将应用代码存放在固定的 <code>$GOPATH/src</code> 目录下，并且如果执行<code>go get</code> 来拉取外部依赖会自动下载并安装到 <code>$GOPATH</code> 目录下。</p>
+<h3 id="为什么弃用-GOPATH-模式"><a href="#为什么弃用-GOPATH-模式" class="headerlink" title="为什么弃用 GOPATH 模式"></a>为什么弃用 GOPATH 模式</h3><p>&emsp;&emsp;在 <code>GOPATH</code> 的 <code>$GOPATH/src</code> 下进行 <code>.go</code> 文件或源代码的存储，我们可以称其为 <code>GOPATH</code> 的模式，这个模式，看起来好像没有什么问题，那么为什么我们要弃用呢，参见如下原因：</p>
+<p><code>GOPATH</code> 模式下没有版本控制的概念，具有致命的缺陷，至少会造成以下问题：</p>
+<ul>
+<li>在执行 <code>go get</code> 的时候，你无法传达任何的版本信息的期望，也就是说你也无法知道自己当前更新的是哪一个版本，也无法通过指定来拉取自己所期望的具体版本。</li>
+<li>在运行 Go 应用程序的时候，你无法保证其它人与你所期望依赖的第三方库是相同的版本，也就是说在项目依赖库的管理上，你无法保证所有人的依赖版本都一致。</li>
+<li>你没办法处理 v1、v2、v3 等等不同版本的引用问题，因为 GOPATH 模式下的导入路径都是一样的，都是 <code>github.com/foo/bar</code> 。</li>
+<li>Go 语言官方从 Go1.11 起开始推进 Go modules（前身vgo），Go1.13 起不再推荐使用 GOPATH 的使用模式，Go modules 也渐趋稳定，因此新项目也没有必要继续使用 GOPATH 模式。</li>
+</ul>
+<h3 id="在-GOPATH-模式下的产物"><a href="#在-GOPATH-模式下的产物" class="headerlink" title="在 GOPATH 模式下的产物"></a>在 GOPATH 模式下的产物</h3><p>&emsp;&emsp;Go1 在 2012 年 03 月 28 日发布，而 Go1.11 是在 2018 年 08 月 25 日才正式发布（数据来源：GitHub Tag），在这个空档的时间内，并没有 Go modules 这一个东西，最早期可能还好说，因为刚发布，用的人不多，所以没有明显暴露，但是后期 Go 语言使用的人越来越多了，那怎么办？</p>
+<p>&emsp;&emsp;这时候社区中逐渐的涌现出了大量的依赖解决方案，百花齐放，让人难以挑选，其中包括我们所熟知的 vendor 目录的模式，以及曾经一度被认为是“官宣”的 dep 的这类依赖管理工具。</p>
+<p>&emsp;&emsp;但为什么 dep 没有正在成为官宣呢，其实是因为随着 Russ Cox 与 Go 团队中的其他成员不断深入地讨论，发现 dep 的一些细节似乎越来越不适合 Go，因此官方采取了另起 proposal 的方式来推进，其方案的结果一开始先是释出 vgo（Go modules 的前身，知道即可，不需要深入了解），最终演变为我们现在所见到的 Go modules，也在 Go1.11 正式进入了 Go 的工具链。</p>
+<p>&emsp;&emsp;因此与其说是 “在 GOPATH 模式下的产物”，不如说是历史为当前提供了重要的教训，因此出现了 Go modules。</p>
+<h2 id="Go-Modules基本使用"><a href="#Go-Modules基本使用" class="headerlink" title="Go Modules基本使用"></a>Go Modules基本使用</h2><p>&emsp;&emsp;在初步了解了 Go modules 的前世今生后，我们正式进入到 Go modules 的使用，首先我们将从头开始创建一个 Go modules 的项目（原则上所创建的目录应该不要放在 GOPATH 之中）。</p>
+<h3 id="所提供的命令"><a href="#所提供的命令" class="headerlink" title="所提供的命令"></a>所提供的命令</h3><p>&emsp;&emsp;在 Go modules 中，我们能够使用如下命令进行操作：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">go mod init</td>
+<td style="text-align:left">生成 go.mod 文件</td>
+</tr>
+<tr>
+<td style="text-align:left">go mod download</td>
+<td style="text-align:left">下载 go.mod 文件中指明的所有依赖</td>
+</tr>
+<tr>
+<td style="text-align:left">go mod tidy</td>
+<td style="text-align:left">整理现有的依赖</td>
+</tr>
+<tr>
+<td style="text-align:left">go mod graph</td>
+<td style="text-align:left">查看现有的依赖结构</td>
+</tr>
+<tr>
+<td style="text-align:left">go mod edit</td>
+<td style="text-align:left">编辑 go.mod 文件</td>
+</tr>
+<tr>
+<td style="text-align:left">go mod vendor</td>
+<td style="text-align:left">导出项目所有的依赖到vendor目录</td>
+</tr>
+<tr>
+<td style="text-align:left">go mod verify</td>
+<td style="text-align:left">校验一个模块是否被篡改过</td>
+</tr>
+<tr>
+<td style="text-align:left">go mod why</td>
+<td style="text-align:left">查看为什么需要依赖某模块</td>
+</tr>
+</tbody>
+</table>
+<h3 id="所提供的环境变量"><a href="#所提供的环境变量" class="headerlink" title="所提供的环境变量"></a>所提供的环境变量</h3><p>&emsp;&emsp;在 Go modules 中有如下常用环境变量，我们可以通过 go env 命令来进行查看，如下：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">
+$ go env
+GO111MODULE="auto"
+GOPROXY="https://proxy.golang.org,direct"
+GONOPROXY=""
+GOSUMDB="sum.golang.org"
+GONOSUMDB=""
+GOPRIVATE=""
+...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h4 id="GO111MODULE"><a href="#GO111MODULE" class="headerlink" title="GO111MODULE"></a>GO111MODULE</h4><p>&emsp;&emsp;Go语言提供了 GO111MODULE 这个环境变量来作为 Go modules 的开关，其允许设置以下参数：</p>
+<ul>
+<li>auto：只要项目包含了 go.mod 文件的话启用 Go modules，目前在 Go1.11 至 Go1.14 中仍然是默认值。</li>
+<li>on：启用 Go modules，推荐设置，将会是未来版本中的默认值。</li>
+<li>off：禁用 Go modules，不推荐设置。</li>
+</ul>
+<h5 id="GO111MODULE-的小历史"><a href="#GO111MODULE-的小历史" class="headerlink" title="GO111MODULE 的小历史"></a>GO111MODULE 的小历史</h5><p>&emsp;&emsp;你可能会留意到 GO111MODULE 这个名字比较“奇特”，实际上在 Go 语言中经常会有这类阶段性的变量， GO111MODULE 这个命名代表着Go语言在 1.11 版本添加的，针对 Module 的变量。</p>
+<p>&emsp;&emsp;像是在 Go1.5 版本的时候，也发布了一个系统环境变量 GO15VENDOREXPERIMENT，作用是用于开启 vendor 目录的支持，当时其默认值也不是开启，仅仅作为 experimental。其随后在 Go1.6 版本时也将默认值改为了开启，并且最后作为了official，GO15VENDOREXPERIMENT 系统变量就退出了历史舞台。</p>
+<p>&emsp;&emsp;而未来 GO111MODULE 这一个系统环境变量也会面临这个问题，也会先调整为默认值为 on（曾经在Go1.13想想改为 on，并且已经合并了 PR，但最后因为种种原因改回了 auto），然后再把 GO111MODULE 的支持给去掉，我们猜测应该会在 Go2 将 GO111MODULE 给去掉，因为如果直接去掉 GO111MODULE 的支持，会存在兼容性问题。</p>
+<h4 id="GOPROXY"><a href="#GOPROXY" class="headerlink" title="GOPROXY"></a>GOPROXY</h4><p>&emsp;&emsp;这个环境变量主要是用于设置 Go 模块代理（Go module proxy），其作用是用于使 Go 在后续拉取模块版本时能够脱离传统的 VCS 方式，直接通过镜像站点来快速拉取。</p>
+<p>&emsp;&emsp;GOPROXY 的默认值是：<code>https://proxy.golang.org,direct</code>，这有一个很严重的问题，就是 <code>proxy.golang.org</code> 在国内是无法访问的，因此这会直接卡住你的第一步，所以你必须在开启 Go modules 的时，同时设置国内的 Go 模块代理，执行如下命令：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ go env -w GOPROXY=https://goproxy.cn,direct
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>&emsp;&emsp;GOPROXY 的值是一个以英文逗号 “,” 分割的 Go 模块代理列表，允许设置多个模块代理，假设你不想使用，也可以将其设置为 “off” ，这将会禁止 Go 在后续操作中使用任何 Go 模块代理。</p>
+<h5 id="direct是什么"><a href="#direct是什么" class="headerlink" title="direct是什么"></a>direct是什么</h5><p>&emsp;&emsp;而在刚刚设置的值中，我们可以发现值列表中有 “direct” 标识，它又有什么作用呢？</p>
+<p>&emsp;&emsp;实际上 “direct” 是一个特殊指示符，用于指示 Go 回源到模块版本的源地址去抓取（比如 GitHub 等），场景如下：当值列表中上一个 Go 模块代理返回 404 或 410 错误时，Go 自动尝试列表中的下一个，遇见 “direct” 时回源，也就是回到源地址去抓取，而遇见 EOF 时终止并抛出类似 “invalid version: unknown revision…” 的错误。</p>
+<h4 id="GOSUMDB"><a href="#GOSUMDB" class="headerlink" title="GOSUMDB"></a>GOSUMDB</h4><p>&emsp;&emsp;它的值是一个 Go checksum database，用于在拉取模块版本时（无论是从源站拉取还是通过 Go module proxy 拉取）保证拉取到的模块版本数据未经过篡改，若发现不一致，也就是可能存在篡改，将会立即中止。</p>
+<p>&emsp;&emsp;GOSUMDB 的默认值为：<code>sum.golang.org</code>，在国内也是无法访问的，但是 GOSUMDB 可以被 Go 模块代理所代理（详见：Proxying a Checksum Database）。</p>
+<p>&emsp;&emsp;因此我们可以通过设置 GOPROXY 来解决，而先前我们所设置的模块代理 <code>goproxy.cn</code> 就能支持代理 <code>sum.golang.org</code>，所以这一个问题在设置 GOPROXY 后，你可以不需要过度关心。</p>
+<p>&emsp;&emsp;另外若对 GOSUMDB 的值有自定义需求，其支持如下格式：</p>
+<ul>
+<li>格式 1：&lt;SUMDB_NAME&gt;+&lt;PUBLIC_KEY&gt;。</li>
+<li>格式 2：&lt;SUMDB_NAME&gt;+&lt;PUBLIC_KEY&gt; &lt;SUMDB_URL&gt;。</li>
+</ul>
+<p>&emsp;&emsp;也可以将其设置为“off”，也就是禁止 Go 在后续操作中校验模块版本。</p>
+<h4 id="GONOPROXY-GONOSUMDB-GOPRIVATE"><a href="#GONOPROXY-GONOSUMDB-GOPRIVATE" class="headerlink" title="GONOPROXY/GONOSUMDB/GOPRIVATE"></a>GONOPROXY/GONOSUMDB/GOPRIVATE</h4><p>&emsp;&emsp;这三个环境变量都是用在当前项目依赖了私有模块，例如像是你公司的私有 git 仓库，又或是 github 中的私有库，都是属于私有模块，都是要进行设置的，否则会拉取失败。</p>
+<p>&emsp;&emsp;更细致来讲，就是依赖了由 GOPROXY 指定的 Go 模块代理或由 GOSUMDB 指定 Go checksum database 都无法访问到的模块时的场景。</p>
+<p>&emsp;&emsp;而一般建议直接设置 GOPRIVATE，它的值将作为 GONOPROXY 和 GONOSUMDB 的默认值，所以建议的最佳姿势是直接使用 GOPRIVATE。</p>
+<p>&emsp;&emsp;并且它们的值都是一个以英文逗号 “,” 分割的模块路径前缀，也就是可以设置多个，例如：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ go env -w GOPRIVATE="git.example.com,github.com/eddycjy/mquote"
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>&emsp;&emsp;设置后，前缀为 git.xxx.com 和 github.com/eddycjy/mquote 的模块都会被认为是私有模块。</p>
+<p>如果不想每次都重新设置，我们也可以利用通配符，例如：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ go env -w GOPRIVATE="*.example.com"
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>&emsp;&emsp;这样子设置的话，所有模块路径为 example.com 的子域名（例如：git.example.com）都将不经过 Go module proxy 和 Go checksum database，需要注意的是不包括 example.com 本身。</p>
+<h2 id="开启-Go-Modules"><a href="#开启-Go-Modules" class="headerlink" title="开启 Go Modules"></a>开启 Go Modules</h2><p>&emsp;&emsp;目前 Go modules 并不是默认开启，因此Go语言提供了 GO111MODULE 这个环境变量来作为 Go modules 的开关，其允许设置以下参数：</p>
+<ul>
+<li>auto：只要项目包含了 go.mod 文件的话启用 Go modules，目前在Go1.11至 Go1.14 中仍然是默认值。</li>
+<li>on：启用 Go modules，推荐设置，将会是未来版本中的默认值。</li>
+<li>off：禁用 Go modules，不推荐设置。</li>
+</ul>
+<p>&emsp;&emsp;如果你不确定你当前的值是什么，可以执行 <code>go env</code> 命令，查看结果</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ go env
+GO111MODULE="off"
+...
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;如果需要对 GO111MODULE 的值进行变更，推荐通过 <code>go env</code> 命令进行设置：</p>
+<pre class="line-numbers language-sh"><code class="language-sh"> $ go env -w GO111MODULE=on
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>&emsp;&emsp;但是需要注意的是如果对应的系统环境变量有值了（进行过设置），<code>go env</code> 是不支持覆盖写入的，否则会出现如下报错信息：<code>warning: go env -w GO111MODULE=... does not override conflicting OS environment variable</code>。</p>
+<p>又或是可以通过直接设置系统环境变量（写入对应的 .bash_profile 文件亦可）来实现这个目的：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ export GO111MODULE=on
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h3><p>&emsp;&emsp;在完成 Go modules 的开启后，我们需要创建一个示例项目来进行演示，执行如下命令：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ mkdir -p $HOME/eddycjy/module-repo 
+$ cd $HOME/eddycjy/module-repo
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;然后进行 Go modules 的初始化，如下：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ go mod init github.com/eddycjy/module-repo
+go: creating new go.mod: module github.com/eddycjy/module-repo
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;在执行 <code>go mod init</code> 命令时，我们指定了模块导入路径为 <code>github.com/eddycjy/module-repo</code>。接下来我们在该项目根目录下创建 main.go 文件，如下：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"fmt"</span>
+    <span class="token string">"github.com/eddycjy/mquote"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>mquote<span class="token punctuation">.</span><span class="token function">GetHello</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;然后在项目根目录执行 <code>go get github.com/eddycjy/mquote</code> 命令，如下：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ go get github.com/eddycjy/mquote 
+go: finding github.com/eddycjy/mquote latest
+go: downloading github.com/eddycjy/mquote v0.0.0-20200220041913-e066a990ce6f
+go: extracting github.com/eddycjy/mquote v0.0.0-20200220041913-e066a990ce6f
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="查看-go-mod-文件"><a href="#查看-go-mod-文件" class="headerlink" title="查看 go.mod 文件"></a>查看 go.mod 文件</h3><p>&emsp;&emsp;在初始化项目时，会生成一个 go.mod 文件，是启用了 Go modules 项目所必须的最重要的标识，同时也是 GO111MODULE 值为 auto 时的识别标识，它描述了当前项目（也就是当前模块）的元信息，每一行都以一个动词开头。</p>
+<p>&emsp;&emsp;在我们刚刚进行了初始化和简单拉取后，我们再次查看 go.mod 文件，基本内容如下：</p>
+<pre class="line-numbers language-go"><code class="language-go">module github<span class="token punctuation">.</span>com<span class="token operator">/</span>eddycjy<span class="token operator">/</span>module<span class="token operator">-</span>repo
+
+<span class="token keyword">go</span> <span class="token number">1.13</span>
+
+<span class="token function">require</span> <span class="token punctuation">(</span>
+    github<span class="token punctuation">.</span>com<span class="token operator">/</span>eddycjy<span class="token operator">/</span>mquote v0<span class="token number">.0</span><span class="token punctuation">.</span><span class="token number">0</span><span class="token operator">-</span><span class="token number">20200220041913</span><span class="token operator">-</span>e066a990ce6f
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;为了更进一步的讲解，我们模拟引用如下：</p>
+<pre class="line-numbers language-go"><code class="language-go">module github<span class="token punctuation">.</span>com<span class="token operator">/</span>eddycjy<span class="token operator">/</span>module<span class="token operator">-</span>repo
+
+<span class="token keyword">go</span> <span class="token number">1.13</span>
+
+<span class="token function">require</span> <span class="token punctuation">(</span>
+    example<span class="token punctuation">.</span>com<span class="token operator">/</span>apple v0<span class="token number">.1</span><span class="token punctuation">.</span><span class="token number">2</span>
+    example<span class="token punctuation">.</span>com<span class="token operator">/</span>banana v1<span class="token number">.2</span><span class="token punctuation">.</span><span class="token number">3</span>
+    example<span class="token punctuation">.</span>com<span class="token operator">/</span>banana<span class="token operator">/</span>v2 v2<span class="token number">.3</span><span class="token punctuation">.</span><span class="token number">4</span>
+    example<span class="token punctuation">.</span>com<span class="token operator">/</span>pear <span class="token comment" spellcheck="true">// indirect</span>
+    example<span class="token punctuation">.</span>com<span class="token operator">/</span>strawberry <span class="token comment" spellcheck="true">// incompatible</span>
+<span class="token punctuation">)</span>
+
+exclude example<span class="token punctuation">.</span>com<span class="token operator">/</span>banana v1<span class="token number">.2</span><span class="token punctuation">.</span><span class="token number">4</span>
+replace example<span class="token punctuation">.</span>com<span class="token operator">/</span>apple v0<span class="token number">.1</span><span class="token punctuation">.</span><span class="token number">2</span> <span class="token operator">=</span><span class="token operator">></span> example<span class="token punctuation">.</span>com<span class="token operator">/</span>fried v0<span class="token number">.1</span><span class="token punctuation">.</span><span class="token number">0</span> 
+replace example<span class="token punctuation">.</span>com<span class="token operator">/</span>banana <span class="token operator">=</span><span class="token operator">></span> example<span class="token punctuation">.</span>com<span class="token operator">/</span>fish
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>module：用于定义当前项目的模块路径。</li>
+<li>go：用于标识当前模块的 Go 语言版本，值为初始化模块时的版本，目前来看还只是个标识作用。</li>
+<li>require：用于设置一个特定的模块版本。</li>
+<li>exclude：用于从使用中排除一个特定的模块版本。</li>
+<li>replace：用于将一个模块版本替换为另外一个模块版本。</li>
+</ul>
+<p>&emsp;&emsp;另外你会发现 <code>example.com/pear</code> 的后面会有一个 indirect 标识，indirect 标识表示该模块为间接依赖，也就是在当前应用程序中的 import 语句中，并没有发现这个模块的明确引用，有可能是你先手动 <code>go get</code> 拉取下来的，也有可能是你所依赖的模块所依赖的，情况有好几种。</p>
+<h3 id="查看-go-sum-文件"><a href="#查看-go-sum-文件" class="headerlink" title="查看 go.sum 文件"></a>查看 go.sum 文件</h3><p>&emsp;&emsp;在第一次拉取模块依赖后，会发现多出了一个 go.sum 文件，其详细罗列了当前项目直接或间接依赖的所有模块版本，并写明了那些模块版本的 SHA-256 哈希值以备 Go 在今后的操作中保证项目所依赖的那些模块版本不会被篡改。</p>
+<pre class="line-numbers language-go"><code class="language-go">github<span class="token punctuation">.</span>com<span class="token operator">/</span>eddycjy<span class="token operator">/</span>mquote v0<span class="token number">.0</span><span class="token punctuation">.</span><span class="token number">1</span> h1<span class="token punctuation">:</span>4QHXKo7J8a6J<span class="token operator">/</span>k8UA6CiHhswJQs0sm2foAQQUq8GFHM<span class="token operator">=</span>
+github<span class="token punctuation">.</span>com<span class="token operator">/</span>eddycjy<span class="token operator">/</span>mquote v0<span class="token number">.0</span><span class="token punctuation">.</span><span class="token number">1</span><span class="token operator">/</span><span class="token keyword">go</span><span class="token punctuation">.</span>mod h1<span class="token punctuation">:</span>ZtlkDs7Mriynl7wsDQ4cU23okEtVYqHwl7F1eDh4qPg<span class="token operator">=</span>
+github<span class="token punctuation">.</span>com<span class="token operator">/</span>eddycjy<span class="token operator">/</span>mquote<span class="token operator">/</span>module<span class="token operator">/</span>tour v0<span class="token number">.0</span><span class="token punctuation">.</span><span class="token number">1</span> h1<span class="token punctuation">:</span>cc<span class="token operator">+</span>pgV0LnR8Fhou0zNHughT7IbSnLvfUZ<span class="token operator">+</span>X3fvshrv8<span class="token operator">=</span>
+github<span class="token punctuation">.</span>com<span class="token operator">/</span>eddycjy<span class="token operator">/</span>mquote<span class="token operator">/</span>module<span class="token operator">/</span>tour v0<span class="token number">.0</span><span class="token punctuation">.</span><span class="token number">1</span><span class="token operator">/</span><span class="token keyword">go</span><span class="token punctuation">.</span>mod h1<span class="token punctuation">:</span>8uL1FOiQJZ4<span class="token operator">/</span>1hzqQ5mv4Sm7nJcwYu41F3nZmkiWx5I<span class="token operator">=</span>
+<span class="token operator">...</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;我们可以看到一个模块路径可能有如下两种：</p>
+<pre class="line-numbers language-go"><code class="language-go">github<span class="token punctuation">.</span>com<span class="token operator">/</span>eddycjy<span class="token operator">/</span>mquote v0<span class="token number">.0</span><span class="token punctuation">.</span><span class="token number">1</span> h1<span class="token punctuation">:</span>4QHXKo7J8a6J<span class="token operator">/</span>k8UA6CiHhswJQs0sm2foAQQUq8GFHM<span class="token operator">=</span>
+github<span class="token punctuation">.</span>com<span class="token operator">/</span>eddycjy<span class="token operator">/</span>mquote v0<span class="token number">.0</span><span class="token punctuation">.</span><span class="token number">1</span><span class="token operator">/</span><span class="token keyword">go</span><span class="token punctuation">.</span>mod h1<span class="token punctuation">:</span>ZtlkDs7Mriynl7wsDQ4cU23okEtVYqHwl7F1eDh4qPg<span class="token operator">=</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;h1 hash 是 Go modules 将目标模块版本的 zip 文件开包后，针对所有包内文件依次进行 hash，然后再把它们的 hash 结果按照固定格式和算法组成总的 hash 值。</p>
+<p>&emsp;&emsp;而 h1 hash 和 go.mod hash 两者，要不就是同时存在，要不就是只存在 go.mod hash。那什么情况下会不存在 h1 hash 呢，就是当 Go 认为肯定用不到某个模块版本的时候就会省略它的 h1 hash，就会出现不存在 h1 hash，只存在 go.mod hash 的情况。</p>
+<h3 id="查看全局缓存"><a href="#查看全局缓存" class="headerlink" title="查看全局缓存"></a>查看全局缓存</h3><p>&emsp;&emsp;我们刚刚成功的将 <code>github.com/eddycjy/mquote</code> 模块拉取了下来，其拉取的结果缓存在  <code>$GOPATH/pkg/mod和 $GOPATH/pkg/sumdb</code> 目录下，而在mod目录下会以 <code>github.com/foo/bar</code> 的格式进行存放，如下：</p>
+<pre><code>mod
+├── cache
+├── github.com
+├── golang.org
+├── google.golang.org
+├── gopkg.in
+...
+</code></pre><p>&emsp;&emsp;需要注意的是同一个模块版本的数据只缓存一份，所有其它模块共享使用。如果你希望清理所有已缓存的模块版本数据，可以执行 <code>go clean -modcache</code> 命令。</p>
+<h2 id="Go-Modules-下的-go-get-行为"><a href="#Go-Modules-下的-go-get-行为" class="headerlink" title="Go Modules 下的 go get 行为"></a>Go Modules 下的 go get 行为</h2><p>&emsp;&emsp;在拉取项目依赖时，你会发现拉取的过程总共分为了三大步，分别是 finding（发现）、downloading（下载）以及 extracting（提取）， 并且在拉取信息上一共分为了三段内容：</p>
+<p><img src="https://s.gin.sh/blog/golang/mod/go_mod_info.png" alt="Go Modules 版本信息"></p>
+<p>&emsp;&emsp;需要注意的是，所拉取版本的 commit 时间是以UTC时区为准，而并非本地时区，同时我们会发现我们 go get 命令所拉取到的版本是 v0.0.0，这是因为我们是直接执行 go get -u 获取的，并没有指定任何的版本信息，由 Go modules 自行按照内部规则进行选择。</p>
+<h3 id="go-get-的拉取行为"><a href="#go-get-的拉取行为" class="headerlink" title="go get 的拉取行为"></a>go get 的拉取行为</h3><p>&emsp;&emsp;刚刚我们用 go get 命令拉取了新的依赖，那么 go get 又提供了哪些功能呢，常用的拉取命令如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">go get</td>
+<td style="text-align:left">拉取依赖，会进行指定性拉取（更新），并不会更新所依赖的其它模块。</td>
+</tr>
+<tr>
+<td style="text-align:left">go get -u</td>
+<td style="text-align:left">更新现有的依赖，会强制更新它所依赖的其它全部模块，不包括自身。</td>
+</tr>
+<tr>
+<td style="text-align:left">go get -u -t ./…</td>
+<td style="text-align:left">更新所有直接依赖和间接依赖的模块版本，包括单元测试中用到的。</td>
+</tr>
+</tbody>
+</table>
+<p>&emsp;&emsp;那么我想选择具体版本应当如何执行呢，如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">命令</th>
+<th style="text-align:left">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">go get golang.org/x/text@latest</td>
+<td style="text-align:left">拉取最新的版本，若存在tag，则优先使用。</td>
+</tr>
+<tr>
+<td style="text-align:left">go get golang.org/x/text@master</td>
+<td style="text-align:left">拉取 master 分支的最新 commit。</td>
+</tr>
+<tr>
+<td style="text-align:left">go get <a href="mailto:golang.org/x/text@v0.3.2">golang.org/x/text@v0.3.2</a></td>
+<td style="text-align:left">拉取 tag 为 v0.3.2 的 commit。</td>
+</tr>
+<tr>
+<td style="text-align:left">go get golang.org/x/text@342b2e</td>
+<td style="text-align:left">拉取 hash 为 342b231 的 commit，最终会被转换为 v0.3.2。</td>
+</tr>
+</tbody>
+</table>
+<h3 id="go-get-的版本选择"><a href="#go-get-的版本选择" class="headerlink" title="go get 的版本选择"></a>go get 的版本选择</h3><p>&emsp;&emsp;我们回顾一下我们拉取的 <code>go get github.com/eddycjy/mquote</code>，其结果是 <code>v0.0.0-20200220041913-e066a990ce6f</code>，对照着上面所提到的 <code>go get</code> 行为来看，你可能还会有一些疑惑，那就是在 <code>go get</code> 没有指定任何版本的情况下，它的版本选择规则是怎么样的，也就是为什么 <code>go get</code> 拉取的是 <code>v0.0.0</code>，它什么时候会拉取正常带版本号的 <code>tags</code> 呢。实际上这需要区分两种情况，如下：</p>
+<ul>
+<li>所拉取的模块有发布 tags：<ul>
+<li>如果只有单个模块，那么就取主版本号最大的那个tag。</li>
+<li>如果有多个模块，则推算相应的模块路径，取主版本号最大的那个tag（子模块的tag的模块路径会有前缀要求）</li>
+</ul>
+</li>
+<li>所拉取的模块没有发布过 tags：<ul>
+<li>默认取主分支最新一次 commit 的 commithash。</li>
+<li>没有发布过 tags</li>
+</ul>
+</li>
+</ul>
+<h3 id="没有发布过-tags"><a href="#没有发布过-tags" class="headerlink" title="没有发布过 tags"></a>没有发布过 tags</h3><p>&emsp;&emsp;那么为什么会拉取的是 <code>v0.0.0 呢</code>，是因为 <code>github.com/eddycjy/mquote</code> 没有发布任何的tag，如下：</p>
+<p><img src="https://s.gin.sh/blog/golang/mod/go_mod_no_tag.png" alt="没有发布过 tags"></p>
+<p>&emsp;&emsp;因此它默认取的是主分支最新一次 commit 的 commit 时间和 commithash，也就是 <code>20200220041913-e066a990ce6f</code>，属于第二种情况。</p>
+<h3 id="有发布-tags"><a href="#有发布-tags" class="headerlink" title="有发布 tags"></a>有发布 tags</h3><p>&emsp;&emsp;在项目有发布 tags 的情况下，还存在着多种模式，也就是只有单个模块和多个模块，我们统一以多个模块来进行展示，因为多个模块的情况下就已经包含了单个模块的使用了，如下图：</p>
+<p><img src="https://s.gin.sh/blog/golang/mod/go_mod_has_tag.png" alt="有发布 tags"></p>
+<p>&emsp;&emsp;在这个项目中，我们一共打了两个tag，分别是：v0.0.1 和 module/tour/v0.0.1。这时候你可能会奇怪，为什么要打 module/tour/v0.0.1 这么“奇怪”的tag，这有什么用意吗？</p>
+<p>&emsp;&emsp;其实是 Go modules 在同一个项目下多个模块的tag表现方式，其主要目录结构为：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">mquote
+├── go.mod
+├── module
+│   └── tour
+│       ├── go.mod
+│       └── tour.go
+└── quote.go
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;可以看到在 mquote 这个项目的根目录有一个 go.mod 文件，而在 module/tour 目录下也有一个 go.mod 文件，其模块导入和版本信息的对应关系如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">tag</th>
+<th style="text-align:left">模块导入路径</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">v0.0.1</td>
+<td style="text-align:left">github.com/eddycjy/mquote</td>
+<td>mquote 项目的v 0.0.1 版本</td>
+</tr>
+<tr>
+<td style="text-align:left">module/tour/v0.01</td>
+<td style="text-align:left">github.com/eddycjy/mquote/module/tour</td>
+<td>mquote 项目下的子模块 module/tour 的 v0.0.1 版本</td>
+</tr>
+</tbody>
+</table>
+<h3 id="导入主模块和子模块"><a href="#导入主模块和子模块" class="headerlink" title="导入主模块和子模块"></a>导入主模块和子模块</h3><p>&emsp;&emsp;结合上述内容，拉取主模块的话，还是照旧执行如下命令：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ go get github.com/eddycjy/mquote@v0.0.1
+go: finding github.com/eddycjy/mquote v0.0.1
+go: downloading github.com/eddycjy/mquote v0.0.1
+go: extracting github.com/eddycjy/mquote v0.0.1
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;如果是想拉取子模块，执行如下命令：</p>
+<pre class="line-numbers language-sh"><code class="language-sh">$ go get github.com/eddycjy/mquote/module/tour@v0.0.1
+go: finding github.com/eddycjy/mquote/module v0.0.1
+go: finding github.com/eddycjy/mquote/module/tour v0.0.1
+go: downloading github.com/eddycjy/mquote/module/tour v0.0.1
+go: extracting github.com/eddycjy/mquote/module/tour v0.0.1
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;我们将主模块和子模块的拉取进行对比，你会发现子模块的拉取会多出一步，它会先发现 <code>github.com/eddycjy/mquote/module</code>，再继续推算，最终拉取到 <code>module/tour</code>。</p>
+<h2 id="Go-Modules-的导入路径说明"><a href="#Go-Modules-的导入路径说明" class="headerlink" title="Go Modules 的导入路径说明"></a>Go Modules 的导入路径说明</h2><h3 id="不同版本的导入路径"><a href="#不同版本的导入路径" class="headerlink" title="不同版本的导入路径"></a>不同版本的导入路径</h3><p>&emsp;&emsp;在前面的模块拉取和引用中，你会发现我们的模块导入路径就是 <code>github.com/eddycjy/mquote</code> 和  <code>github.com/eddycjy/mquote/module/tour</code>，似乎并没有什么特殊的。</p>
+<p>&emsp;&emsp;其实不然，实际上 Go modules 在主版本号为 v0 和 v1 的情况下省略了版本号，而在主版本号为v2及以上则需要明确指定出主版本号，否则会出现冲突，其tag与模块导入路径的大致对应关系如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:left">tag</th>
+<th style="text-align:left">模块导入路径</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:left">v0.0.0</td>
+<td style="text-align:left">github.com/eddycjy/mquote</td>
+</tr>
+<tr>
+<td style="text-align:left">v1.0.0</td>
+<td style="text-align:left">github.com/eddycjy/mquote</td>
+</tr>
+<tr>
+<td style="text-align:left">v2.0.0</td>
+<td style="text-align:left">github.com/eddycjy/mquote/v2</td>
+</tr>
+<tr>
+<td style="text-align:left">v3.0.0</td>
+<td style="text-align:left">github.com/eddycjy/mquote/v3</td>
+</tr>
+</tbody>
+</table>
+<p>&emsp;&emsp;简单来讲，就是主版本号为 v0 和 v1 时，不需要在模块导入路径包含主版本的信息，而在 v1 版本以后，也就是 v2 起，必须要在模块的导入路径末尾加上主版本号，引用时就需要调整为如下格式：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"github.com/eddycjy/mquote/v2/example"</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;另外忽略主版本号 v0 和 v1 是强制性的（不是可选项），因此每个软件包只有一个明确且规范的导入路径。</p>
+<h3 id="为什么忽略-v0-和-v1-的主版本号"><a href="#为什么忽略-v0-和-v1-的主版本号" class="headerlink" title="为什么忽略 v0 和 v1 的主版本号"></a>为什么忽略 v0 和 v1 的主版本号</h3><ul>
+<li><p>1.导入路径中忽略 v1 版本的原因是：考虑到许多开发人员创建一旦到达 v1 版本便永不改变的软件包，这是官方所鼓励的，不认为所有这些开发人员在无意发布 v2 版时都应被迫拥有明确的 v1 版本尾缀，这将导致 v1 版本变成“噪音”且无意义。</p>
+</li>
+<li><p>2.导入路径中忽略了 v0 版本的原因是：根据语义化版本规范，v0的这些版本完全没有兼容性保证。需要一个显式的 v0 版本的标识对确保兼容性没有多大帮助。</p>
+</li>
+</ul>
+<h2 id="Go-Modules-的语义化版本控制"><a href="#Go-Modules-的语义化版本控制" class="headerlink" title="Go Modules 的语义化版本控制"></a>Go Modules 的语义化版本控制</h2><p>&emsp;&emsp;我们不断地在 Go Modules 的使用中提到版本号，其实质上被称为“语义化版本”，假设我们的版本号是 v1.2.3，如下：</p>
+<p>&emsp;&emsp;其版本格式为 “主版本号.次版本号.修订号”，版本号的递增规则如下：</p>
+<p><img src="https://s.gin.sh/blog/golang/mod/go_mod_version_1.png" alt="Go Modules Version 1"></p>
+<ul>
+<li>主版本号：当你做了不兼容的 API 修改。</li>
+<li>次版本号：当你做了向下兼容的功能性新增。</li>
+<li>修订号：当你做了向下兼容的问题修正。</li>
+</ul>
+<p>&emsp;&emsp;假设你是先行版本号或特殊情况，可以将版本信息追加到“主版本号.次版本号.修订号”的后面，作为延伸，如下：</p>
+<p><img src="https://s.gin.sh/blog/golang/mod/go_mod_version_2.png" alt="Go Modules Version 2"></p>
+<p>&emsp;&emsp;至此我们介绍了 Go modules 所支持的两类版本号方式，在我们发布新版本打 tag 的时候，需要注意遵循，否则不遵循语义化版本规则的版本号都是无法进行拉取的。</p>
+<h2 id="Go-Modules-的最小版本选择"><a href="#Go-Modules-的最小版本选择" class="headerlink" title="Go Modules 的最小版本选择"></a>Go Modules 的最小版本选择</h2><p>&emsp;&emsp;现在我们已经有一个模块，也有发布的 tag，但是一个模块往往依赖着许多其它许许多多的模块，并且不同的模块在依赖时很有可能会出现依赖同一个模块的不同版本，如下图（来自 Russ Cox）：</p>
+<p><img src="https://s.gin.sh/blog/golang/mod/go_mod_version_3.png" alt="Go Modules Version 3"></p>
+<p>&emsp;&emsp;在上述依赖中，模块 A 依赖了模块 B 和模块 C，而模块 B 依赖了模块 D，模块 C 依赖了模块 D 和 F，模块 D 又依赖了模块 E，而且同模块的不同版本还依赖了对应模块的不同版本。那么这个时候 Go modules 怎么选择版本，选择的是哪一个版本呢？</p>
+<p>&emsp;&emsp;我们根据 proposal 可得知，Go modules 会把每个模块的依赖版本清单都整理出来，最终得到一个构建清单，如下图（来自 Russ Cox）：</p>
+<p><img src="https://s.gin.sh/blog/golang/mod/go_mod_version_4.png" alt="Go Modules Version 4"></p>
+<p>&emsp;&emsp;我们看到 rough list 和 final list，两者的区别在于重复引用的模块 D（v1.3、v1.4），其最终清单选用了模块 D 的 v1.4 版本，主要原因：</p>
+<ul>
+<li><p>语义化版本的控制：因为模块 D 的 v1.3 和 v1.4 版本变更，都属于次版本号的变更，而在语义化版本的约束下，v1.4 必须是要向下兼容 v1.3 版本，因此认为不存在破坏性变更，也就是兼容的。</p>
+</li>
+<li><p>模块导入路径的规范：主版本号不同，模块的导入路径不一样，因此若出现不兼容的情况，其主版本号会改变，模块的导入路径自然也就改变了，因此不会与第一点的基础相冲突。</p>
+</li>
+</ul>
+<h2 id="go-sum-文件要不要提交"><a href="#go-sum-文件要不要提交" class="headerlink" title="go.sum 文件要不要提交"></a>go.sum 文件要不要提交</h2><p>&emsp;&emsp;理论上 go.mod 和 go.sum 文件都应该提交到你的 Git 仓库中去。</p>
+<p>&emsp;&emsp;假设我们不上传 go.sum 文件，就会造成每个人执行 Go modules 相关命令，又会生成新的一份 go.sum，也就是会重新到上游拉取，再拉取时有可能就是被篡改过的了，会有很大的安全隐患，失去了与基准版本（第一个所提交的人，所期望的版本）的校验内容，因此 go.sum文件是需要提交。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>&emsp;&emsp;至此我们介绍了 Go modules 的前世今生、基本使用和在 Go modules 模式下 <code>go get</code> 命令的行为转换，同时我们对常见的多版本导入路径、语义化版本控制以及多模块的最小版本选择规则进行了大致的介绍。</p>
+<p>&emsp;&emsp;Go modules 的成长和发展经历了一定的过程，如果你是刚接触的读者，直接基于 Go modules 的项目开始即可，如果既有老项目，那么是时候考虑切换过来了，Go1.14起已经准备就绪，并推荐你使用。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://github.com/golang/go/wiki/Modules" target="_blank" rel="noopener">wiki/Modules</a><br><a href="https://github.com/golang/go/wiki/vgo" target="_blank" rel="noopener">wiki/vgo</a><br><a href="https://segmentfault.com/a/1190000020522261" target="_blank" rel="noopener">干货满满的 Go Modules 和 goproxy.cn</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/golang/go-modules-ultimate-getting-started/">https://gin.sh/golang/go-modules-ultimate-getting-started/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Golang/">
+                                    <span class="chip bg-color">Golang</span>
+                                </a>
+                            
+                                <a href="/tags/go-mod/">
+                                    <span class="chip bg-color">go mod</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/golang/go-modules-ultimate-getting-started/';
+        this.page.identifier = '/golang/go-modules-ultimate-getting-started/';
+        this.page.title = 'Go Modules 终极入门';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="far fa-dot-circle"></i>&nbsp;Current
+            </div>
+            <div class="card">
+                <a href="/golang/go-modules-ultimate-getting-started/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/21.jpg" class="responsive-img" alt="Go Modules 终极入门">
+                        
+                        <span class="card-title">Go Modules 终极入门</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Go modules 是 Go 语言中正式官宣的项目依赖解决方案，Go modules（前身为vgo）于 Go1.11 正式发布，在 Go1.14 已经准备好，并且可以用在生产上（ready for production）了，Go 官方也鼓励所有用户从其他依赖项管理工具迁移到 Go modules。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-29
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Golang/" class="post-category">
+                                    Golang
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                    <a href="/tags/go-mod/">
+                        <span class="chip bg-color">go mod</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/kubernetes/kubectl-manual/">
+                    <div class="card-image">
+                        
+                        <img src="https://s.gin.sh/blog/images/2019/Kubernetes-2.png" class="responsive-img" alt="kuebctl 操作手册">
+                        
+                        <span class="card-title">kuebctl 操作手册</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            日常和项目中都是用 kubectl 来操作 Kubernetes ，总结来下基本的方法，希望对大家有用。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-02-20
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Kubernetes/" class="post-category">
+                                    Kubernetes
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                    <a href="/tags/Kubernetes/">
+                        <span class="chip bg-color">Kubernetes</span>
+                    </a>
+                    
+                    <a href="/tags/kubectl/">
+                        <span class="chip bg-color">kubectl</span>
+                    </a>
+                    
+                    <a href="/tags/Docker/">
+                        <span class="chip bg-color">Docker</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

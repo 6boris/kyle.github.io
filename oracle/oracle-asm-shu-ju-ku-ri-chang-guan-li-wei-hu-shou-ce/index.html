@@ -1,0 +1,1550 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Oracle ASM数据库日常管理维护手册, Gin Bar">
+    <meta name="description" content="这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Oracle ASM数据库日常管理维护手册 | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/medias/featureimages/19.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Oracle ASM数据库日常管理维护手册</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Oracle/">
+                                <span class="chip bg-color">Oracle</span>
+                            </a>
+                        
+                            <a href="/tags/SQL/">
+                                <span class="chip bg-color">SQL</span>
+                            </a>
+                        
+                            <a href="/tags/DML/">
+                                <span class="chip bg-color">DML</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Oracle/" class="post-category">
+                                Oracle
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2018-10-02
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    14 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Oracle-ASM数据库日常管理维护"><a href="#Oracle-ASM数据库日常管理维护" class="headerlink" title="Oracle ASM数据库日常管理维护"></a>Oracle ASM数据库日常管理维护</h1><p>[Oracle 11G R2 官方文档][1]</p>
+<h2 id="1-单机从ASM到文件系统"><a href="#1-单机从ASM到文件系统" class="headerlink" title="1.单机从ASM到文件系统"></a>1.单机从ASM到文件系统</h2><h3 id="1-1-前期准备"><a href="#1-1-前期准备" class="headerlink" title="1.1  前期准备"></a>1.1  前期准备</h3><ul>
+<li>01.收集信息</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--1.查看数据文件</span>
+<span class="token keyword">SELECT</span> name <span class="token keyword">FROM</span> v$datafile<span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> file_name <span class="token keyword">FROM</span> dba_data_files<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--2.查看日志文件</span>
+<span class="token keyword">SELECT</span> MEMBER <span class="token keyword">FROM</span> v$logfile<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--3.查看临时文件</span>
+<span class="token keyword">SELECT</span> file_name <span class="token keyword">FROM</span> dba_temp_files<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--4.查看控制文件</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> v$controlfile<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>02.备份数据库</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token number">1</span><span class="token punctuation">.</span>RMAN 备份
+<span class="token keyword">backup</span> tag racdb_full format <span class="token string">'/u01/backup/datafile/racdb_full_%s_%p_%t'</span> <span class="token punctuation">(</span><span class="token keyword">database</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">backup</span> tag racdb_ctrl format <span class="token string">'/u01/backup/datafile/racdb_ctrl_%s_%p_%t'</span> <span class="token punctuation">(</span><span class="token keyword">current</span> controlfile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">backup</span> tag racdb_pfile format '<span class="token operator">/</span>u01<span class="token comment" spellcheck="true">//backup/datafile/racdb_spfile_%s_%p_%t' (spfile);</span>
+
+<span class="token comment" spellcheck="true">--2.SQLPLUS</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">backup</span> controlfile <span class="token keyword">to</span> <span class="token string">'/u01/backup/datafile/control.ctl'</span><span class="token punctuation">;</span>
+ <span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">backup</span> controlfile <span class="token keyword">to</span> trace <span class="token keyword">as</span>  <span class="token string">'/u01/backup/datafile/control.trc'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>03.准备目录等环境</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>04.开始迁移</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--1.控制文件</span>
+ <span class="token keyword">alter</span> system <span class="token keyword">set</span> control_files<span class="token operator">=</span><span class="token string">'/oracle/oradata/racdb/control01.ctl'</span> scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--2.参数文件</span>
+<span class="token keyword">alter</span> system <span class="token keyword">set</span> db_create_file_dest<span class="token operator">=</span><span class="token string">'/oracle/oradata/racdb/'</span> scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--3.归档日志</span>
+<span class="token keyword">show</span> parameter recover；
+<span class="token keyword">alter</span> system <span class="token keyword">set</span> db_recovery_file_dest<span class="token operator">=</span><span class="token string">'/oracle/recovery'</span> scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--4.将参数文件导出(需要手动删除ASM信息)</span>
+<span class="token keyword">create</span> pfile<span class="token operator">=</span><span class="token string">'/oracle/racdbpfile.ora'</span> <span class="token keyword">from</span> spfile<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">--5.关机后用新的PFILE启动数据库到NOMOUNT</span>
+<span class="token keyword">shutdown</span> immediate
+startup pfile<span class="token operator">=</span><span class="token string">'/oracle/racdbpfile.ora'</span> nomount<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--6.根据现在的PFILE生成SPFILE</span>
+<span class="token keyword">create</span> spfile <span class="token keyword">from</span> pfile<span class="token operator">=</span><span class="token string">'/oracle/racdbpfile.ora'</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--7.关闭数据库后用SPFILE启动数据库</span>
+<span class="token keyword">shutdown</span> immediate
+startup nomount
+<span class="token keyword">show</span> parameter spfile<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--8.RMAN恢复控制文件</span>
+<span class="token keyword">restore</span> controlfile <span class="token keyword">from</span> <span class="token string">'+DG_DATA/RACDB/CONTROLFILE/Current.256.966890297'</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--10.挂载数据库</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> mount<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--11.RMAN将数据文件从ASM到文件系统</span>
+<span class="token keyword">backup</span> <span class="token keyword">as</span> copy <span class="token keyword">database</span> format <span class="token string">'/oracle/oradata/racdb/%U'</span><span class="token punctuation">;</span>
+switch <span class="token keyword">database</span> <span class="token keyword">to</span> copy<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--12.恢复数据库(不恢复)</span>
+ recover <span class="token keyword">database</span> <span class="token keyword">using</span> <span class="token keyword">backup</span> controlfile until cancel<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--13.打开数据库</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">open</span> resetlogs<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--14.处理临时文件（删掉再添加）</span>
+<span class="token keyword">select</span> file_name <span class="token keyword">from</span> dba_temp_files<span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> tempfile <span class="token string">'+DG_DATA/racdb/tempfile/temp.263.966890331'</span> <span class="token keyword">drop</span> including datafiles<span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">tablespace</span> <span class="token keyword">temp</span> <span class="token keyword">add</span> tempfile <span class="token string">'/oracle/oradata/racdb/temp01.dbf'</span> size 100m autoextend <span class="token keyword">off</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--注意：如果临时文件删不掉可以重启数据库再删</span>
+
+<span class="token comment" spellcheck="true">--15.处理日志</span>
+<span class="token keyword">select</span> member <span class="token keyword">from</span> v$log<span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">drop</span> logfile <span class="token keyword">group</span> <span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">add</span> logfile <span class="token keyword">group</span> <span class="token number">2</span> <span class="token punctuation">(</span><span class="token string">'/oracle/oradata/racdb/redo01.log'</span><span class="token punctuation">)</span> size 100m<span class="token punctuation">;</span>
+ <span class="token keyword">alter</span> system <span class="token keyword">checkpoint</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--注意:这个步骤再文件系统和ASM中相互转换</span>
+<span class="token comment" spellcheck="true">--16.添加控制文件（重启后生效）</span>
+<span class="token keyword">alter</span> system <span class="token keyword">set</span> control_files<span class="token operator">=</span><span class="token string">'/oracle/oradata/racdb/control01.ctl'</span><span class="token punctuation">,</span><span class="token string">'/oracle/recovery/racdb/control02.ctl'</span>scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--17.修改数据文件名字</span>
+mv data_D<span class="token operator">-</span>RACDB_I<span class="token operator">-</span>964507061_TS<span class="token operator">-</span>SYSTEM_FNO<span class="token operator">-</span>1_0ksq4vvu    SYSTEM01<span class="token number">.dbf</span>
+mv data_D<span class="token operator">-</span>RACDB_I<span class="token operator">-</span>964507061_TS<span class="token operator">-</span>SYSAUX_FNO<span class="token operator">-</span>2_0lsq5012    SYSAUX01<span class="token number">.dbf</span>
+mv data_D<span class="token operator">-</span>RACDB_I<span class="token operator">-</span>964507061_TS<span class="token operator">-</span>UNDOTBS1_FNO<span class="token operator">-</span>3_0jsq4vur    UNDOTBS01<span class="token number">.dbf</span>
+mv data_D<span class="token operator">-</span>RACDB_I<span class="token operator">-</span>964507061_TS<span class="token operator">-</span>USERS_FNO<span class="token operator">-</span>4_0msq501r    USERS01<span class="token number">.dbf</span>
+
+<span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">rename</span> <span class="token keyword">file</span> <span class="token string">'/oracle/oradata/racdb/data_D-RACDB_I-964507061_TS-SYSTEM_FNO-1_0ksq4vvu'</span> 
+<span class="token keyword">to</span> <span class="token string">'/oracle/oradata/racdb/SYSTEM01.dbf'</span><span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">rename</span> <span class="token keyword">file</span> <span class="token string">'/oracle/oradata/racdb/data_D-RACDB_I-964507061_TS-SYSAUX_FNO-2_0lsq5012'</span> 
+<span class="token keyword">to</span> <span class="token string">'/oracle/oradata/racdb/SYSAUX01.dbf'</span><span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">rename</span> <span class="token keyword">file</span> <span class="token string">'/oracle/oradata/racdb/data_D-RACDB_I-964507061_TS-UNDOTBS1_FNO-3_0jsq4vur'</span> 
+<span class="token keyword">to</span> <span class="token string">'/oracle/oradata/racdb/UNDOTBS01.dbf'</span><span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">rename</span> <span class="token keyword">file</span> <span class="token string">'/oracle/oradata/racdb/data_D-RACDB_I-964507061_TS-USERS_FNO-4_0msq501r'</span> 
+<span class="token keyword">to</span> <span class="token string">'/oracle/oradata/racdb/USERS01.dbf'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>转换前文件目录</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> name <span class="token keyword">FROM</span> v$datafile<span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> file_name <span class="token keyword">FROM</span> dba_data_files<span class="token punctuation">;</span>
+
+<span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>datafile<span class="token operator">/</span>system<span class="token number">.260</span><span class="token punctuation">.</span><span class="token number">966890307</span>
+<span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>datafile<span class="token operator">/</span>sysaux<span class="token number">.261</span><span class="token punctuation">.</span><span class="token number">966890319</span>
+<span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>datafile<span class="token operator">/</span>undotbs1<span class="token number">.262</span><span class="token punctuation">.</span><span class="token number">966890327</span>
+<span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>datafile<span class="token operator">/</span>users<span class="token number">.264</span><span class="token punctuation">.</span><span class="token number">966890339</span>
+
+<span class="token keyword">SELECT</span> MEMBER <span class="token keyword">FROM</span> v$logfile<span class="token punctuation">;</span>
+
+<span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>onlinelog<span class="token operator">/</span>group_1<span class="token number">.257</span><span class="token punctuation">.</span><span class="token number">966890301</span>
+<span class="token operator">+</span>DG_BACKUP<span class="token operator">/</span>racdb<span class="token operator">/</span>onlinelog<span class="token operator">/</span>group_1<span class="token number">.257</span><span class="token punctuation">.</span><span class="token number">966890301</span>
+<span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>onlinelog<span class="token operator">/</span>group_2<span class="token number">.258</span><span class="token punctuation">.</span><span class="token number">966890303</span>
+<span class="token operator">+</span>DG_BACKUP<span class="token operator">/</span>racdb<span class="token operator">/</span>onlinelog<span class="token operator">/</span>group_2<span class="token number">.258</span><span class="token punctuation">.</span><span class="token number">966890303</span>
+<span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>onlinelog<span class="token operator">/</span>group_3<span class="token number">.259</span><span class="token punctuation">.</span><span class="token number">966890305</span>
+<span class="token operator">+</span>DG_BACKUP<span class="token operator">/</span>racdb<span class="token operator">/</span>onlinelog<span class="token operator">/</span>group_3<span class="token number">.259</span><span class="token punctuation">.</span><span class="token number">966890305</span>
+
+<span class="token keyword">SELECT</span> file_name <span class="token keyword">FROM</span> dba_temp_files<span class="token punctuation">;</span>
+
+<span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>tempfile<span class="token operator">/</span><span class="token keyword">temp</span><span class="token punctuation">.</span><span class="token number">263.966890331</span>
+
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> v$controlfile<span class="token punctuation">;</span>
+
+        <span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>controlfile<span class="token operator">/</span>cur <span class="token keyword">NO</span>       <span class="token number">16384</span>           <span class="token number">2924</span>
+        rent<span class="token number">.256</span><span class="token punctuation">.</span><span class="token number">966890297</span>
+
+        <span class="token operator">+</span>DG_BACKUP<span class="token operator">/</span>racdb<span class="token operator">/</span>controlfile<span class="token operator">/</span><span class="token number">c</span> YES      <span class="token number">16384</span>           <span class="token number">2924</span>
+        urrent<span class="token number">.256</span><span class="token punctuation">.</span><span class="token number">966890299</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>转换后文件目录</li>
+</ul>
+<p>![数据文件][2]</p>
+<p>![日志文件][3]</p>
+<p>![临时文件][4]</p>
+<p>![控制文件][5]</p>
+<h2 id="2-单机从ASM到文件系统"><a href="#2-单机从ASM到文件系统" class="headerlink" title="2.单机从ASM到文件系统"></a>2.单机从ASM到文件系统</h2><ul>
+<li>步骤</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token number">1</span><span class="token punctuation">.</span>利用PFILE和SPFILE将一个包含控制文件文字的SPFILE存到ASM
+<span class="token number">2</span><span class="token punctuation">.</span>RMAN将备份的控制文件恢复到指定目录
+<span class="token number">3</span><span class="token punctuation">.</span>恢复数据文件
+<span class="token number">4</span><span class="token punctuation">.</span>处理日志文件
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>操作</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">SQL<span class="token operator">></span>  <span class="token keyword">alter</span> system <span class="token keyword">set</span> control_files<span class="token operator">=</span><span class="token string">'+DG_DATA'</span> scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system <span class="token keyword">set</span> db_create_file_dest<span class="token operator">=</span><span class="token string">'+DG_DATA/'</span> scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system <span class="token keyword">set</span> db_recovery_file_dest<span class="token operator">=</span><span class="token string">'+DG_BACKUP'</span> scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system <span class="token keyword">set</span> control_files<span class="token operator">=</span><span class="token string">'+DG_DATA/racdb/control01.ctl'</span> scope<span class="token operator">=</span>spfile<span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">create</span> pfile <span class="token string">'/oracle/racdbpfile.ora'</span> <span class="token keyword">from</span> spfile<span class="token punctuation">;</span>
+<span class="token keyword">create</span> pfile <span class="token string">'/oracle/racdbpfile.ora'</span> <span class="token keyword">from</span> spfile
+             <span class="token operator">*</span>
+ERROR at line <span class="token number">1</span>:
+ORA<span class="token number">-00923</span>: <span class="token keyword">FROM</span> keyword <span class="token operator">not</span> found <span class="token keyword">where</span> expected
+
+
+SQL<span class="token operator">></span> <span class="token keyword">create</span> pfile<span class="token operator">=</span><span class="token string">'/oracle/racdbpfile.ora'</span> <span class="token keyword">from</span> spfile<span class="token punctuation">;</span>
+
+<span class="token keyword">File</span> created<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">shutdown</span> immediate<span class="token punctuation">;</span>
+<span class="token keyword">Database</span> closed<span class="token punctuation">.</span>
+<span class="token keyword">Database</span> dismounted<span class="token punctuation">.</span>
+ORACLE instance shut down<span class="token punctuation">.</span>
+SQL<span class="token operator">></span> 
+SQL<span class="token operator">></span> startup pfile<span class="token operator">=</span><span class="token string">'/oracle/racdbpfile.ora'</span> nomount<span class="token punctuation">;</span>
+ORACLE instance started<span class="token punctuation">.</span>
+
+Total System <span class="token keyword">Global</span> Area <span class="token number">1043886080</span> bytes
+<span class="token keyword">Fixed</span> Size                  <span class="token number">2259840</span> bytes
+Variable Size             <span class="token number">335545472</span> bytes
+<span class="token keyword">Database</span> Buffers          <span class="token number">700448768</span> bytes
+Redo Buffers                <span class="token number">5632000</span> bytes
+SQL<span class="token operator">></span> <span class="token keyword">create</span> spfile <span class="token keyword">from</span> pfile<span class="token operator">=</span><span class="token string">'/oracle/racdbpfile.ora'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">File</span> created<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">create</span> spfile<span class="token operator">=</span><span class="token string">'+DG_DATA/racdb/spfileracdb.ora'</span> <span class="token keyword">from</span> pfile<span class="token operator">=</span><span class="token string">'/oralce/racdbpfile.ora'</span>
+  <span class="token number">2</span>  <span class="token punctuation">;</span>
+<span class="token keyword">create</span> spfile<span class="token operator">=</span><span class="token string">'+DG_DATA/racdb/spfileracdb.ora'</span> <span class="token keyword">from</span> pfile<span class="token operator">=</span><span class="token string">'/oralce/racdbpfile.ora'</span>
+<span class="token operator">*</span>
+ERROR at line <span class="token number">1</span>:
+ORA<span class="token number">-01078</span>: failure <span class="token operator">in</span> processing system parameters
+LRM<span class="token number">-00109</span>: could <span class="token operator">not</span> <span class="token keyword">open</span> parameter <span class="token keyword">file</span> <span class="token string">'/oralce/racdbpfile.ora'</span>
+
+
+SQL<span class="token operator">></span> <span class="token keyword">create</span> spfile<span class="token operator">=</span><span class="token string">'+DG_DATA/racdb/spfileracdb.ora'</span> <span class="token keyword">from</span> pfile<span class="token operator">=</span><span class="token string">'/oralce/racdbpfile.ora'</span>
+  <span class="token number">2</span>  <span class="token punctuation">;</span>
+<span class="token keyword">create</span> spfile<span class="token operator">=</span><span class="token string">'+DG_DATA/racdb/spfileracdb.ora'</span> <span class="token keyword">from</span> pfile<span class="token operator">=</span><span class="token string">'/oralce/racdbpfile.ora'</span>
+<span class="token operator">*</span>
+ERROR at line <span class="token number">1</span>:
+ORA<span class="token number">-01078</span>: failure <span class="token operator">in</span> processing system parameters
+LRM<span class="token number">-00109</span>: could <span class="token operator">not</span> <span class="token keyword">open</span> parameter <span class="token keyword">file</span> <span class="token string">'/oralce/racdbpfile.ora'</span>
+
+
+SQL<span class="token operator">></span> <span class="token keyword">create</span> spfile<span class="token operator">=</span><span class="token string">'+DG_DATA/racdb/spfileracdb.ora'</span> <span class="token keyword">from</span> pfile<span class="token operator">=</span><span class="token string">'/oracle/racdbpfile.ora'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">File</span> created<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">shutdown</span> immediate<span class="token punctuation">;</span>
+ORA<span class="token number">-01507</span>: <span class="token keyword">database</span> <span class="token operator">not</span> mounted
+
+
+ORACLE instance shut down<span class="token punctuation">.</span>
+SQL<span class="token operator">></span> startup nomount<span class="token punctuation">;</span>
+ORACLE instance started<span class="token punctuation">.</span>
+
+Total System <span class="token keyword">Global</span> Area <span class="token number">1043886080</span> bytes
+<span class="token keyword">Fixed</span> Size                  <span class="token number">2259840</span> bytes
+Variable Size             <span class="token number">335545472</span> bytes
+<span class="token keyword">Database</span> Buffers          <span class="token number">700448768</span> bytes
+Redo Buffers                <span class="token number">5632000</span> bytes
+SQL<span class="token operator">></span> <span class="token keyword">show</span> parameter spfile
+SQL<span class="token operator">></span> <span class="token keyword">show</span> parameter control
+
+NAME                                 <span class="token keyword">TYPE</span>                   <span class="token keyword">VALUE</span>
+<span class="token comment" spellcheck="true">------------------------------------ ---------------------- ------------------------------</span>
+control_file_record_keep_time        <span class="token keyword">integer</span>                <span class="token number">7</span>
+control_files                        string                 <span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>control01<span class="token punctuation">.</span>ctl
+control_management_pack_access       string                 DIAGNOSTIC<span class="token operator">+</span>TUNING
+
+
+<span class="token punctuation">[</span>oracle<span class="token variable">@rac1</span>:<span class="token operator">/</span><span class="token punctuation">]</span>$rman target <span class="token operator">/</span>
+
+Recovery Manager: <span class="token keyword">Release</span> <span class="token number">11.2</span><span class="token punctuation">.</span><span class="token number">0.4</span><span class="token punctuation">.</span><span class="token number">0</span> <span class="token operator">-</span> Production <span class="token keyword">on</span> Thu Feb <span class="token number">1</span> <span class="token number">15</span>:<span class="token number">37</span>:<span class="token number">25</span> <span class="token number">2018</span>
+
+Copyright <span class="token punctuation">(</span><span class="token number">c</span><span class="token punctuation">)</span> <span class="token number">1982</span><span class="token punctuation">,</span> <span class="token number">2011</span><span class="token punctuation">,</span> Oracle <span class="token operator">and</span><span class="token operator">/</span><span class="token operator">or</span> its affiliates<span class="token punctuation">.</span>  <span class="token keyword">All</span> rights reserved<span class="token punctuation">.</span>
+
+connected <span class="token keyword">to</span> target <span class="token keyword">database</span>: RACDB <span class="token punctuation">(</span><span class="token operator">not</span> mounted<span class="token punctuation">)</span>
+
+RMAN<span class="token operator">></span> <span class="token keyword">restore</span> controlfile <span class="token keyword">from</span> <span class="token string">'/u01/backup/datafile/racdb_ctrl_32_1_966957454'</span><span class="token punctuation">;</span>
+
+Starting <span class="token keyword">restore</span> at <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">37</span>:<span class="token number">57</span>
+<span class="token keyword">using</span> target <span class="token keyword">database</span> control <span class="token keyword">file</span> instead <span class="token keyword">of</span> recovery catalog
+allocated channel: ORA_DISK_1
+channel ORA_DISK_1: SID<span class="token operator">=</span><span class="token number">10</span> device <span class="token keyword">type</span><span class="token operator">=</span><span class="token keyword">DISK</span>
+
+channel ORA_DISK_1: restoring control <span class="token keyword">file</span>
+channel ORA_DISK_1: <span class="token keyword">restore</span> complete<span class="token punctuation">,</span> elapsed time: <span class="token number">00</span>:<span class="token number">00</span>:<span class="token number">03</span>
+output <span class="token keyword">file</span> name<span class="token operator">=</span><span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>control01<span class="token punctuation">.</span>ctl
+Finished <span class="token keyword">restore</span> at <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">38</span>:<span class="token number">01</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> <span class="token keyword">database</span> mount<span class="token punctuation">;</span>
+
+<span class="token keyword">Database</span> altered<span class="token punctuation">.</span>
+
+
+RMAN<span class="token operator">></span> list <span class="token keyword">backup</span><span class="token punctuation">;</span>
+
+released channel: ORA_DISK_1
+
+List <span class="token keyword">of</span> <span class="token keyword">Backup</span> Sets
+<span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+
+
+BS <span class="token keyword">Key</span>  <span class="token keyword">Type</span> LV Size       Device <span class="token keyword">Type</span> Elapsed Time Completion Time    
+<span class="token comment" spellcheck="true">------- ---- -- ---------- ----------- ------------ -------------------</span>
+<span class="token number">24</span>      <span class="token keyword">Full</span>    <span class="token number">1</span><span class="token punctuation">.</span>05G      <span class="token keyword">DISK</span>        <span class="token number">00</span>:<span class="token number">00</span>:<span class="token number">15</span>     <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">17</span>:<span class="token number">28</span>
+        BP <span class="token keyword">Key</span>: <span class="token number">24</span>   <span class="token keyword">Status</span>: AVAILABLE  Compressed: <span class="token keyword">NO</span>  Tag: RACDB_FULL
+        Piece Name: <span class="token operator">/</span>u01<span class="token operator">/</span><span class="token keyword">backup</span><span class="token operator">/</span>datafile<span class="token operator">/</span>racdb_full_30_1_966957433
+  List <span class="token keyword">of</span> Datafiles <span class="token operator">in</span> <span class="token keyword">backup</span> <span class="token keyword">set</span> <span class="token number">24</span>
+  <span class="token keyword">File</span> LV <span class="token keyword">Type</span> Ckp SCN    Ckp Time            Name
+  <span class="token comment" spellcheck="true">---- -- ---- ---------- ------------------- ----</span>
+  <span class="token number">1</span>       <span class="token keyword">Full</span> <span class="token number">874708</span>     <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">17</span>:<span class="token number">14</span> <span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>SYSTEM01<span class="token number">.dbf</span>
+  <span class="token number">2</span>       <span class="token keyword">Full</span> <span class="token number">874708</span>     <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">17</span>:<span class="token number">14</span> <span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>SYSAUX01<span class="token number">.dbf</span>
+  <span class="token number">3</span>       <span class="token keyword">Full</span> <span class="token number">874708</span>     <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">17</span>:<span class="token number">14</span> <span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>UNDOTBS01<span class="token number">.dbf</span>
+  <span class="token number">4</span>       <span class="token keyword">Full</span> <span class="token number">874708</span>     <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">17</span>:<span class="token number">14</span> <span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>USERS01<span class="token number">.dbf</span>
+
+BS <span class="token keyword">Key</span>  <span class="token keyword">Type</span> LV Size       Device <span class="token keyword">Type</span> Elapsed Time Completion Time    
+<span class="token comment" spellcheck="true">------- ---- -- ---------- ----------- ------------ -------------------</span>
+<span class="token number">25</span>      <span class="token keyword">Full</span>    <span class="token number">46</span><span class="token punctuation">.</span>05M     <span class="token keyword">DISK</span>        <span class="token number">00</span>:<span class="token number">00</span>:<span class="token number">01</span>     <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">17</span>:<span class="token number">30</span>
+        BP <span class="token keyword">Key</span>: <span class="token number">25</span>   <span class="token keyword">Status</span>: AVAILABLE  Compressed: <span class="token keyword">NO</span>  Tag: TAG20180201T151729
+        Piece Name: <span class="token operator">+</span>DG_BACKUP<span class="token operator">/</span>racdb<span class="token operator">/</span>autobackup<span class="token operator">/</span>2018_02_01<span class="token operator">/</span>s_966957449<span class="token number">.256</span><span class="token punctuation">.</span><span class="token number">966957449</span>
+  SPFILE Included: Modification time: <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">14</span>:<span class="token number">40</span>:<span class="token number">33</span>
+  SPFILE db_unique_name: RACDB
+  Control <span class="token keyword">File</span> Included: Ckp SCN: <span class="token number">874719</span>       Ckp time: <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">17</span>:<span class="token number">29</span>
+
+  List <span class="token keyword">of</span> Permanent Datafiles
+<span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token keyword">File</span> Size<span class="token punctuation">(</span>MB<span class="token punctuation">)</span> <span class="token keyword">Tablespace</span>           RB segs Datafile Name
+<span class="token comment" spellcheck="true">---- -------- -------------------- ------- ------------------------</span>
+<span class="token number">1</span>    <span class="token number">750</span>      SYSTEM               <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>     <span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>SYSTEM01<span class="token number">.dbf</span>
+<span class="token number">2</span>    <span class="token number">600</span>      SYSAUX               <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>     <span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>SYSAUX01<span class="token number">.dbf</span>
+<span class="token number">3</span>    <span class="token number">885</span>      UNDOTBS1             <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>     <span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>UNDOTBS01<span class="token number">.dbf</span>
+<span class="token number">4</span>    <span class="token number">5</span>        USERS                <span class="token operator">*</span><span class="token operator">*</span><span class="token operator">*</span>     <span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>USERS01<span class="token number">.dbf</span>
+
+List <span class="token keyword">of</span> <span class="token keyword">Temporary</span> Files
+<span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span><span class="token operator">=</span>
+<span class="token keyword">File</span> Size<span class="token punctuation">(</span>MB<span class="token punctuation">)</span> <span class="token keyword">Tablespace</span>           Maxsize<span class="token punctuation">(</span>MB<span class="token punctuation">)</span> Tempfile Name
+<span class="token comment" spellcheck="true">---- -------- -------------------- ----------- --------------------</span>
+<span class="token number">1</span>    <span class="token number">100</span>      <span class="token keyword">TEMP</span>                 <span class="token number">100</span>         <span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>temp01<span class="token number">.dbf</span>
+
+RMAN<span class="token operator">></span> run{
+<span class="token number">2</span><span class="token operator">></span> <span class="token keyword">set</span> newname <span class="token keyword">for</span> datafile <span class="token number">1</span> <span class="token keyword">to</span> <span class="token string">"+DG_DATA"</span><span class="token punctuation">;</span>
+<span class="token number">3</span><span class="token operator">></span> <span class="token keyword">set</span> newname <span class="token keyword">for</span> datafile <span class="token number">2</span> <span class="token keyword">to</span> <span class="token string">"+DG_DATA"</span><span class="token punctuation">;</span>
+<span class="token number">4</span><span class="token operator">></span> <span class="token keyword">set</span> newname <span class="token keyword">for</span> datafile <span class="token number">3</span> <span class="token keyword">to</span> <span class="token string">"+DG_DATA"</span><span class="token punctuation">;</span>
+<span class="token number">5</span><span class="token operator">></span> <span class="token keyword">set</span> newname <span class="token keyword">for</span> datafile <span class="token number">4</span> <span class="token keyword">to</span> <span class="token string">"+DG_DATA"</span><span class="token punctuation">;</span>
+<span class="token number">6</span><span class="token operator">></span> <span class="token keyword">set</span> newname <span class="token keyword">for</span> tempfile <span class="token number">1</span> <span class="token keyword">to</span> <span class="token string">"+DG_DATA"</span><span class="token punctuation">;</span>
+<span class="token number">7</span><span class="token operator">></span> <span class="token keyword">restore</span> <span class="token keyword">database</span><span class="token punctuation">;</span>
+<span class="token number">8</span><span class="token operator">></span> switch datafile <span class="token keyword">all</span><span class="token punctuation">;</span>
+<span class="token number">9</span><span class="token operator">></span> recover <span class="token keyword">database</span><span class="token punctuation">;</span>
+<span class="token number">10</span><span class="token operator">></span> }
+
+executing command: <span class="token keyword">SET</span> NEWNAME
+
+executing command: <span class="token keyword">SET</span> NEWNAME
+
+executing command: <span class="token keyword">SET</span> NEWNAME
+
+executing command: <span class="token keyword">SET</span> NEWNAME
+
+executing command: <span class="token keyword">SET</span> NEWNAME
+
+Starting <span class="token keyword">restore</span> at <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">44</span>:<span class="token number">20</span>
+<span class="token keyword">using</span> channel ORA_DISK_1
+
+channel ORA_DISK_1: starting datafile <span class="token keyword">backup</span> <span class="token keyword">set</span> <span class="token keyword">restore</span>
+channel ORA_DISK_1: specifying datafile<span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token keyword">to</span> <span class="token keyword">restore</span> <span class="token keyword">from</span> <span class="token keyword">backup</span> <span class="token keyword">set</span>
+channel ORA_DISK_1: restoring datafile <span class="token number">00001</span> <span class="token keyword">to</span> <span class="token operator">+</span>DG_DATA
+channel ORA_DISK_1: restoring datafile <span class="token number">00002</span> <span class="token keyword">to</span> <span class="token operator">+</span>DG_DATA
+channel ORA_DISK_1: restoring datafile <span class="token number">00003</span> <span class="token keyword">to</span> <span class="token operator">+</span>DG_DATA
+channel ORA_DISK_1: restoring datafile <span class="token number">00004</span> <span class="token keyword">to</span> <span class="token operator">+</span>DG_DATA
+channel ORA_DISK_1: reading <span class="token keyword">from</span> <span class="token keyword">backup</span> piece <span class="token operator">/</span>u01<span class="token operator">/</span><span class="token keyword">backup</span><span class="token operator">/</span>datafile<span class="token operator">/</span>racdb_full_30_1_966957433
+channel ORA_DISK_1: piece handle<span class="token operator">=</span><span class="token operator">/</span>u01<span class="token operator">/</span><span class="token keyword">backup</span><span class="token operator">/</span>datafile<span class="token operator">/</span>racdb_full_30_1_966957433 tag<span class="token operator">=</span>RACDB_FULL
+channel ORA_DISK_1: restored <span class="token keyword">backup</span> piece <span class="token number">1</span>
+channel ORA_DISK_1: <span class="token keyword">restore</span> complete<span class="token punctuation">,</span> elapsed time: <span class="token number">00</span>:<span class="token number">00</span>:<span class="token number">45</span>
+Finished <span class="token keyword">restore</span> at <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">45</span>:<span class="token number">05</span>
+
+datafile <span class="token number">1</span> switched <span class="token keyword">to</span> datafile copy
+input datafile copy RECID<span class="token operator">=</span><span class="token number">15</span> STAMP<span class="token operator">=</span><span class="token number">966959106</span> <span class="token keyword">file</span> name<span class="token operator">=</span><span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>datafile<span class="token operator">/</span>system<span class="token number">.261</span><span class="token punctuation">.</span><span class="token number">966959061</span>
+datafile <span class="token number">2</span> switched <span class="token keyword">to</span> datafile copy
+input datafile copy RECID<span class="token operator">=</span><span class="token number">16</span> STAMP<span class="token operator">=</span><span class="token number">966959106</span> <span class="token keyword">file</span> name<span class="token operator">=</span><span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>datafile<span class="token operator">/</span>sysaux<span class="token number">.260</span><span class="token punctuation">.</span><span class="token number">966959061</span>
+datafile <span class="token number">3</span> switched <span class="token keyword">to</span> datafile copy
+input datafile copy RECID<span class="token operator">=</span><span class="token number">17</span> STAMP<span class="token operator">=</span><span class="token number">966959106</span> <span class="token keyword">file</span> name<span class="token operator">=</span><span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>datafile<span class="token operator">/</span>undotbs1<span class="token number">.262</span><span class="token punctuation">.</span><span class="token number">966959061</span>
+datafile <span class="token number">4</span> switched <span class="token keyword">to</span> datafile copy
+input datafile copy RECID<span class="token operator">=</span><span class="token number">18</span> STAMP<span class="token operator">=</span><span class="token number">966959106</span> <span class="token keyword">file</span> name<span class="token operator">=</span><span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>datafile<span class="token operator">/</span>users<span class="token number">.265</span><span class="token punctuation">.</span><span class="token number">966959061</span>
+
+Starting recover at <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">45</span>:<span class="token number">08</span>
+<span class="token keyword">using</span> channel ORA_DISK_1
+
+starting media recovery
+
+archived log <span class="token keyword">for</span> thread <span class="token number">1</span> <span class="token keyword">with</span> sequence <span class="token number">33</span> <span class="token operator">is</span> already <span class="token keyword">on</span> <span class="token keyword">disk</span> <span class="token keyword">as</span> <span class="token keyword">file</span> <span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>redo03<span class="token punctuation">.</span>log
+archived log <span class="token keyword">file</span> name<span class="token operator">=</span><span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>racdb<span class="token operator">/</span>redo03<span class="token punctuation">.</span>log thread<span class="token operator">=</span><span class="token number">1</span> sequence<span class="token operator">=</span><span class="token number">33</span>
+media recovery complete<span class="token punctuation">,</span> elapsed time: <span class="token number">00</span>:<span class="token number">00</span>:<span class="token number">01</span>
+Finished recover at <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">45</span>:<span class="token number">11</span>
+
+
+<span class="token comment" spellcheck="true">--这里不知道为什么控制文件也帮我恢复了</span>
+ASMCMD <span class="token punctuation">[</span><span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token punctuation">]</span> <span class="token operator">></span> ls
+CONTROLFILE<span class="token operator">/</span>
+DATAFILE<span class="token operator">/</span>
+PARAMETERFILE<span class="token operator">/</span>
+control01<span class="token punctuation">.</span>ctl
+spfileracdb<span class="token punctuation">.</span>ora
+ASMCMD <span class="token punctuation">[</span><span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token punctuation">]</span> <span class="token operator">></span> <span class="token number">cd</span> datafile
+ASMCMD <span class="token punctuation">[</span><span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>datafile<span class="token punctuation">]</span> <span class="token operator">></span> ls
+SYSAUX<span class="token number">.260</span><span class="token punctuation">.</span><span class="token number">966959061</span>
+SYSTEM<span class="token number">.261</span><span class="token punctuation">.</span><span class="token number">966959061</span>
+UNDOTBS1<span class="token number">.262</span><span class="token punctuation">.</span><span class="token number">966959061</span>
+USERS<span class="token number">.265</span><span class="token punctuation">.</span><span class="token number">966959061</span>
+ASMCMD <span class="token punctuation">[</span><span class="token operator">+</span>DG_DATA<span class="token operator">/</span>racdb<span class="token operator">/</span>datafile<span class="token punctuation">]</span> <span class="token operator">></span>  
+
+QL<span class="token operator">></span> <span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">add</span> logfile <span class="token keyword">group</span> <span class="token number">3</span> <span class="token punctuation">(</span><span class="token string">'+DG_DATA'</span><span class="token punctuation">)</span> size 100m<span class="token punctuation">;</span>
+
+<span class="token keyword">Database</span> altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">add</span> logfile <span class="token keyword">group</span> <span class="token number">4</span> <span class="token punctuation">(</span><span class="token string">'+DG_DATA'</span><span class="token punctuation">)</span> size 100m<span class="token punctuation">;</span>
+
+<span class="token keyword">Database</span> altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system switch logfile<span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">select</span> member <span class="token keyword">from</span> v$log<span class="token punctuation">;</span>
+<span class="token keyword">select</span> member <span class="token keyword">from</span> v$log
+       <span class="token operator">*</span>
+ERROR at line <span class="token number">1</span>:
+ORA<span class="token number">-00904</span>: <span class="token string">"MEMBER"</span>: invalid identifier
+
+
+SQL<span class="token operator">></span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> v$log<span class="token punctuation">;</span>
+
+    <span class="token keyword">GROUP</span><span class="token comment" spellcheck="true">#    THREAD#  SEQUENCE#      BYTES  BLOCKSIZE    MEMBERS ARC STATUS         FIRST_CHANGE# FIRST_TIME   NEXT_CHANGE# NEXT_TIME</span>
+<span class="token comment" spellcheck="true">---------- ---------- ---------- ---------- ---------- ---------- --- ---------------- ------------- ------------------- ------------ -------------------</span>
+         <span class="token number">1</span>          <span class="token number">1</span>          <span class="token number">1</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES ACTIVE        <span class="token number">875061</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">50</span>:<span class="token number">41</span>       <span class="token number">876161</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">02</span>:<span class="token number">43</span>
+         <span class="token number">2</span>          <span class="token number">1</span>          <span class="token number">2</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> <span class="token keyword">NO</span>  <span class="token keyword">CURRENT</span>       <span class="token number">876161</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">02</span>:<span class="token number">43</span>   <span class="token number">2</span><span class="token punctuation">.</span>8147E<span class="token operator">+</span><span class="token number">14</span>
+         <span class="token number">3</span>          <span class="token number">1</span>          <span class="token number">0</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES UNUSED     <span class="token number">0</span>                                 <span class="token number">0</span>
+         <span class="token number">4</span>          <span class="token number">1</span>          <span class="token number">0</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES UNUSED     <span class="token number">0</span>                                 <span class="token number">0</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system switch logfile<span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system switch logfile<span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> v$log<span class="token punctuation">;</span>
+
+    <span class="token keyword">GROUP</span><span class="token comment" spellcheck="true">#    THREAD#  SEQUENCE#      BYTES  BLOCKSIZE    MEMBERS ARC STATUS         FIRST_CHANGE# FIRST_TIME   NEXT_CHANGE# NEXT_TIME</span>
+<span class="token comment" spellcheck="true">---------- ---------- ---------- ---------- ---------- ---------- --- ---------------- ------------- ------------------- ------------ -------------------</span>
+         <span class="token number">1</span>          <span class="token number">1</span>          <span class="token number">1</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES ACTIVE        <span class="token number">875061</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">50</span>:<span class="token number">41</span>       <span class="token number">876161</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">02</span>:<span class="token number">43</span>
+         <span class="token number">2</span>          <span class="token number">1</span>          <span class="token number">2</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES ACTIVE        <span class="token number">876161</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">02</span>:<span class="token number">43</span>       <span class="token number">876177</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">03</span>
+         <span class="token number">3</span>          <span class="token number">1</span>          <span class="token number">3</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES ACTIVE        <span class="token number">876177</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">03</span>       <span class="token number">876180</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">04</span>
+         <span class="token number">4</span>          <span class="token number">1</span>          <span class="token number">4</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> <span class="token keyword">NO</span>  <span class="token keyword">CURRENT</span>       <span class="token number">876180</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">04</span>   <span class="token number">2</span><span class="token punctuation">.</span>8147E<span class="token operator">+</span><span class="token number">14</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system <span class="token keyword">checkpoint</span><span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system <span class="token keyword">checkpoint</span><span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> v$log<span class="token punctuation">;</span>
+
+    <span class="token keyword">GROUP</span><span class="token comment" spellcheck="true">#    THREAD#  SEQUENCE#      BYTES  BLOCKSIZE    MEMBERS ARC STATUS         FIRST_CHANGE# FIRST_TIME   NEXT_CHANGE# NEXT_TIME</span>
+<span class="token comment" spellcheck="true">---------- ---------- ---------- ---------- ---------- ---------- --- ---------------- ------------- ------------------- ------------ -------------------</span>
+         <span class="token number">1</span>          <span class="token number">1</span>          <span class="token number">1</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES INACTIVE      <span class="token number">875061</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">15</span>:<span class="token number">50</span>:<span class="token number">41</span>       <span class="token number">876161</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">02</span>:<span class="token number">43</span>
+         <span class="token number">2</span>          <span class="token number">1</span>          <span class="token number">2</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES INACTIVE      <span class="token number">876161</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">02</span>:<span class="token number">43</span>       <span class="token number">876177</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">03</span>
+         <span class="token number">3</span>          <span class="token number">1</span>          <span class="token number">3</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES INACTIVE      <span class="token number">876177</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">03</span>       <span class="token number">876180</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">04</span>
+         <span class="token number">4</span>          <span class="token number">1</span>          <span class="token number">4</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> <span class="token keyword">NO</span>  <span class="token keyword">CURRENT</span>       <span class="token number">876180</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">04</span>   <span class="token number">2</span><span class="token punctuation">.</span>8147E<span class="token operator">+</span><span class="token number">14</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system <span class="token keyword">drop</span> logfile <span class="token keyword">group</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">alter</span> system <span class="token keyword">drop</span> logfile <span class="token keyword">group</span> <span class="token number">1</span>
+             <span class="token operator">*</span>
+ERROR at line <span class="token number">1</span>:
+ORA<span class="token number">-02065</span>: illegal <span class="token keyword">option</span> <span class="token keyword">for</span> <span class="token keyword">ALTER</span> SYSTEM
+
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">drop</span> logfile <span class="token keyword">group</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+<span class="token keyword">Database</span> altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">drop</span> logfile <span class="token keyword">group</span> <span class="token number">2</span><span class="token punctuation">;</span>
+
+<span class="token keyword">Database</span> altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> 
+SQL<span class="token operator">></span> 
+SQL<span class="token operator">></span> 
+SQL<span class="token operator">></span> 
+SQL<span class="token operator">></span> 
+SQL<span class="token operator">></span> 
+SQL<span class="token operator">></span> 
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">add</span> logfile <span class="token keyword">group</span> <span class="token number">2</span> <span class="token punctuation">(</span><span class="token string">'+DG_DATA'</span><span class="token punctuation">)</span> size 100m<span class="token punctuation">;</span>
+
+<span class="token keyword">Database</span> altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">add</span> logfile <span class="token keyword">group</span> <span class="token number">1</span><span class="token punctuation">(</span><span class="token string">'+DG_DATA'</span><span class="token punctuation">)</span> size 100m<span class="token punctuation">;</span>
+
+<span class="token keyword">Database</span> altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> v$log<span class="token punctuation">;</span>
+
+    <span class="token keyword">GROUP</span><span class="token comment" spellcheck="true">#    THREAD#  SEQUENCE#      BYTES  BLOCKSIZE    MEMBERS ARC STATUS         FIRST_CHANGE# FIRST_TIME   NEXT_CHANGE# NEXT_TIME</span>
+<span class="token comment" spellcheck="true">---------- ---------- ---------- ---------- ---------- ---------- --- ---------------- ------------- ------------------- ------------ -------------------</span>
+         <span class="token number">1</span>          <span class="token number">1</span>          <span class="token number">0</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES UNUSED     <span class="token number">0</span>                                 <span class="token number">0</span>
+         <span class="token number">2</span>          <span class="token number">1</span>          <span class="token number">0</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES UNUSED     <span class="token number">0</span>                                 <span class="token number">0</span>
+         <span class="token number">3</span>          <span class="token number">1</span>          <span class="token number">3</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES INACTIVE      <span class="token number">876177</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">03</span>       <span class="token number">876180</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">04</span>
+         <span class="token number">4</span>          <span class="token number">1</span>          <span class="token number">4</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> <span class="token keyword">NO</span>  <span class="token keyword">CURRENT</span>       <span class="token number">876180</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">04</span>   <span class="token number">2</span><span class="token punctuation">.</span>8147E<span class="token operator">+</span><span class="token number">14</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> v$log<span class="token punctuation">;</span>
+
+    <span class="token keyword">GROUP</span><span class="token comment" spellcheck="true">#    THREAD#  SEQUENCE#      BYTES  BLOCKSIZE    MEMBERS ARC STATUS         FIRST_CHANGE# FIRST_TIME   NEXT_CHANGE# NEXT_TIME</span>
+<span class="token comment" spellcheck="true">---------- ---------- ---------- ---------- ---------- ---------- --- ---------------- ------------- ------------------- ------------ -------------------</span>
+         <span class="token number">1</span>          <span class="token number">1</span>          <span class="token number">0</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES UNUSED     <span class="token number">0</span>                                 <span class="token number">0</span>
+         <span class="token number">2</span>          <span class="token number">1</span>          <span class="token number">0</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES UNUSED     <span class="token number">0</span>                                 <span class="token number">0</span>
+         <span class="token number">3</span>          <span class="token number">1</span>          <span class="token number">3</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> YES INACTIVE      <span class="token number">876177</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">03</span>       <span class="token number">876180</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">04</span>
+         <span class="token number">4</span>          <span class="token number">1</span>          <span class="token number">4</span>  <span class="token number">104857600</span>        <span class="token number">512</span>          <span class="token number">1</span> <span class="token keyword">NO</span>  <span class="token keyword">CURRENT</span>       <span class="token number">876180</span> <span class="token number">2018</span><span class="token operator">-</span><span class="token number">02</span><span class="token operator">-</span><span class="token number">01</span> <span class="token number">16</span>:<span class="token number">03</span>:<span class="token number">04</span>   <span class="token number">2</span><span class="token punctuation">.</span>8147E<span class="token operator">+</span><span class="token number">14</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system switch logfile<span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+
+SQL<span class="token operator">></span> <span class="token operator">/</span>
+
+System altered<span class="token punctuation">.</span>
+
+SQL<span class="token operator">></span> <span class="token keyword">alter</span> system <span class="token keyword">checkpoint</span>
+  <span class="token number">2</span>  <span class="token punctuation">;</span>
+
+System altered<span class="token punctuation">.</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/oracle/oracle-asm-shu-ju-ku-ri-chang-guan-li-wei-hu-shou-ce/">https://gin.sh/oracle/oracle-asm-shu-ju-ku-ri-chang-guan-li-wei-hu-shou-ce/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Oracle/">
+                                    <span class="chip bg-color">Oracle</span>
+                                </a>
+                            
+                                <a href="/tags/SQL/">
+                                    <span class="chip bg-color">SQL</span>
+                                </a>
+                            
+                                <a href="/tags/DML/">
+                                    <span class="chip bg-color">DML</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/oracle/oracle-asm-shu-ju-ku-ri-chang-guan-li-wei-hu-shou-ce/';
+        this.page.identifier = '/oracle/oracle-asm-shu-ju-ku-ri-chang-guan-li-wei-hu-shou-ce/';
+        this.page.title = 'Oracle ASM数据库日常管理维护手册';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/oracle/oracle-dml-ri-chang-cao-zuo-he-shi-wu-chu-li/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/15.jpg" class="responsive-img" alt="Oracle DML日常操作和事务处理">
+                        
+                        <span class="card-title">Oracle DML日常操作和事务处理</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-10-02
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Oracle/" class="post-category">
+                                    Oracle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle/">
+                        <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                    <a href="/tags/SQL/">
+                        <span class="chip bg-color">SQL</span>
+                    </a>
+                    
+                    <a href="/tags/DML/">
+                        <span class="chip bg-color">DML</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/oracle/oracle-zhi-ddl-he-dui-xiang-guan-li/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/18.jpg" class="responsive-img" alt="Oracle之DDL和对象管理">
+                        
+                        <span class="card-title">Oracle之DDL和对象管理</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-10-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Oracle/" class="post-category">
+                                    Oracle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle/">
+                        <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                    <a href="/tags/SQL/">
+                        <span class="chip bg-color">SQL</span>
+                    </a>
+                    
+                    <a href="/tags/DDL/">
+                        <span class="chip bg-color">DDL</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

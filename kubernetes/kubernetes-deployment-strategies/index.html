@@ -1,0 +1,1250 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="kubernetes, yaml, Deployment，DevOps">
+    <meta name="description" content="在 Kubernetes 中，有几种不同的发布应用程序的方法，有必要选择正确的策略以在应用程序更新期间使基础架构可靠。">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Kubernetes 上的应用部署策略 | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/kubernetes/cover/k4s_featured.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Kubernetes 上的应用部署策略</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Kubernetes/">
+                                <span class="chip bg-color">Kubernetes</span>
+                            </a>
+                        
+                            <a href="/tags/Deployment/">
+                                <span class="chip bg-color">Deployment</span>
+                            </a>
+                        
+                            <a href="/tags/DevOps/">
+                                <span class="chip bg-color">DevOps</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Kubernetes/" class="post-category">
+                                Kubernetes
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2020-01-20
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    7 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Kubernetes-上的应用部署策略"><a href="#Kubernetes-上的应用部署策略" class="headerlink" title="Kubernetes 上的应用部署策略"></a>Kubernetes 上的应用部署策略</h1><!-- Choosing the right deployment procedure depends on the needs, we listed below some of the possible strategies to adopt: -->
+<p>在 Kubernetes中，有几种不同的发布应用程序的方法，有必要选择正确的策略以在应用程序更新期间使基础架构可靠。<br><img src="https://s.gin.sh/blog/kubernetes/architecture/architecture-1.jpg" alt="Architecture"></p>
+<!-- Choosing the right deployment procedure depends on the needs, we listed below some of the possible strategies to adopt: -->
+<p>根据需要选择正确的部署过程，我们在下面列出了一些可能采用的策略：</p>
+<!-- - recreate: terminate the old version and release the new one
+- ramped: release a new version on a rolling update fashion, one after the other
+- blue/green: release a new version alongside the old version then switch traffic
+- canary: release a new version to a subset of users, then proceed to a full rollout
+- a/b testing: release a new version to a subset of users in a precise way (HTTP headers, cookie, weight, etc.). A/B testing is really a technique for making business decisions based on statistics but we will briefly describe the process. This doesn’t come out of the box with Kubernetes, it 
+implies extra work to setup a more advanced infrastructure (Istio, Linkerd, Traefik, custom nginx/haproxy, etc). -->
+<ul>
+<li>recreate: 终止旧版本并发布新版本</li>
+<li>ramped: 以滚动更新的方式发布新版本，一个又一个</li>
+<li>blue/green: 与旧版本一起发布新版本，然后切换流量</li>
+<li>canary: 向一部分用户发布新版本，然后进行全面部署</li>
+<li>a/b testing: 以精确的方式（HTTP标头，Cookie，权重等）向一部分用户发布新版本。 A / B测试实际上是一种基于统计信息做出业务决策的技术，但是我们将简要描述该过程。 Kubernetes并不是开箱即用的，它意味着需要额外的工作来设置更高级的基础架构（Istio，Linkerd，Traefik，自定义nginx / haproxy等）。</li>
+</ul>
+<!-- You can experiment with each of these strategies using Minikube, the manifests and steps to follow are explained in this repository: https://github.com/ContainerSolutions/k8s-deployment-strategies -->
+<p>您可以使用Minikube尝试每种策略，该存储库中说明了要遵循的清单和步骤： <a href="https://github.com/ContainerSolutions/k8s-deployment-strategies" target="_blank" rel="noopener">https://github.com/ContainerSolutions/k8s-deployment-strategies</a></p>
+<!-- Let’s take a look at each strategy and see what type of application would fit best for it. -->
+<p>让我们看一下每种策略，看看哪种类型的应用程序最适合它。</p>
+<!-- ## Recreate - best for development environment -->
+<h2 id="重新建立-最适合开发环境"><a href="#重新建立-最适合开发环境" class="headerlink" title="重新建立 - 最适合开发环境"></a>重新建立 - 最适合开发环境</h2><p>使用 <code>Recreate</code> 类型的策略定义的部署将终止所有正在运行的实例，然后使用较新版本重新创建它们。</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">3</span>
+  <span class="token key atrule">strategy</span><span class="token punctuation">:</span>
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> Recreate
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以在以下位置找到完整的示例和部署步骤:  <a href="https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/recreate" target="_blank" rel="noopener">https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/recreate</a> </p>
+<!-- Pro: -->
+<p>优点:</p>
+<!-- - application state entirely renewed -->
+<ul>
+<li>应用状态完全更新</li>
+</ul>
+<!-- Cons: -->
+<p>缺点:<br><!-- - downtime that depends on both shutdown and boot duration of the application --></p>
+<ul>
+<li>停机时间取决于应用程序的关闭和启动持续时间</li>
+</ul>
+<!-- ## Ramped - slow rollout -->
+<h2 id="Ramped-slow-rollout"><a href="#Ramped-slow-rollout" class="headerlink" title="Ramped - slow rollout"></a>Ramped - slow rollout</h2><!-- A ramped deployment updates pods in a rolling update fashion, a secondary ReplicaSet is created with the new version of the application, then the number of replicas of the old version is decreased and the new version is increased until the correct number of replicas is reached. -->
+<p>渐变部署以滚动更新方式更新 pod，使用应用程序的新版本创建辅助ReplicaSet，然后减少旧版本的副本数，并增加新版本，直到达到正确的副本数。</p>
+<p><img src="https://s.gin.sh/blog/kubernetes/architecture/kubernetes-deployment-strategy-ramped-1.png" alt="Kubernetes Deployment Strategy Ramped"></p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">3</span>
+  <span class="token key atrule">strategy</span><span class="token punctuation">:</span>
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> RollingUpdate
+    <span class="token key atrule">rollingUpdate</span><span class="token punctuation">:</span>
+      <span class="token key atrule">maxSurge</span><span class="token punctuation">:</span> <span class="token number">2        </span><span class="token comment" spellcheck="true"># how many pods we can add at a time</span>
+      <span class="token key atrule">maxUnavailable</span><span class="token punctuation">:</span> <span class="token number">0  </span><span class="token comment" spellcheck="true"># maxUnavailable define how many pods can be unavailable</span>
+                         <span class="token comment" spellcheck="true"># during the rolling update</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以在以下位置找到完整的示例和部署步骤 <a href="https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/ramped" target="_blank" rel="noopener">https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/ramped</a></p>
+<!-- When setup together with horizontal pod autoscaling it can be handy to use a percentage based value instead of a number for maxSurge and maxUnavailable. -->
+<p>与水平吊舱自动缩放一起设置时，使用基于百分比的值代替 maxSurge 和 maxUnavailable 的数字会很方便。</p>
+<!-- If you trigger a deployment while an existing rollout is in progress, the deployment will pause the rollout and proceed to a new release by overriding the rollout. -->
+<p>如果在进行现有部署时触发部署，则部署将暂停部署，并通过覆盖部署来继续进行新发行。</p>
+<p>优点:</p>
+<!-- - version is slowly released across instances -->
+<!-- - convenient for stateful applications that can handle rebalancing of the data -->
+<ul>
+<li>版本会在实例之间缓慢发布</li>
+<li>对于可以处理数据重新平衡的有状态应用程序很方便</li>
+</ul>
+<p>缺点:</p>
+<!-- - rollout/rollback can take time
+- supporting multiple APIs is hard
+- no control over traffic -->
+<ul>
+<li>推出/回滚可能需要一些时间</li>
+<li>很难支持多个 API</li>
+<li>无法控制流量</li>
+</ul>
+<!-- ## Blue/Green - best to avoid API versioning issues -->
+<h2 id="蓝-绿-发布-最好避免-API-版本控制问题"><a href="#蓝-绿-发布-最好避免-API-版本控制问题" class="headerlink" title="蓝/绿 发布 - 最好避免 API 版本控制问题"></a>蓝/绿 发布 - 最好避免 API 版本控制问题</h2><!-- A blue/green deployment differs from a ramped deployment because the "green" version of the application is deployed alongside the "blue" version. After testing that the new version meets the requirements, we update the Kubernetes Service object that plays the role of load balancer to send traffic to the new version by replacing the version label in the selector field. -->
+<p>蓝色/绿色部署与渐变部署不同，因为应用程序的“绿色”版本与“蓝色”版本一起部署。 在测试新版本满足要求之后，我们更新 Kubernetes Service 对象，该对象扮演负载平衡器的角色，通过替换选择器字段中的版本标签将流量发送到新版本。</p>
+<p><img src="https://s.gin.sh/blog/kubernetes/architecture/kubernetes-deployment-strategy-blue-green-1.png" alt="kubernetes Deployment Strategy Blue Green"></p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Service
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>
+ <span class="token key atrule">name</span><span class="token punctuation">:</span> my<span class="token punctuation">-</span>app
+ <span class="token key atrule">labels</span><span class="token punctuation">:</span>
+   <span class="token key atrule">app</span><span class="token punctuation">:</span> my<span class="token punctuation">-</span>app
+<span class="token key atrule">spec</span><span class="token punctuation">:</span>
+ <span class="token key atrule">type</span><span class="token punctuation">:</span> NodePort
+ <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+ <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> http
+   <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080</span>
+   <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> <span class="token number">8080</span>
+
+ <span class="token comment" spellcheck="true"># Note here that we match both the app and the version.</span>
+ <span class="token comment" spellcheck="true"># When switching traffic, we update the label “version” with</span>
+ <span class="token comment" spellcheck="true"># the appropriate value, ie: v2.0.0</span>
+ <span class="token key atrule">selector</span><span class="token punctuation">:</span>
+   <span class="token key atrule">app</span><span class="token punctuation">:</span> my<span class="token punctuation">-</span>app
+   <span class="token key atrule">version</span><span class="token punctuation">:</span> v1.0.0
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<!-- A full example and steps to deploy can be found at https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/blue-green -->
+<p>可以在以下位置找到完整的示例和部署步骤 <a href="https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/blue-green" target="_blank" rel="noopener">https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/blue-green</a></p>
+<p>优点:</p>
+<!-- - instant rollout/rollback -->
+<!-- - avoid versioning issue, change the entire cluster state in one go -->
+<ul>
+<li>即时推出/回滚</li>
+<li>避免版本问题，一次性更改整个群集状态</li>
+</ul>
+<p>缺点:</p>
+<!-- - requires double the resources
+- proper test of the entire platform should be done before releasing to production
+- handling stateful applications can be hard -->
+<ul>
+<li>需要两倍的资源</li>
+<li>在发布到生产环境之前，应该对整个平台进行适当的测试</li>
+<li>处理有状态的应用程序可能很困难</li>
+</ul>
+<!-- ## Canary - let the consumer do the testing -->
+<h2 id="金丝雀-让用户测试"><a href="#金丝雀-让用户测试" class="headerlink" title="金丝雀 - 让用户测试"></a>金丝雀 - 让用户测试</h2><!-- A canary deployment consists of routing a subset of users to a new functionality. In Kubernetes, a canary deployment can be done using two Deployments with common pod labels. One replica of the new version is released alongside the old version. Then after some time and if no error is detected, scale up the number of replicas of the new version and delete the old deployment. -->
+<p>金丝雀部署包括将用户的子集路由到新功能。 在Kubernetes中，可以使用两个具有通用Pod标签的部署来完成金丝雀部署。 新版本的一个副本与旧版本一起发布。 然后，在一段时间后，如果未检测到错误，请按比例增加新版本的副本数量并删除旧的部署。</p>
+<!-- Using this ReplicaSet technique requires spinning-up as many pods as necessary to get the right percentage of traffic. That said, if you want to send 1% of traffic to version B, you need to have one pod running with version B and 99 pods running with version A. This can be pretty inconvenient to manage so if you are looking for a better managed traffic distribution, look at load balancers such as HAProxy or service meshes like Linkerd, which provide greater controls over traffic. -->
+<p>使用此ReplicaSet技术需要旋转尽可能多的Pod，以获取正确百分比的流量。 就是说，如果您要将1％的流量发送到B版，则需要让一个Pod与B版一起运行，而有99个Pod与A版一起运行。这可能非常不方便管理，因此，如果您正在寻找一种更好的管理方式， 流量分配，请查看诸如HAProxy之类的负载平衡器或诸如Linkerd之类的服务网格，它们可以提供对流量的更好控制。</p>
+<p><img src="https://s.gin.sh/blog/kubernetes/architecture/kubernetes-deployment-strategy-canary-1.png" alt="kubernetes Deployment Strategy Canary"></p>
+<!-- In the following example we use two ReplicaSets side by side, version A with three replicas (75% of the traffic), version B with one replica (25% of the traffic). -->
+<p>在以下示例中，我们并排使用两个副本集，版本A具有三个副本（占流量的75％），版本B具有一个副本（占流量的25％）。</p>
+<p>Truncated deployment manifest version A:</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>Truncated deployment manifest version B, note that we only start one replica of the application:</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">spec</span><span class="token punctuation">:</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">1</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<!-- A full example and steps to deploy can be found at https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/canary -->
+<p>可以在以下位置找到完整的示例和部署步骤 <a href="https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/canary" target="_blank" rel="noopener">https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/canary</a></p>
+<p>优点:</p>
+<!-- - version released for a subset of users -->
+<!-- - convenient for error rate and performance monitoring -->
+<!-- - fast rollback -->
+<ul>
+<li>为部分用户发布的版本</li>
+<li>方便错误率和性能监控</li>
+<li>快速回滚</li>
+</ul>
+<p>缺点:</p>
+<!-- - slow rollout
+- fine tuned traffic distribution can be expensive (99% A/ 1%B = 99 pod A, 1 pod B) -->
+<ul>
+<li>缓慢推出</li>
+<li>调整好的流量分配可能会很昂贵（99％A / 1％B = 99个Pod A，1个Pod B）</li>
+</ul>
+<!-- The procedure used above is Kubernetes native, we adjust the number of replicas managed by a ReplicaSet to distribute the traffic amongst the versions. -->
+<p>上面使用的过程是Kubernetes的本机程序，我们调整了ReplicaSet管理的副本数量，以在版本之间分配流量。</p>
+<!-- If you are not confident about the impact that the release of a new feature might have on the stability of the platform, a canary release strategy is suggested. -->
+<p>如果您不确定新功能的发布可能对平台的稳定性产生什么影响，建议使用金丝雀发布策略。</p>
+<!-- ## A/B testing - best for feature testing on a subset of users -->
+<h2 id="A-B-测试-最适合部分用户的功能测试"><a href="#A-B-测试-最适合部分用户的功能测试" class="headerlink" title="A/B 测试 - 最适合部分用户的功能测试"></a>A/B 测试 - 最适合部分用户的功能测试</h2><!-- A/B testing is really a technique for making business decisions based on statistics, rather than a deployment strategy. However, it is related and can be implemented using a canary deployment so we will briefly discuss it here. -->
+<p>A/B 测试实际上是一种基于统计信息而不是部署策略制定业务决策的技术。 但是，它是相关的，可以使用canary部署来实现，因此我们将在此处简要讨论。</p>
+<!-- In addition to distributing traffic amongst versions based on weight, you can precisely target a given pool of users based on a few parameters (cookie, user agent, etc.). This technique is widely used to test conversion of a given feature and only rollout the version that converts the most. -->
+<p>除了根据权重在各个版本之间分配流量外，您还可以基于一些参数（cookie，用户代理等）精确定位给定的用户群。 此技术被广泛用于测试给定功能的转换，并且仅推出转换最多的版本。</p>
+<!-- Istio, like other service meshes, provides a finer-grained way to subdivide service instances with dynamic request routing based on weights and/or HTTP headers. -->
+<p>与其他服务网格一样，Istio提供了一种更细粒度的方法，可以基于权重和/或HTTP标头使用动态请求路由细分服务实例。</p>
+<p><img src="https://s.gin.sh/blog/kubernetes/architecture/kubernetes-deployment-strategy-a-b-testing-3.png" alt="Kubernetes Deployment Strategy A/B testing"></p>
+<!-- Below is an example of rules setup using Istio, as Istio is still in heavy development the following example rule may change in the future: -->
+<p>以下是使用 Istio 设置规则的示例，因为 Istio 仍处于开发阶段，因此以下示例规则将来可能会更改：</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">route</span><span class="token punctuation">:</span>
+<span class="token punctuation">-</span> <span class="token key atrule">tags</span><span class="token punctuation">:</span>
+  <span class="token key atrule">version</span><span class="token punctuation">:</span> v1.0.0
+  <span class="token key atrule">weight</span><span class="token punctuation">:</span> <span class="token number">90</span>
+<span class="token punctuation">-</span> <span class="token key atrule">tags</span><span class="token punctuation">:</span>
+  <span class="token key atrule">version</span><span class="token punctuation">:</span> v2.0.0
+  <span class="token key atrule">weight</span><span class="token punctuation">:</span> <span class="token number">10</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>可以在以下位置找到完整的示例和部署步骤 <a href="https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/ab-testing" target="_blank" rel="noopener">https://github.com/ContainerSolutions/k8s-deployment-strategies/tree/master/ab-testing</a></p>
+<!-- Other tools like Linkerd, Traefik, NGINX, HAProxy, also allow you to do this. -->
+<p>其他工具（如Linkerd，Traefik，NGINX，HAProxy）也允许您执行此操作。</p>
+<p>优点:</p>
+<!-- - requires intelligent load balancer -->
+<!-- - several versions run in parallel -->
+<!-- - full control over the traffic distribution -->
+<ul>
+<li>需要智能负载均衡器</li>
+<li>多个版本并行运行</li>
+<li>完全控制流量分配</li>
+</ul>
+<p>缺点:</p>
+<!-- - hard to troubleshoot errors for a given session, distributed tracing becomes mandatory -->
+<!-- - not straightforward, you need to setup additional tools -->
+<ul>
+<li>很难解决给定会话的错误，必须进行分布式跟踪</li>
+<li>不简单，您需要设置其他工具</li>
+</ul>
+<p><img src="https://s.gin.sh/blog/kubernetes/architecture/k8s_deployment_strategies.png" alt="Kubernetes Deployment Strategy"></p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><!-- There are different ways to deploy an application, when releasing to development/staging environments, a recreate or ramped deployment is usually a good choice. When it comes to production, a ramped or blue/green deployment is usually a good fit, but proper testing of the new platform is necessary. If you are not confident with the stability of the platform and what could be the impact of releasing a new software version, then a canary release should be the way to go. By doing so, you let the consumer test the application and its integration to the platform. Last but not least, if your business requires testing of a new feature amongst a specific pool of users, for example all users accessing the application using a mobile phone are sent to version A, all users accessing via desktop go to version B. Then you may want to use the A/B testing technique which, by using a Kubernetes service mesh or a custom server configuration lets you target where a user should be routed depending on some parameters. -->
+<p>有多种方法可以部署应用程序，当发布到开发/登台环境时，重新创建或扩展的部署通常是一个不错的选择。当涉及生产时，通常最好是采用倾斜的部署或蓝绿色部署，但必须对新平台进行适当的测试。如果您对平台的稳定性以及发布新软件版本可能带来的影响不满意，那么应该选择Canary发布。这样，您就可以让使用者测试应用程序及其与平台的集成。最后但并非最不重要的一点是，如果您的企业需要在特定的用户群中测试新功能，例如，所有使用手机访问该应用程序的用户都发送到版本A，那么所有通过桌面访问的用户都将转到版本B。可能想使用A / B测试技术，该技术通过使用Kubernetes服务网格或自定义服务器配置，使您可以根据某些参数确定应将用户路由到的位置。</p>
+<!-- I hope this was useful, if you have any questions/feedback feel free to comment below. -->
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://blog.container-solutions.com/kubernetes-deployment-strategies" target="_blank" rel="noopener">Blog Kubernetes Deployment Strategy</a><br><a href="https://github.com/ContainerSolutions/k8s-deployment-strategies" target="_blank" rel="noopener">GitHub Kubernetes Deployment Strategy</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/kubernetes/kubernetes-deployment-strategies/">https://gin.sh/kubernetes/kubernetes-deployment-strategies/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Kubernetes/">
+                                    <span class="chip bg-color">Kubernetes</span>
+                                </a>
+                            
+                                <a href="/tags/Deployment/">
+                                    <span class="chip bg-color">Deployment</span>
+                                </a>
+                            
+                                <a href="/tags/DevOps/">
+                                    <span class="chip bg-color">DevOps</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/kubernetes/kubernetes-deployment-strategies/';
+        this.page.identifier = '/kubernetes/kubernetes-deployment-strategies/';
+        this.page.title = 'Kubernetes 上的应用部署策略';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/kubernetes/kubectl-manual/">
+                    <div class="card-image">
+                        
+                        <img src="https://s.gin.sh/blog/images/2019/Kubernetes-2.png" class="responsive-img" alt="kuebctl 操作手册">
+                        
+                        <span class="card-title">kuebctl 操作手册</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            日常和项目中都是用 kubectl 来操作 Kubernetes ，总结来下基本的方法，希望对大家有用。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-02-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Kubernetes/" class="post-category">
+                                    Kubernetes
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                    <a href="/tags/Kubernetes/">
+                        <span class="chip bg-color">Kubernetes</span>
+                    </a>
+                    
+                    <a href="/tags/kubectl/">
+                        <span class="chip bg-color">kubectl</span>
+                    </a>
+                    
+                    <a href="/tags/Docker/">
+                        <span class="chip bg-color">Docker</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/kubernetes/kubernetes-deployment-yaml-glossary/">
+                    <div class="card-image">
+                        
+                        <img src="https://s.gin.sh/blog/images/2019/Kubernetes-2.png" class="responsive-img" alt="Kubernetes Deployment YAML glossary">
+                        
+                        <span class="card-title">Kubernetes Deployment YAML glossary</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            Kubernetes 的安装非常复杂，本文将会介绍 Deployment YAML 名词解释。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-01-17
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Kubernetes/" class="post-category">
+                                    Kubernetes
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Kubeadm/">
+                        <span class="chip bg-color">Kubeadm</span>
+                    </a>
+                    
+                    <a href="/tags/Kubernetes/">
+                        <span class="chip bg-color">Kubernetes</span>
+                    </a>
+                    
+                    <a href="/tags/YAML/">
+                        <span class="chip bg-color">YAML</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

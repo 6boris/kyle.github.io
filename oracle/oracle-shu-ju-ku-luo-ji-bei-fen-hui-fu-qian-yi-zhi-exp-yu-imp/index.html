@@ -1,0 +1,1774 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Oracle数据库逻辑备份恢复迁移之exp与imp, Gin Bar">
+    <meta name="description" content="这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Oracle数据库逻辑备份恢复迁移之exp与imp | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/medias/featureimages/16.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Oracle数据库逻辑备份恢复迁移之exp与imp</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Oracle/">
+                                <span class="chip bg-color">Oracle</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%A4%87%E4%BB%BD%E5%AE%B9%E7%81%BE/">
+                                <span class="chip bg-color">备份容灾</span>
+                            </a>
+                        
+                            <a href="/tags/Exp/">
+                                <span class="chip bg-color">Exp</span>
+                            </a>
+                        
+                            <a href="/tags/Imp/">
+                                <span class="chip bg-color">Imp</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Oracle/" class="post-category">
+                                Oracle
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2018-10-02
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    37 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Oracle数据库逻辑备份恢复迁移之exp与imp"><a href="#Oracle数据库逻辑备份恢复迁移之exp与imp" class="headerlink" title="Oracle数据库逻辑备份恢复迁移之exp与imp"></a>Oracle数据库逻辑备份恢复迁移之exp与imp</h1><p>[Oracle 11G R2 官方文档][1] </p>
+<h2 id="1-export与import逻辑备份恢复概述"><a href="#1-export与import逻辑备份恢复概述" class="headerlink" title="1.export与import逻辑备份恢复概述"></a>1.export与import逻辑备份恢复概述</h2><h3 id="1-1-备份概述"><a href="#1-1-备份概述" class="headerlink" title="1.1 备份概述"></a>1.1 备份概述</h3><ul>
+<li>备份可分为两类，物理备份和逻辑备份<blockquote>
+<p>&emsp;&emsp;物理备份：该方法实现数据库的完整恢复，但需要极大的外部存储设备，例如磁带库，具体包括冷备份和热备份。冷备份和热备份(热备份要求数据库运行在归档模式下)都是物理备份，它涉及到组成数据库的文件，但不考虑逻辑内容。<br>&emsp;&emsp;逻辑备份： 使用软件技术从数据库中导出数据并写入一个输出文件，该文件的格式一般与原数据库的文件格式不同，只是 原数据库中数据内容的一个映像。因此，逻辑备份文件只能用来对数据库进行逻辑恢复，即数据导入，而不能按数据库原来的存储特征进行物理恢复。逻辑备份一般 用于增量备份，即备份那些在上次备份以后改变的数据。<br>&emsp;&emsp;Oracle 的导出导入是一个很常用的迁移工具。 在Oracle 10g以后，Oracle 推出了数据泵(expdp/impdp).它可以通过使用并行，从而在效率上要比exp/imp 要高。但是这个exp/imp很多时候还需要使用。<br>&emsp;&emsp;导入/导出是ORACLE幸存的最古老的两个命令行工具，其实我从来不认为Exp/Imp是一种好的备份方式，正确的说法是Exp/Imp只能是一个好的转储工具，特别是在小型数据库的转储，表空间的迁移，表的抽取，检测逻辑和物理冲突等中有不小的功劳。当然，我们也可以把它作为小型数据库的物理备份后的一个逻辑辅助备份，也是不错的建议。对于越来越大的数据库，特别是TB级数据库和越来越多数据仓库的出现，EXP/IMP越来越力不从心了，这个时候，数据库的备份都转向了RMAN和第三方工具。下面说明一下EXP/IMP的使用。</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="2-export与import参数详解"><a href="#2-export与import参数详解" class="headerlink" title="2.export与import参数详解"></a>2.export与import参数详解</h2><h3 id="2-1-export参数详解"><a href="#2-1-export参数详解" class="headerlink" title="2.1 export参数详解"></a>2.1 export参数详解</h3><pre class="line-numbers language-shell"><code class="language-shell">[oracle@orcl:/]$exp -help
+
+Export: Release 11.2.0.4.0 - Production on Tue Jan 30 18:30:39 2018
+
+Copyright (c) 1982, 2011, Oracle and/or its affiliates.  All rights reserved.
+
+
+
+You can let Export prompt you for parameters by entering the EXP
+command followed by your username/password:
+
+     Example: EXP SCOTT/TIGER
+
+Or, you can control how Export runs by entering the EXP command followed
+by various arguments. To specify parameters, you use keywords:
+
+     Format:  EXP KEYWORD=value or KEYWORD=(value1,value2,...,valueN)
+     Example: EXP SCOTT/TIGER GRANTS=Y TABLES=(EMP,DEPT,MGR)
+               or TABLES=(T1:P1,T1:P2), if T1 is partitioned table
+
+USERID must be the first parameter on the command line.
+
+Keyword    Description (Default)      Keyword      Description (Default)
+--------------------------------------------------------------------------
+USERID     username/password          FULL         export entire file (N)
+BUFFER     size of data buffer        OWNER        list of owner usernames
+FILE       output files (EXPDAT.DMP)  TABLES       list of table names
+COMPRESS   import into one extent (Y) RECORDLENGTH length of IO record
+GRANTS     export grants (Y)          INCTYPE      incremental export type
+INDEXES    export indexes (Y)         RECORD       track incr. export (Y)
+DIRECT     direct path (N)            TRIGGERS     export triggers (Y)
+LOG        log file of screen output  STATISTICS   analyze objects (ESTIMATE)
+ROWS       export data rows (Y)       PARFILE      parameter filename
+CONSISTENT cross-table consistency(N) CONSTRAINTS  export constraints (Y)
+
+OBJECT_CONSISTENT    transaction set to read only during object export (N)
+FEEDBACK             display progress every x rows (0)
+FILESIZE             maximum size of each dump file
+FLASHBACK_SCN        SCN used to set session snapshot back to
+FLASHBACK_TIME       time used to get the SCN closest to the specified time
+QUERY                select clause used to export a subset of a table
+RESUMABLE            suspend when a space related error is encountered(N)
+RESUMABLE_NAME       text string used to identify resumable statement
+RESUMABLE_TIMEOUT    wait time for RESUMABLE 
+TTS_FULL_CHECK       perform full or partial dependency check for TTS
+VOLSIZE              number of bytes to write to each tape volume
+TABLESPACES          list of tablespaces to export
+TRANSPORT_TABLESPACE export transportable tablespace metadata (N)
+TEMPLATE             template name which invokes iAS mode export
+
+Export terminated successfully without warnings.
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>EXP的所有参数（括号中为参数的默认值）：<blockquote>
+<p>可以通过exp help=y或者imp help=y查看exp或imp的详细参数，下面以exp为例解释参数意义<br>USERID：用户名/口令</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>FULL：导出整个数据库，只有拥有exp_full_database角色的用户或者特权用户如sys，system等才能进行全库导出。 示例如下<br>exp “‘/ as sysdba’” full=y</p>
+</blockquote>
+<blockquote>
+<p>BUFFER：制定数据缓冲区大小，主要用于提高exp/imp速度，该单位为字节，不能写成buffer=1m的形式，应写成字节为单位的参数，如buffer=1048576<br>exp hr/hr file=t_b.dmp buffer= 1048576 tables=T</p>
+</blockquote>
+<blockquote>
+<p>OWNER：需要导出的用户，示例如下<br>exp “‘/ as sysdba’” owner=(hr,ITPUX02) file=hr_ITPUX02.dmp<br>上例中由于是在linux平台进行测试的，需要对 owner=(hr,ITPUX02)使用\进行转义</p>
+</blockquote>
+<blockquote>
+<p>FILE：输出文件</p>
+</blockquote>
+<blockquote>
+<p>TABLES：需要导出的表</p>
+</blockquote>
+<blockquote>
+<p>COMPRESS：导入到一个区 (Y) 。主要目的是为了消除存储碎片，以保证某张表的所有记录都存储在连续的空间里。 但是负面效应很明显， 如果该参数值为y，则会将高水位线以下的所有extent导入到一个区中， 因此在导入时很有可能出现，明明表中数据很少，但是却花了很多时间在建立的extent上。 且自oracle9i开始，使用了本地管理的表空间，存储碎片的问题应该比低版本好多了，个人建议将compress设为n。</p>
+</blockquote>
+<ul>
+<li><p>DIRECT：直接路径 (N)。</p>
+<blockquote>
+<p>传统模式导出和直接路径导出的原理<br>传 统模式导出相当于使用select语句从表中取出数据，数据从磁盘上先读到buffer cache中，记录被转移到一个评估检测的缓冲区中，数据经过语法检测后没有问题，将数据传给PGA，最后写入导出的文件中。如果使用Direct Path模式导出，数据直接从磁盘上读取到导出的PGA中：记录直接被转换导出会话的私有buffer中。这也就是意味着SQL语句处理层被忽略掉了，因 为数据已经是符合导出的格式了，不需要其他的转换处理了。数据直接被传送给导出的客户端，最后写入导出文件。过程可概况如下</p>
+<pre class="line-numbers language-shell"><code class="language-shell">direct=n datafile---->sga----->pga----->dump
+direct=y datafile---->pga----->dump
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>传统路径导出VS直接路径导出(oracle exp direct=y)两者的差异<br>a、 Conventional path Export<br>&emsp;&emsp; 传统路径模式使用SQL SELECT语句抽取表数据。数据从磁盘读入到buffer cache缓冲区中，行被转移到评估缓冲区。在此之后根据SQL表达式，将记录返回给导出客户端，然后写入到dump文件。<br>b、Direct path Export<br>&emsp;&emsp; 直接导出模式，数据直接从磁盘中读取到导出session的PGA中，行被直接转移到导出session的私有缓冲区，从而跳过SQL命令处理层。<br>避免了不必要的数据转换。最后记录返回给导出客户端，写到dump文件。</p>
+</blockquote>
+</li>
+<li><p>传统路径导出VS直接路径导出(oracle exp direct=y)性能问题</p>
+<blockquote>
+<p>&emsp;&emsp; a、直接路径导出方式比传统路径方式具有更优的性能，速度更快，因为绕过了SQL命令处理部分。<br>&emsp;&emsp; b、直接路径导出方式支持RECORDLENGTH参数(最大为64k)，该参数值通常建议设置为系统I/O或者DB_BLOCK_SIZE的整数倍<br>&emsp;&emsp; c、影响直接路径导出的具体因素(DB_BLOCK_SIZE，列的类型，I/O性能，即数据文件所在的磁盘驱动器是否单独于dump文件所在的磁盘驱动器)<br>&emsp;&emsp; d、无论是直接路径导出还是传统路径导出产生的dump，在使用imp方式导入时，会耗用相同的时间.</p>
+</blockquote>
+</li>
+<li><p>传统路径导出VS直接路径导出(oracle exp direct=y)直接路径导出的限制</p>
+<blockquote>
+<p>a、直接路径导出不支持交互模式<br>b、不支持表空间传输模式(即transport_tablespaces=y不被支持)，支持的是full,owner,tables导出方式<br>c、不支持query查询方式，如exp scott/tiger tables=emp query=\”where job=\’salesman\’ \” 不被支持<br>d、直接路径导出使用recordlength设置一次可以导出数据的量，取代传统路径使用buffer的设置<br>e、直接路径导出要求nls_lang环境参数等于数据库字符集，负责收到exp-41警告及exp-0终止错误</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>GRANTS：导出权限 (Y)<br>INCTYPE：增量导出类型，已废除<br>INDEXES：导出索引 (Y)<br>RECORD：跟踪增量导出 (Y) ，已废除<br>TRIGGERS：导出触发器 (Y)<br>LOG：屏幕输出的日志文件</p>
+</blockquote>
+<blockquote>
+<p>STATISTICS：在导出文件中保留对象的统计信息，默认值ESTIMATE，还可以为compute或者none。如果导出时出现<br>EXP-00091: Exporting questionable statistics<br>可以考虑将 STATISTICS设置为NONE<br>ROWS：确定表中的数据行是否导出，默认为Y，导出</p>
+</blockquote>
+<blockquote>
+<p>QUERY：用于导出表的子集的select子句，示例如下<br>exp hr/hr file=emp_q.dmp tables=employees query=\”where hire_date >to_date(\’1999-01-01\’\,\’yyyy-mm-dd\’)\”</p>
+</blockquote>
+<ul>
+<li>PARFILE：参数文件名，可以用如下方式导出<pre class="line-numbers language-sql"><code class="language-sql">exp hr<span class="token operator">/</span>hr parfile<span class="token operator">=</span>parfile
+$ cat parfile
+<span class="token keyword">file</span><span class="token operator">=</span>t_p<span class="token punctuation">.</span>dmp
+compress<span class="token operator">=</span>y
+<span class="token keyword">rows</span><span class="token operator">=</span>y
+<span class="token keyword">tables</span><span class="token operator">=</span><span class="token punctuation">(</span>t<span class="token punctuation">,</span>empl<span class="token operator">%</span>s<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<blockquote>
+<p>使用parfile参数可以对频繁进行的导出操作进行反复调用，同时也可以避免不同操作系统之间需要对特定字符进行转义的烦恼，如下例</p>
+<pre class="line-numbers language-sql"><code class="language-sql">exp hr<span class="token operator">/</span>hr parfile<span class="token operator">=</span>parfile
+$cat parfile
+<span class="token keyword">file</span><span class="token operator">=</span>t_p<span class="token punctuation">.</span>dmp
+compress<span class="token operator">=</span>y
+<span class="token keyword">rows</span><span class="token operator">=</span>y
+<span class="token keyword">tables</span><span class="token operator">=</span>employees
+<span class="token keyword">statistics</span><span class="token operator">=</span>none
+query<span class="token operator">=</span><span class="token string">"where hire_date>to_date('1999-01-01','yyyy-mm-dd')"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>CONSISTENT：在导出时，将影响正在导出的表的事务设为只读，主要作用于嵌套表和分区表，默认为N。<br>CONSTRAINTS：导出的约束条件 (Y)<br>OBJECT_CONSISTENT:只在对象导出期间设置为只读的事务处理 (N)<br>FEEDBACK:每 x 行显示进度，默认为0<br>FILESIZE：每个导出文件的最大大小<br>FLASHBACK_SCN：用于将会话快照设置回以前状态的SCN<br>FLASHBACK_TIME：用于获取最接近指定时间的SCN的时间<br>RESUMABLE：遇到空间不足时的错误时挂起，默认为N，需与 RESUMABLE_NAME和 RESUMABLE_TIMEOUT一起使用<br>RESUMABLE_NAME：用于标示哪个会话需要使用 RESUMABLE选项，格式为 User USERNAME (USERID), Session SESSIONID, Instance INSTANCEID<br>RESUMABLE_TIMEOUT：RESUMABLE的等待时间，默认为7200s，如果在指定时间内未解决问题，则操作中断<br>TTS_FULL_CHECK：对TTS执行完整或部分相关性检查<br>TABLESPACES：要导出的表空间列表，示例如下<br>exp “‘/ as sysdba’” file=t_ts.dmp tablespaces=(users,example)<br>TRANSPORT_TABLESPACE 导出可传输的表空间元数据 (N)<br>直接备份到磁带上<br>exp icdmain/icd rows=y indexes=n compress=n buffer=65536 feedback=100000 file=/dev/rmt0 log=exp.log tables=(tab1,tab2,tab3)<br>注：在磁盘空间允许的情况下，应先备份到本地服务器，然后再拷贝到磁带。出于速度方面的考虑，尽量不要直接备份到磁带设备</p>
+</blockquote>
+<h3 id="2-2-import参数详解"><a href="#2-2-import参数详解" class="headerlink" title="2.2 import参数详解"></a>2.2 import参数详解</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token punctuation">[</span>oracle<span class="token variable">@orcl</span>:<span class="token operator">/</span><span class="token punctuation">]</span>$imp <span class="token operator">-</span>help
+
+<span class="token keyword">Import</span>: <span class="token keyword">Release</span> <span class="token number">11.2</span><span class="token punctuation">.</span><span class="token number">0.4</span><span class="token punctuation">.</span><span class="token number">0</span> <span class="token operator">-</span> Production <span class="token keyword">on</span> Tue Jan <span class="token number">30</span> <span class="token number">19</span>:<span class="token number">01</span>:<span class="token number">13</span> <span class="token number">2018</span>
+
+Copyright <span class="token punctuation">(</span><span class="token number">c</span><span class="token punctuation">)</span> <span class="token number">1982</span><span class="token punctuation">,</span> <span class="token number">2011</span><span class="token punctuation">,</span> Oracle <span class="token operator">and</span><span class="token operator">/</span><span class="token operator">or</span> its affiliates<span class="token punctuation">.</span>  <span class="token keyword">All</span> rights reserved<span class="token punctuation">.</span>
+
+
+
+You can let <span class="token keyword">Import</span> prompt you <span class="token keyword">for</span> parameters <span class="token keyword">by</span> entering the IMP
+command followed <span class="token keyword">by</span> your username<span class="token operator">/</span>password:
+
+     Example: IMP SCOTT<span class="token operator">/</span>TIGER
+
+<span class="token operator">Or</span><span class="token punctuation">,</span> you can control how <span class="token keyword">Import</span> runs <span class="token keyword">by</span> entering the IMP command followed
+<span class="token keyword">by</span> various arguments<span class="token punctuation">.</span> <span class="token keyword">To</span> specify parameters<span class="token punctuation">,</span> you <span class="token keyword">use</span> keywords:
+
+     Format:  IMP KEYWORD<span class="token operator">=</span><span class="token keyword">value</span> <span class="token operator">or</span> KEYWORD<span class="token operator">=</span><span class="token punctuation">(</span>value1<span class="token punctuation">,</span>value2<span class="token punctuation">,</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">,</span>valueN<span class="token punctuation">)</span>
+     Example: IMP SCOTT<span class="token operator">/</span>TIGER <span class="token keyword">IGNORE</span><span class="token operator">=</span>Y <span class="token keyword">TABLES</span><span class="token operator">=</span><span class="token punctuation">(</span>EMP<span class="token punctuation">,</span>DEPT<span class="token punctuation">)</span> <span class="token keyword">FULL</span><span class="token operator">=</span>N
+               <span class="token operator">or</span> <span class="token keyword">TABLES</span><span class="token operator">=</span><span class="token punctuation">(</span>T1:P1<span class="token punctuation">,</span>T1:P2<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">if</span> T1 <span class="token operator">is</span> partitioned <span class="token keyword">table</span>
+
+USERID must <span class="token number">be</span> the <span class="token keyword">first</span> parameter <span class="token keyword">on</span> the command line<span class="token punctuation">.</span>
+
+Keyword  Description <span class="token punctuation">(</span><span class="token keyword">Default</span><span class="token punctuation">)</span>       Keyword      Description <span class="token punctuation">(</span><span class="token keyword">Default</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">--------------------------------------------------------------------------</span>
+USERID   username<span class="token operator">/</span>password           <span class="token keyword">FULL</span>         <span class="token keyword">import</span> entire <span class="token keyword">file</span> <span class="token punctuation">(</span>N<span class="token punctuation">)</span>
+BUFFER   size <span class="token keyword">of</span> <span class="token keyword">data</span> buffer         FROMUSER     list <span class="token keyword">of</span> owner usernames
+<span class="token keyword">FILE</span>     input files <span class="token punctuation">(</span>EXPDAT<span class="token punctuation">.</span>DMP<span class="token punctuation">)</span>    TOUSER       list <span class="token keyword">of</span> usernames
+<span class="token keyword">SHOW</span>     just list <span class="token keyword">file</span> contents <span class="token punctuation">(</span>N<span class="token punctuation">)</span> <span class="token keyword">TABLES</span>       list <span class="token keyword">of</span> <span class="token keyword">table</span> names
+<span class="token keyword">IGNORE</span>   <span class="token keyword">ignore</span> <span class="token keyword">create</span> <span class="token keyword">errors</span> <span class="token punctuation">(</span>N<span class="token punctuation">)</span>    RECORDLENGTH length <span class="token keyword">of</span> IO record
+GRANTS   <span class="token keyword">import</span> grants <span class="token punctuation">(</span>Y<span class="token punctuation">)</span>           INCTYPE      incremental <span class="token keyword">import</span> <span class="token keyword">type</span>
+INDEXES  <span class="token keyword">import</span> indexes <span class="token punctuation">(</span>Y<span class="token punctuation">)</span>          <span class="token keyword">COMMIT</span>       <span class="token keyword">commit</span> array <span class="token keyword">insert</span> <span class="token punctuation">(</span>N<span class="token punctuation">)</span>
+<span class="token keyword">ROWS</span>     <span class="token keyword">import</span> <span class="token keyword">data</span> <span class="token keyword">rows</span> <span class="token punctuation">(</span>Y<span class="token punctuation">)</span>        PARFILE      parameter filename
+LOG      log <span class="token keyword">file</span> <span class="token keyword">of</span> screen output   CONSTRAINTS  <span class="token keyword">import</span> constraints <span class="token punctuation">(</span>Y<span class="token punctuation">)</span>
+DESTROY                overwrite <span class="token keyword">tablespace</span> <span class="token keyword">data</span> <span class="token keyword">file</span> <span class="token punctuation">(</span>N<span class="token punctuation">)</span>
+INDEXFILE              <span class="token keyword">write</span> <span class="token keyword">table</span><span class="token operator">/</span><span class="token keyword">index</span> info <span class="token keyword">to</span> specified <span class="token keyword">file</span>
+SKIP_UNUSABLE_INDEXES  skip maintenance <span class="token keyword">of</span> unusable indexes <span class="token punctuation">(</span>N<span class="token punctuation">)</span>
+FEEDBACK               display progress every x <span class="token keyword">rows</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+TOID_NOVALIDATE        skip validation <span class="token keyword">of</span> specified <span class="token keyword">type</span> ids 
+FILESIZE               maximum size <span class="token keyword">of</span> each <span class="token keyword">dump</span> <span class="token keyword">file</span>
+<span class="token keyword">STATISTICS</span>             <span class="token keyword">import</span> precomputed <span class="token keyword">statistics</span> <span class="token punctuation">(</span>always<span class="token punctuation">)</span>
+RESUMABLE              suspend <span class="token keyword">when</span> <span class="token number">a</span> space related error <span class="token operator">is</span> encountered<span class="token punctuation">(</span>N<span class="token punctuation">)</span>
+RESUMABLE_NAME         <span class="token keyword">text</span> string used <span class="token keyword">to</span> identify resumable statement
+RESUMABLE_TIMEOUT      wait time <span class="token keyword">for</span> RESUMABLE 
+COMPILE                compile procedures<span class="token punctuation">,</span> packages<span class="token punctuation">,</span> <span class="token operator">and</span> functions <span class="token punctuation">(</span>Y<span class="token punctuation">)</span>
+STREAMS_CONFIGURATION  <span class="token keyword">import</span> streams general metadata <span class="token punctuation">(</span>Y<span class="token punctuation">)</span>
+STREAMS_INSTANTIATION  <span class="token keyword">import</span> streams instantiation metadata <span class="token punctuation">(</span>N<span class="token punctuation">)</span>
+DATA_ONLY              <span class="token keyword">import</span> only <span class="token keyword">data</span> <span class="token punctuation">(</span>N<span class="token punctuation">)</span>
+VOLSIZE                number <span class="token keyword">of</span> bytes <span class="token operator">in</span> <span class="token keyword">file</span> <span class="token keyword">on</span> each volume <span class="token keyword">of</span> <span class="token number">a</span> <span class="token keyword">file</span> <span class="token keyword">on</span> tape
+
+The <span class="token keyword">following</span> keywords only <span class="token keyword">apply</span> <span class="token keyword">to</span> transportable tablespaces
+TRANSPORT_TABLESPACE <span class="token keyword">import</span> transportable <span class="token keyword">tablespace</span> metadata <span class="token punctuation">(</span>N<span class="token punctuation">)</span>
+TABLESPACES tablespaces <span class="token keyword">to</span> <span class="token number">be</span> transported <span class="token keyword">into</span> <span class="token keyword">database</span>
+DATAFILES datafiles <span class="token keyword">to</span> <span class="token number">be</span> transported <span class="token keyword">into</span> <span class="token keyword">database</span>
+TTS_OWNERS users that own <span class="token keyword">data</span> <span class="token operator">in</span> the transportable <span class="token keyword">tablespace</span> <span class="token keyword">set</span>
+
+<span class="token keyword">Import</span> terminated successfully without <span class="token keyword">warnings</span><span class="token punctuation">.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><p>IMP的所有参数（括号中为参数的默认值）：</p>
+<blockquote>
+<p>i&emsp;&emsp;mp的参数和exp的大致相同，下面是常用参数的解释，与exp相同的这就不再赘述<br>&emsp;&emsp;ignore：Oracle在恢复数据的过程中，当导入某个表时，该表已经存在，就要根据ignore参数的设置来决定如何操作。若 ignore=y，Oracle不执行CREATE TABLE语句，直接将数据插入到表中，如果插入的记录违背了约束条件，比如主键约束，唯一索引等，则出错的记录不会插入，但合法的记录会添加到表中。若 ignore=n，Oracle不执行CREATE TABLE语句，同时也不会将数据插入到表中，而是忽略该表的错误，继续导入下一个表。 注<br>意：如果表中的字段并没有唯一性约束，那么在使用ignore=y的情况下很有可能插入重复数据。<br>&emsp;&emsp;indexes：在恢复数据的过程中，若indexes=n，则表上的索引不会被恢复，但是对 LOB 索引, OID索引和 主键索引等系统自动生成的索引将无条件恢复。<br>&emsp;&emsp;indexfile：不进行导入操作而是将创建对象的文本保存到文件中，可以通过编辑使用该文本文件创建数据库对象。<br>&emsp;&emsp;fromuser,touser:这两个参数可以组合使用，也可以分开使用。他们可以实现将源用户的对象数据，导入到目标用户schema底下的功能。这里要注意，导入时的用户需要有<br>imp_full_database角色，示例如下<br>导入一个或一组指定用户所属的全部对象<br>$imp system/manager file=full_all.dmp log=seapark fromuser=hr<br>$imp system/manager file=seapark log=seapark fromuser=(seapark,amy,amyc,harold)<br>将一个或一组指定用户所属的全部对象导入到另一个用户下<br>$imp hr/hr fromuser=hr touser=czm file=hr_all.dmp<br>$imp system/manager file=tank log=tank fromuser=(seapark,amy) touser=(seapark1, amy1)<br>commit：默认值为 COMMIT=N，及在每插入完一个对象后提交。 当COMMIT=Y时候是根据你BUFFER的大小决定每次提交的数量。对于包含了LONG、RAW、 DATE等类型的表，不论BUFFER设置多大，都是每插入一行进行提交。设置commit=y可以防止减少回滚段的压力，但由于频繁提交，会带来性能 上的影响，推荐使用COMMIT=N。</p>
+</blockquote>
+</li>
+<li><p>下列关键字仅用于可传输的表空间</p>
+<blockquote>
+<p>TRANSPORT_TABLESPACE 导入可传输的表空间元数据 (N)<br>TABLESPACES 将要传输到数据库的表空间<br>DATAFILES 将要传输到数据库的数据文件<br>TTS_OWNERS 拥有可传输表空间集中数据的用户</p>
+</blockquote>
+</li>
+<li><p>关于增量参数的说明：exp/imp的增量并不是真正意义上的增量，所以最好不要使用。</p>
+</li>
+</ul>
+<h2 id="3-exp-imp常用语法"><a href="#3-exp-imp常用语法" class="headerlink" title="3.exp / imp常用语法"></a>3.exp / imp常用语法</h2><h3 id="3-1-exp"><a href="#3-1-exp" class="headerlink" title="3.1 exp"></a>3.1 exp</h3><ul>
+<li><p>完全</p>
+<pre class="line-numbers language-shell"><code class="language-shell">exp system/oracle compress=n buffer=4096000 feedback=100000 full=y file=expfull_itpuxdb.dmp log=expfull_itpuxdb.log
+--exp \"/ as sysdba\" compress=n buffer=4096000 feedback=100000 full=y file=exp_itpuxdb.dmp log=exp_itpuxdb.log
+--backup/backup : exp_full_database,imp_full_database, grant exp_full_database to backup; grant imp_full_database to backup;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>用户</p>
+<pre class="line-numbers language-shell"><code class="language-shell">exp system/oracle compress=n buffer=4096000 feedback=100000 owner=itpux file=expitpux_itpuxdb.dmp log=expitpux_itpuxdb.log
+--exp itpux/itpux compress=n buffer=4096000 feedback=100000 file=expitpux_itpuxdb.dmp log=expitpux_itpuxdb.log
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li><p>表</p>
+<pre class="line-numbers language-shell"><code class="language-shell">exp itpux/itpux compress=n buffer=4096000 feedback=100000 tables=t1,t2,t2 file=exp_t1_itpuxdb.dmp log=exp_t1_itpuxdb.log
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li><p>other</p>
+<pre class="line-numbers language-shell"><code class="language-shell">exp system/oracle compress=n buffer=4096000 feedback=100000 rows=n file=expfull_itpuxdb.dmp log=expfull_itpuxdb.log
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+<h3 id="3-2-imp"><a href="#3-2-imp" class="headerlink" title="3.2 imp"></a>3.2 imp</h3><ul>
+<li><p>完全</p>
+<pre class="line-numbers language-shell"><code class="language-shell">imp system/oracle ignore=y buffer=4096000 feedback=100000 full=y file=expfull_itpuxdb.dmp log=impfull_itpuxdb.log
+--exp \"/ as sysdba\" system/oracle ignore=y buffer=4096000 feedback=100000 full=y file=expfull_itpuxdb.dmp log=impfull_itpuxdb.log
+--backup/backup : exp_full_database,imp_full_database, grant exp_full_database to backup; grant imp_full_database to backup;
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>用户</p>
+<pre class="line-numbers language-shell"><code class="language-shell">imp system/oracle fromuser=itpux touser=itpux ignore=y buffer=4096000 feedback=100000 file=expitpux_itpuxdb.dmp log=impitpux_itpuxdb.log
+--imp itpux/itpux fromuser=itpux touser=itpux ignore=y buffer=4096000 feedback=100000 file=expitpux_itpuxdb.dmp log=impitpux_itpuxdb.log
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+<li><p>表</p>
+<pre class="line-numbers language-shell"><code class="language-shell">imp itpux/itpux fromuser=itpux touser=itpux tables=t1,t2,t3 ignore=y buffer=4096000 feedback=100000 file=exp_t1_itpuxdb.dmp log=imp_t1_itpuxdb.log
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+</ul>
+<h2 id="4-配置生产环境的逻辑自动备份策略"><a href="#4-配置生产环境的逻辑自动备份策略" class="headerlink" title="4.配置生产环境的逻辑自动备份策略"></a>4.配置生产环境的逻辑自动备份策略</h2><blockquote>
+<p>要求：每天早上5点做逻辑全备，备份文件保留一周。<br><code>`</code>shell<br>vi /backup/scripts/expfull_db01.sh<br>export BAKDATE=<code>date +%Y%m%d</code><br>export ORACLE_SID=db01<br>nohup exp system/oracle compress=n buffer=4096000 feedback=100000 full=y file=/backup/expfull_db01_$BAKDATE.dmp log=/backup/expfull_db01_$BAKDATE.log &amp;<br>gzip -f /backup/expfull_db01_$BAKDATE.dmp<br>find /backup -name expfull_db01_*.dmp.gz -atime +2 -exec rm -rf {} \;</p>
+</blockquote>
+<p>#chown -R oracle:dba /backup/expfull_db01.sh</p>
+<p>#chmod 775 /backup/expfull_db01.sh</p>
+<p>#crontab -e<br>00 05 <em> </em> * su - oracle -c /backup/scripts/expfull_db01.sh</p>
+<pre><code>
+## 5.exp / imp生产环境数据迁移流程和注意事项
+### 5.1 数据迁移的目的
+&gt;使用exp/imp进行数据迁移的前置条件、操作步骤，降低对对应用造成的影响及避免故障
+### 5.2 数据迁移的适用范围
+&gt;所有线上库9i ,10g &gt; 11g 12c 
+&gt;11g不建用了，
+### 5.3 数据迁移的风险评估
+&gt;&amp;emsp;&amp;emsp;01.exp导出数据时没有使用compress=n参数，会导致所有数据被压缩在一个extent里，导入可能由于没有连续的blocks满足需要，导致imp失败。
+&amp;emsp;&amp;emsp;02.有些os对文件大小有限制，exp数据时需要使用filesize参数来分割导出文件
+&amp;emsp;&amp;emsp;03.exp导出数据时没有正确估计dmp文件所需空间，导致主机磁盘满。
+&amp;emsp;&amp;emsp;05.imp导入数据时没有使用ignore=y参数，目标库上存在表的情况下数据无法导入
+&amp;emsp;&amp;emsp;05.imp导入大量数据时没有使用commit=y参数，导致事务太久，undo资源占用过大无法及时回收。
+&amp;emsp;&amp;emsp;06.跨字符集的数据迁移，由于字符集不兼容导致数据迁移失败。
+&amp;emsp;&amp;emsp;07.imp跨schema进行数据迁移时，没有正确指定fromuser、touser，导致数据没有正确导入
+&amp;emsp;&amp;emsp;09.导入表空间不存在或者空间不足，导致表创建失败或者数据导入失败，导致其他应用报错
+### 5.4 数据迁移的准备工作
+&gt;&amp;emsp;&amp;emsp;01.检查源数据库和目标库的版本、字符集，如果目标库版本低于源库，使用目标库的软件做导出。如果字符集不一致，不建议使用exp/imp迁移数据。
+&amp;emsp;&amp;emsp;02.检查目标库上表结构和源结构是否一致，如果不一致，先修复结构，保证一致。
+&amp;emsp;&amp;emsp;03.user_segments里查出导出表所占的空间大小，检查os对文件大小的限制。如果表大小超出文件大小，exp导出时加上这两个参数：filesize=小于文件限制的数值m,file=exp01.dmp,exp02.dmp,…多个dmp文件
+&amp;emsp;&amp;emsp;04.表比较多的情况下，建议用parfile。各个参数在parfile里写好。
+tables=(tab1,tab2,tab3,..)
+&amp;emsp;&amp;emsp;05.根据不同的需要要书写query子句时，这个参数跟direct=y冲突
+### 5.5 数据迁移的执行过程
+&gt;01.如果目标表是已存在数据，跟应用确认后，可以先进行导出备份，以防后面需要回退。
+先根据需求编辑exp、imp的参数文件：’-‘后面是参数说明，实际使用时去掉cat exp_itpux.par
+userid=itpux/itpux@db01
+direct=y –直接路径导出，加快导出速度
+compress=n –避免数据全部压缩在一个数据块上
+file=exp_itpux01.dmp
+log=exp_itpux01.log
+recordlength=65535 –写dmp文件时一次IO的大小，上限是65535，可以加快导出速度
+buffer=4096000 -数据缓冲区大小
+tables=itpux01
+
+exp parfile=exp_itpux.par –进行数据导出
+```shell
+cat imp_itpux.par
+userid=itpux/itpux
+commit=y –开启批量提交，避免长事务
+ignore=y –如果目标表已经存在，只导入数据
+fromuser=itpux
+touser=itpux
+tables=itpux01
+file=imp_itpux01.dmp
+log=imp_itpux01.log
+buffer=100000 –大小控制导入速度的，设置过大会导致日志产生很快
+imp parfile=imp_itpux.par –进行数据导入
+</code></pre><blockquote>
+<p>注意上面的fromuser和touser。如果将表导入到两个schema:itpux01,itpux02<br>需要按照这种格式配置参数：<br>fromuser和touser一一对应，即使导出时只有一个schema.<br>fromuser=itpux01,itpux01<br>touser=itpux02,itpux02</p>
+</blockquote>
+<ul>
+<li>02 exp导出数据时，检查exp的日志，如果报错，一般是参数配置错误，参考官方文档调整参数。</li>
+<li>03 imp导入之前，需要创建相应的用户，权限，表空间等对象，否则报错：<pre class="line-numbers language-sql"><code class="language-sql">spool itpux_object_create_scripts<span class="token punctuation">.</span>sql
+<span class="token keyword">SET</span> LONG <span class="token number">2000000</span> PAGESIZE <span class="token number">0</span> head <span class="token keyword">off</span> verify <span class="token keyword">off</span> feedback <span class="token keyword">off</span> linesize <span class="token number">180</span>
+<span class="token keyword">select</span> dbms_metadata<span class="token punctuation">.</span>get_ddl<span class="token punctuation">(</span><span class="token string">'USER'</span><span class="token punctuation">,</span><span class="token string">'ITPUX02'</span><span class="token punctuation">)</span> <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
+<span class="token keyword">select</span> dbms_metadata<span class="token punctuation">.</span>get_granted_ddl<span class="token punctuation">(</span><span class="token string">'OBJECT_GRANT'</span><span class="token punctuation">,</span><span class="token string">'ITPUX02'</span><span class="token punctuation">)</span> <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
+<span class="token keyword">select</span> dbms_metadata<span class="token punctuation">.</span>get_granted_ddl<span class="token punctuation">(</span><span class="token string">'ROLE_GRANT'</span><span class="token punctuation">,</span><span class="token string">'ITPUX02'</span><span class="token punctuation">)</span> <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
+<span class="token keyword">select</span> dbms_metadata<span class="token punctuation">.</span>get_granted_ddl<span class="token punctuation">(</span><span class="token string">'SYSTEM_GRANT'</span><span class="token punctuation">,</span><span class="token string">'ITPUX02'</span><span class="token punctuation">)</span> <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
+<span class="token keyword">select</span> dbms_metadata<span class="token punctuation">.</span>get_ddl<span class="token punctuation">(</span><span class="token string">'TABLESPACE'</span><span class="token punctuation">,</span><span class="token string">'ITPUX02'</span><span class="token punctuation">)</span> <span class="token keyword">from</span> dual<span class="token punctuation">;</span>
+spool <span class="token keyword">off</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>04 imp导入数据过程，需要监控下数据库事务和日志产生速度。</li>
+<li>05 对导入的表收集统计信息。</li>
+</ul>
+<h3 id="5-6-数据迁移后的验证方案"><a href="#5-6-数据迁移后的验证方案" class="headerlink" title="5.6 数据迁移后的验证方案"></a>5.6 数据迁移后的验证方案</h3><blockquote>
+<p>对比exp、imp的日志，确认导出导入数据量是否一致。并在数据库上检查数据量。<br>比如上面的数据迁移，检查数据量跟日志显示是否一致。<br>select count(*) from itpux.itpux01;<br>跨schema或者数据库迁移数据时，除检查日志外，还需要检查源和目标的对象数据量、是否有失效对象。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> object_type s_object_type<span class="token punctuation">,</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">from</span> dba_objects <span class="token keyword">where</span> owner<span class="token operator">=</span><span class="token string">'ITPUX01'</span> <span class="token keyword">group</span> <span class="token keyword">by</span> object_type <span class="token punctuation">;</span>
+<span class="token keyword">select</span> object_type t_object_type<span class="token punctuation">,</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">from</span> dba_objects <span class="token keyword">where</span> owner<span class="token operator">=</span><span class="token string">'ITPUX01'</span> <span class="token keyword">group</span> <span class="token keyword">by</span> object_type <span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_objects <span class="token keyword">where</span> <span class="token keyword">status</span> <span class="token operator">&lt;></span> <span class="token string">'VALID'</span> <span class="token operator">and</span> owner<span class="token operator">=</span><span class="token string">'ITPUX01'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>dblink两个库一起查询;<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> s<span class="token punctuation">.</span>s_object_type<span class="token punctuation">,</span>
+     s<span class="token punctuation">.</span>s_count<span class="token punctuation">,</span>
+     t<span class="token punctuation">.</span>t_object_type<span class="token punctuation">,</span>
+     t<span class="token punctuation">.</span>t_count
+<span class="token keyword">FROM</span> <span class="token punctuation">(</span>  <span class="token keyword">SELECT</span> object_type s_object_type<span class="token punctuation">,</span> <span class="token function">COUNT</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> s_count
+          <span class="token keyword">FROM</span> dba_objects<span class="token variable">@db01</span>
+         <span class="token keyword">WHERE</span> owner <span class="token operator">=</span> <span class="token string">'ITPUX01'</span>
+      <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> object_type<span class="token punctuation">)</span> s<span class="token punctuation">,</span>
+     <span class="token punctuation">(</span>  <span class="token keyword">SELECT</span> object_type t_object_type<span class="token punctuation">,</span> <span class="token function">COUNT</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> t_count
+          <span class="token keyword">FROM</span> dba_objects
+         <span class="token keyword">WHERE</span> owner <span class="token operator">=</span> <span class="token string">'ITPUX01'</span>
+      <span class="token keyword">GROUP</span> <span class="token keyword">BY</span> object_type<span class="token punctuation">)</span> t<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+自动生成编译无效对象SQL及编译过程</li>
+</ul>
+</blockquote>
+<ul>
+<li>统计当前用户无效对象数量:<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> owner<span class="token punctuation">,</span>
+       object_type<span class="token punctuation">,</span>
+       <span class="token keyword">status</span><span class="token punctuation">,</span>
+       <span class="token function">COUNT</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
+  <span class="token keyword">FROM</span> dba_objects
+ <span class="token keyword">WHERE</span> <span class="token keyword">status</span> <span class="token operator">&lt;></span> <span class="token string">'VALID'</span>
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> owner<span class="token punctuation">,</span> object_type<span class="token punctuation">,</span> <span class="token keyword">status</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> owner<span class="token punctuation">,</span> object_type<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>生成编译无效对象SQL</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>    <span class="token string">'ALTER '</span>
+     <span class="token operator">||</span> OBJECT_TYPE
+     <span class="token operator">||</span> <span class="token string">' '</span>
+     <span class="token operator">||</span> OWNER
+     <span class="token operator">||</span> <span class="token string">'.'</span>
+     <span class="token operator">||</span> OBJECT_NAME
+     <span class="token operator">||</span> <span class="token string">' COMPILE;'</span>
+<span class="token keyword">FROM</span> dba_objects
+<span class="token keyword">WHERE</span>     <span class="token keyword">status</span> <span class="token operator">&lt;></span> <span class="token string">'VALID'</span>
+     <span class="token operator">AND</span> object_type <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token string">'PACKAGE'</span><span class="token punctuation">,</span>
+                         <span class="token string">'PACKAGE BODY'</span><span class="token punctuation">,</span>
+                         <span class="token string">'FUNCTION'</span><span class="token punctuation">,</span>
+                         <span class="token string">'PROCEDURE'</span><span class="token punctuation">,</span>
+                         <span class="token string">'TRIGGER'</span><span class="token punctuation">,</span>
+                         <span class="token string">'VIEW'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<blockquote>
+<p>通过复制以上SQL语句,直接手动执行编译执行,也可以采用如下方式在oracle用户下进行手工编译<br><code>`</code>sql</p>
+</blockquote>
+<h1 id="su-oracle"><a href="#su-oracle" class="headerlink" title="su - oracle"></a>su - oracle</h1><p>$ sqlplus / as sysdba<br>SQL&gt; @$ORACLE_HOME/rdbms/admin/utlrp.sql<br><code>`</code></p>
+</li>
+<li><p>如果有序列要处理</p>
+<pre class="line-numbers language-sql"><code class="language-sql">exclude<span class="token operator">=</span>SEQUENCE
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>目标库<br>方法1:<br>1.源库： 查出sequence的最大值<br>2.目标库： DROP SEQUENCE …. 再 CREATE SEQUENCE START最大值 其他不变<br>方法2：<br>目标库： DROP SEQUENCE …. 再 CREATE SEQUENCE START 超大值 （保证比之前的都大，不会发生冲突的 ）</p>
+</blockquote>
+</li>
+<li><p>可以用以下脚本来实现 ：<br><code>`</code>sql<br>/<em> Formatted on 2018/1/30 19:49:33 (QP5 v5.313) </em>/<br>script FROM THE SOURCE database. USE this script TO RESET THE proper starting VALUE FOR sequences ON THE TARGET database.<br>cr_tts_create_seq.SQL<br>SET HEADING OFF FEEDBACK OFF TRIMSPOOL ON ESCAPE OFF<br>SET LONG 1000 LINESIZE 1000 PAGESIZE 0<br>COL SEQDDL FORMAT A300<br>SPOOL tts_create_seq.sql<br>PROMPT /<em> ========================= </em>/<br>PROMPT /<em> Drop and create sequences </em>/<br>PROMPT /<em> ========================= </em>/</p>
+</li>
+</ul>
+<p>SELECT REGEXP_REPLACE (<br>           DBMS_METADATA.get_ddl (‘SEQUENCE’, sequence_name, sequence_owner),<br>           ‘^.<em>(CREATE SEQUENCE.</em>CYCLE).*$’,<br>              ‘DROP SEQUENCE “‘<br>           || sequence_owner<br>           || ‘“.”‘<br>           || sequence_name<br>           || ‘“;’<br>           || CHR (10)<br>           || ‘\1;’)<br>           SEQDDL<br>  FROM dba_sequences<br> WHERE sequence_owner NOT IN (SELECT name<br>                                FROM SYSTEM.logstdby$skip_support<br>                               WHERE action = 0);</p>
+<p>SPOOL OFF</p>
+<pre><code>
+### 5.7 数据迁移核心对象风险
+&gt;由于核心表访问、变更频繁，不宜直接使用imp对核心表大量导入数据。
+
+### 5.8 数据迁移回退方案
+&gt;exp对应用无影响，不需要回退。
+imp后可能数据有误，需要进行回退操作。
+如果目标表本来就是空表，跟应用确认后，直接清空即可。
+如果目标表原有数据，跟应用确认是否使用原有备份数据进行恢复。若需要，先exp备份当前数据，然后清空再导入前面的备份数据。
+
+## 6.exp / imp数据迁移案例
+### 6.1 迁移目的
+&gt;&amp;emsp;&amp;emsp;将linux系统oracle服务器上schema（itpux01,itpux02）全部通过Exp迁移到另一台oracle服务器，并能正常查询到相关数据。
+### 6.2 迁移流程
+```sql
+1.准备数据：linux系统oracle服务器上创建用户,表空间.并创建相关表.数据等。
+2.linux本地用Exp做导出;
+3.再到远程主机创建相关对象；
+4.远程主机用imp做导入(导入);
+5.验证远程本地数据合法性;
+</code></pre><h3 id="6-3-迁移过程"><a href="#6-3-迁移过程" class="headerlink" title="6.3 迁移过程"></a>6.3 迁移过程</h3><ul>
+<li>创建表空间<br><code>`</code>sql<br>CREATE TABLESPACE itpux11<br>  DATAFILE ‘/oracle/oradata/db01/itpux01.dbf’<pre><code>           SIZE 100 M
+           AUTOEXTEND OFF
+</code></pre>  EXTENT MANAGEMENT LOCAL AUTOALLOCATE<br>  SEGMENT SPACE MANAGEMENT AUTO;</li>
+</ul>
+<p>CREATE TABLESPACE itpux12<br>    DATAFILE ‘/oracle/oradata/db01/itpux02.dbf’<br>                 SIZE 100 M<br>                 AUTOEXTEND OFF<br>    EXTENT MANAGEMENT LOCAL AUTOALLOCATE<br>    SEGMENT SPACE MANAGEMENT AUTO;</p>
+<pre><code>
+* 创建用户并授权
+```sql
+CREATE USER itpux01 IDENTIFIED BY itpux01
+    DEFAULT TABLESPACE itpux01;
+CREATE USER itpux02 IDENTIFIED BY itpux02
+    DEFAULT TABLESPACE itpux02;
+GRANT DBA TO itpux01;
+GRANT DBA TO itpux02;
+
+ALTER USER itpux01
+    QUOTA UNLIMITED ON itpux01;
+
+ALTER USER itpux02
+    QUOTA UNLIMITED ON itpux02;
+</code></pre><ul>
+<li>moon用户登录并创建测试表<br><code>`</code>sql<br>CONN itpux01 / itpux01<br>CREATE TABLE itpux01<br>(<br>  id    NUMBER (30) PRIMARY KEY NOT NULL,<br>  name DATE<br>);</li>
+</ul>
+<p>CONN itpux02 / itpux02<br>CREATE TABLE itpux02<br>(<br>    id    NUMBER (30) PRIMARY KEY NOT NULL,<br>    name DATE<br>);</p>
+<pre><code>
+* 创建2个存储过程并执行
+```sql
+CONN itpux01 / itpux01
+
+CREATE OR REPLACE PROCEDURE p_itpux01
+IS
+BEGIN
+    EXECUTE IMMEDIATE &#39;select count(*) from itpux01&#39;;
+
+    FOR i IN 1 .. 1000
+    LOOP
+        INSERT INTO itpux01 (id, name)
+             VALUES (i, SYSDATE);
+
+        COMMIT;
+    END LOOP;
+
+    EXECUTE IMMEDIATE &#39;select count(*) from itpux01&#39;;
+END p_itpux01;
+/
+
+
+BEGIN
+    p_itpux01;
+END;
+/
+
+SELECT COUNT (*) FROM itpux01;
+
+SELECT *
+  FROM itpux01
+ WHERE id &gt; 990;
+
+CONN itpux02 / itpux02
+CREATE OR REPLACE PROCEDURE p_itpux02
+IS
+BEGIN
+    EXECUTE IMMEDIATE &#39;select count(*) from itpux02&#39;;
+
+    FOR i IN 1 .. 2000
+    LOOP
+        INSERT INTO itpux02 (id, name)
+             VALUES (i, SYSDATE);
+
+        COMMIT;
+    END LOOP;
+
+    EXECUTE IMMEDIATE &#39;select count(*) from itpux02&#39;;
+END p_itpux02;
+/
+
+BEGIN
+    p_itpux02;
+END;
+/
+</code></pre><ul>
+<li>查询验证数据<br><code>`</code>sql<br>CONN itpux01 / itpux01</li>
+</ul>
+<p>SELECT COUNT (*) FROM itpux01;</p>
+<p>SELECT *<br>  FROM itpux01<br> WHERE id &gt; 990;</p>
+<p>CONN itpux02 / itpux02</p>
+<p>SELECT COUNT (*) FROM itpux02;</p>
+<p>SELECT *<br>  FROM itpux02<br> WHERE id &gt; 1990;</p>
+<pre><code>
+* 本地用Exp做导出
+```sql
+EXP SYSTEM/oracle OWNER=itpux01,itpux02 COMPRESS=n FILE=exp_2table.dmp LOG=exp_2table.LOG direct=y recordlength=65535 buffer=4096000
+</code></pre><ul>
+<li>imp导入之前，需要创建相应的用户，权限，表空间等对象，否则报<br><code>`</code>sql<br>/<em> Formatted on 2018/1/30 20:03:14 (QP5 v5.313) </em>/<br>SPOOL itpux_object_create_scripts.sql<br>SET LONG 2000000 PAGESIZE 0 HEAD OFF VERIFY OFF FEEDBACK OFF LINESIZE 180</li>
+</ul>
+<p>SELECT DBMS_METADATA.get_ddl (‘USER’, ‘ITPUX01’) FROM DUAL;</p>
+<p>SELECT DBMS_METADATA.get_granted_ddl (‘OBJECT_GRANT’, ‘ITPUX01’) FROM DUAL;</p>
+<p>SELECT DBMS_METADATA.get_granted_ddl (‘ROLE_GRANT’, ‘ITPUX01’) FROM DUAL;</p>
+<p>SELECT DBMS_METADATA.get_granted_ddl (‘SYSTEM_GRANT’, ‘ITPUX01’) FROM DUAL;</p>
+<p>SELECT DBMS_METADATA.get_ddl (‘TABLESPACE’, ‘ITPUX01’) FROM DUAL;</p>
+<p>SELECT DBMS_METADATA.get_ddl (‘USER’, ‘ITPUX02’) FROM DUAL;</p>
+<p>SELECT DBMS_METADATA.get_granted_ddl (‘OBJECT_GRANT’, ‘ITPUX02’) FROM DUAL;</p>
+<p>SELECT DBMS_METADATA.get_granted_ddl (‘ROLE_GRANT’, ‘ITPUX02’) FROM DUAL;</p>
+<p>SELECT DBMS_METADATA.get_granted_ddl (‘SYSTEM_GRANT’, ‘ITPUX02’) FROM DUAL;</p>
+<p>SELECT DBMS_METADATA.get_ddl (‘TABLESPACE’, ‘ITPUX02’) FROM DUAL;</p>
+<p>SPOOL OFF;</p>
+<pre><code>
+* 异机用imp做导入
+```sql
+imp SYSTEM/oracle fromuser=itpux01,itpux02 touser=itpux01,itpux02 FILE=exp_2table.dmp LOG=exp_2table.LOG COMMIT=y IGNORE=y buffer=4096000
+</code></pre><ul>
+<li>验证导入后的数据合法性<br><code>`</code>sql</li>
+</ul>
+<pre><code>
+### 6.4 数据迁移后的验证方案
+&gt;对比exp、imp的日志，确认导出导入数据量是否一致。并在数据库上检查数据量。
+比如上面的数据迁移，检查数据量跟日志显示是否一致。
+```sql
+SELECT COUNT (*) FROM itpux.itpux01;
+</code></pre><blockquote>
+<p>跨schema或者数据库迁移数据时，除检查日志外，还需要检查源和目标的对象数据量、是否有失效对象。<br><code>`</code>sql<br>  SELECT object_type s_object_type, COUNT (*)<br>    FROM dba_objects<br>   WHERE owner = ‘ITPUX01’<br>GROUP BY object_type;</p>
+</blockquote>
+<p>  SELECT object_type t_object_type, COUNT (*)<br>    FROM dba_objects<br>   WHERE owner = ‘ITPUX01’<br>GROUP BY object_type;</p>
+<p>SELECT *<br>  FROM dba_objects<br> WHERE status &lt;&gt; ‘VALID’ AND owner = ‘ITPUX01’;</p>
+<pre><code>* dblink两个库一起查
+```sql
+SELECT s.s_object_type,
+       s.s_count,
+       t.t_object_type,
+       t.t_count
+  FROM (  SELECT object_type s_object_type, COUNT (*) s_count
+            FROM dba_objects@db01
+           WHERE owner = &#39;ITPUX01&#39;
+        GROUP BY object_type) s,
+       (  SELECT object_type t_object_type, COUNT (*) t_count
+            FROM dba_objects
+           WHERE owner = &#39;ITPUX01&#39;
+        GROUP BY object_type) t;
+</code></pre><ul>
+<li>自动生成编译无效对象SQL及编译过程<blockquote>
+<p>统计当前用户无效对象数量</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> owner<span class="token punctuation">,</span>
+       object_type<span class="token punctuation">,</span>
+       <span class="token keyword">status</span><span class="token punctuation">,</span>
+       <span class="token function">COUNT</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
+  <span class="token keyword">FROM</span> dba_objects
+ <span class="token keyword">WHERE</span> <span class="token keyword">status</span> <span class="token operator">&lt;></span> <span class="token string">'VALID'</span>
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> owner<span class="token punctuation">,</span> object_type<span class="token punctuation">,</span> <span class="token keyword">status</span>
+<span class="token keyword">ORDER</span> <span class="token keyword">BY</span> owner<span class="token punctuation">,</span> object_type<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>生成编译无效对象SQL</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">SELECT</span>    <span class="token string">'ALTER '</span>
+       <span class="token operator">||</span> OBJECT_TYPE
+       <span class="token operator">||</span> <span class="token string">' '</span>
+       <span class="token operator">||</span> OWNER
+       <span class="token operator">||</span> <span class="token string">'.'</span>
+       <span class="token operator">||</span> OBJECT_NAME
+       <span class="token operator">||</span> <span class="token string">' COMPILE;'</span>
+  <span class="token keyword">FROM</span> dba_objects
+ <span class="token keyword">WHERE</span>     <span class="token keyword">status</span> <span class="token operator">&lt;></span> <span class="token string">'VALID'</span>
+       <span class="token operator">AND</span> object_type <span class="token operator">IN</span> <span class="token punctuation">(</span><span class="token string">'PACKAGE'</span><span class="token punctuation">,</span>
+                           <span class="token string">'PACKAGE BODY'</span><span class="token punctuation">,</span>
+                           <span class="token string">'FUNCTION'</span><span class="token punctuation">,</span>
+                           <span class="token string">'PROCEDURE'</span><span class="token punctuation">,</span>
+                           <span class="token string">'TRIGGER'</span><span class="token punctuation">,</span>
+                           <span class="token string">'VIEW'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过复制以上SQL语句,直接手动执行编译执行.<br>也可以采用如下方式在oracle用户下进行手工编译</p>
+<pre class="line-numbers language-sql"><code class="language-sql">su <span class="token operator">-</span> oracle
+$ sqlplus <span class="token operator">/</span> <span class="token keyword">as</span> sysdba
+SQL<span class="token operator">></span> <span class="token variable">@$ORACLE_HOME</span><span class="token operator">/</span>rdbms<span class="token operator">/</span>admin<span class="token operator">/</span>utlrp<span class="token punctuation">.</span>sql
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+<h2 id="7-exp-imp迁移过程字符集的处理"><a href="#7-exp-imp迁移过程字符集的处理" class="headerlink" title="7.exp / imp迁移过程字符集的处理"></a>7.exp / imp迁移过程字符集的处理</h2><blockquote>
+<p>进行数据的导入导出时，我们要注意关于字符集的问题。在EXP/IMP过程中我们需要注意四个字符集的参数：</p>
+<pre class="line-numbers language-shell"><code class="language-shell">01.导出端的客户端字符集。
+02.导出端数据库字符集。
+03.导入端的客户端字符集。
+04.导入端数据库字符集。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我们首先需要查看这四个字符集参数。<br>查看数据库的字符集的信息：<br><code>`</code>sql<br>SQL&gt; select <em> from nls_database_parameters;<br>//SQL&gt; select </em> from props$;<br>SQL&gt; SET PAGESIZE 30<br>SQL&gt; select * from nls_database_parameters;</p>
+</blockquote>
+<p>PARAMETER                      VALUE</p>
+<hr>
+<p>NLS_LANGUAGE                   AMERICAN<br>NLS_TERRITORY                  AMERICA<br>NLS_CURRENCY                   $<br>NLS_ISO_CURRENCY               AMERICA<br>NLS_NUMERIC_CHARACTERS         .,<br>NLS_CHARACTERSET               ZHS16GBK<br>NLS_CALENDAR                   GREGORIAN<br>NLS_DATE_FORMAT                DD-MON-RR<br>NLS_DATE_LANGUAGE              AMERICAN<br>NLS_SORT                       BINARY<br>NLS_TIME_FORMAT                HH.MI.SSXFF AM<br>NLS_TIMESTAMP_FORMAT           DD-MON-RR HH.MI.SSXFF AM<br>NLS_TIME_TZ_FORMAT             HH.MI.SSXFF AM TZR<br>NLS_TIMESTAMP_TZ_FORMAT        DD-MON-RR HH.MI.SSXFF AM TZR<br>NLS_DUAL_CURRENCY              $<br>NLS_COMP                       BINARY<br>NLS_LENGTH_SEMANTICS           BYTE<br>NLS_NCHAR_CONV_EXCP            FALSE<br>NLS_NCHAR_CHARACTERSET         UTF8<br>NLS_RDBMS_VERSION              11.2.0.4.0</p>
+<p>20 rows selected.</p>
+<pre><code>&gt;我们再来查看客户端的字符集信息：
+客户端字符集的参数NLS_LANG=_&lt; territory &gt;.
+language：指定oracle消息使用的语言，日期中日和月的显示。
+Territory：指定货币和数字的格式，地区和计算星期及日期的习惯。
+Characterset：控制客户端应用程序使用的字符集。通常设置或等于客户端的代码页。ZHS16GBK、UTF8。
+
+* 如数据库语言环境
+&gt;os是windows,使用命令
+set NLS_LANG=AMERICAN_AMERICA.ZHS16GBK
+
+&gt;os是linux or unix,使用命令
+export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK
+在unix中：
+\
+
+&gt;$ env|grep NLS_LANG
+NLS_LANG=AMERICAN_AMERICA.ZHS16GBK
+
+&gt;当前修改可用：
+$ export NLS_LANG=AMERICAN_AMERICA.ZHS16GBK
+
+&gt;永久修改可用：
+vi bash_profile
+
+* 通常在导出时最好把客户端字符集设置得和数据库端相同。当进行数据导入时，主要有以下两种情况：
+&gt;&amp;emsp;&amp;emsp;(1) 源数据库和目标数据库具有相同的字符集设置。
+这时，只需设置导出和导入端的客户端NLS_LANG等于数据库字符集即可。
+&amp;emsp;&amp;emsp;(2) 源数据库和目标数据库字符集不同。
+&amp;emsp;&amp;emsp;先将导出端客户端的NLS_LANG设置成和导出端的数据库字符集一致，导出数据，然后将导入端客户端的NLS_LANG设置成和导出端一致，导入数据，这样转换只发生在数据库端，而且只发生一次。
+&amp;emsp;&amp;emsp;这种情况下，只有当导入端数据库字符集为导出端数据库字符集的严格超集时，数据才能完全导成功，否则，可能会有数据不一致或乱码出现。
+## 8.exp / imp优化的方法
+&gt;当需要exp/imp的数据量比较大时，这个过程需要的时间是比较长的，我们可以用一些方法来优化exp/imp的操作。
+
+* 01.exp:使用直接路径 direct=y
+&gt;&amp;emsp;&amp;emsp;oracle会避开sql语句处理引擎,直接从数据库文件中读取数据,然后写入导出文件.
+&amp;emsp;&amp;emsp;可以在导出日志中观察到: exp-00067: table xxx will be exported in conventional path
+&amp;emsp;&amp;emsp;如果没有使用直接路径,必须保证buffer参数的值足够大.
+&amp;emsp;&amp;emsp;有一些参数于direct=y不兼容,无法用直接路径导出可移动的tablespace,或者用query参数导出数据库子集.
+&amp;emsp;&amp;emsp;当导入导出的数据库运行在不同的os下时,必须保证recordlength参数的值一致.
+
+* 02.exp: 清空回收站
+```sql
+SQL&gt; select count(*) from dba_recyclebin;
+SQL&gt; purge dba_recyclebin;
+</code></pre><ul>
+<li><p>03.imp:避免磁盘排序</p>
+<blockquote>
+<p>涉及到sort_area_size参数,也就是我们的PGA要够大。</p>
+</blockquote>
+</li>
+<li><p>05.imp:优化日志缓冲区</p>
+<blockquote>
+<p>比如将log_buffer容量扩大10倍(最大不要超过5M),也就是我们的SGA要够大。</p>
+</blockquote>
+</li>
+<li><p>05.imp:避免日志切换等待</p>
+<blockquote>
+<p>增加重做日志组的数量,增大日志文件大小.</p>
+</blockquote>
+</li>
+<li><p>06.imp:使用commit</p>
+<blockquote>
+<p>commit = y<br>注意:这个方式不能处理包含LOB和LONG类型的表,对于这样的table,如果使用commit = y,每插入一行,就会执行一次提交.</p>
+</blockquote>
+</li>
+<li><p>07.imp:使用NOLOGGING方式减小重做日志大小</p>
+<blockquote>
+<p>在导入时指定参数indexes=n,只导入数据而忽略index,在导完数据后在通过脚本创建index,指定NOLOGGING选项</p>
+</blockquote>
+</li>
+</ul>
+<h2 id="9-exp-imp-常见问题及解决方法"><a href="#9-exp-imp-常见问题及解决方法" class="headerlink" title="9.exp / imp 常见问题及解决方法"></a>9.exp / imp 常见问题及解决方法</h2><h3 id="9-1-关于imp-exp版本的问题"><a href="#9-1-关于imp-exp版本的问题" class="headerlink" title="9.1 关于imp/exp版本的问题"></a>9.1 关于imp/exp版本的问题</h3><blockquote>
+<p>一般来说，从低版本导入到高版本问题不大，麻烦的是将高版本的数据导入到低版本中。</p>
+<ul>
+<li>可以跨版本的使用EXP/IMP，但必须正确地使用EXP和IMP的版本（官方可查）：<pre class="line-numbers language-sql"><code class="language-sql"><span class="token number">1</span>、使用IMP的版本匹配数据库的版本，如：要导入到<span class="token number">11.2</span>中，使用<span class="token number">11.2</span>的IMP工具。
+<span class="token number">2</span>、使用EXP的版本匹配两个数据库中最低的版本，如：从<span class="token number">11.2</span>往<span class="token number">10.2</span>中导入，则使用<span class="token number">10.2</span>版本的EXP工具。
+<span class="token number">3</span>、高版本的Export导出来的转储文件，低版本的<span class="token keyword">Import</span>读不了；低版本的Export导出来的转储文件，高版本的<span class="token keyword">Import</span>可以进行读取。
+<span class="token number">4</span>、从Oracle低版本的Export数据可以<span class="token keyword">Import</span>到Oracle高版本中，但限于Oracle的相邻版本，两个不相邻版本间进行转换应借助中间版本。
+<span class="token number">5</span>、exp<span class="token operator">/</span>imp可以做到在不同版本Oracle、不同数据库上的迁移。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+</blockquote>
+<h3 id="9-2-数据库对象已经存在"><a href="#9-2-数据库对象已经存在" class="headerlink" title="9.2 数据库对象已经存在"></a>9.2 数据库对象已经存在</h3><blockquote>
+<p>&emsp;&emsp;一般情况, 导入数据前应该彻底删除目标数据下的表, 序列, 函数/过程,触发器等; 数据库对象已经存在, 按缺省的imp参数, 则会导入失败如果用了参数ignore=y, 会把exp文件内的数据内容导入如果表有唯一关键字的约束条件, 不合条件将不被导入如果表没有唯一关键字的约束条件, 将引起记录重复</p>
+</blockquote>
+<h3 id="9-3-数据库对象有主外键约束"><a href="#9-3-数据库对象有主外键约束" class="headerlink" title="9.3 数据库对象有主外键约束"></a>9.3 数据库对象有主外键约束</h3><blockquote>
+<p>不符合主外键约束时, 数据会导入失败,<br>解决办法:<br>先导入主表, 再导入依存表<br>disable目标导入对象的主外键约束, 导入数据后, 再enable它们</p>
+</blockquote>
+<h3 id="9-4-权限不够"><a href="#9-4-权限不够" class="headerlink" title="9.4 权限不够"></a>9.4 权限不够</h3><blockquote>
+<p>如果要把A用户的数据导入B用户下, A用户需要有imp_full_database权限</p>
+</blockquote>
+<h3 id="9-5-导入大表存储分配失败"><a href="#9-5-导入大表存储分配失败" class="headerlink" title="9.5 导入大表存储分配失败"></a>9.5 导入大表存储分配失败</h3><blockquote>
+<p>&emsp;&emsp;默认的EXP时, compress = y, 也就是把所有的数据压缩在一个数据块上.<br>导入时, 如果不存在连续一个大数据块, 则会导入失败. 导出大表时, 记得compress= n, 则不会引起这种错误.</p>
+</blockquote>
+<h3 id="9-6-imp和exp使用的字符集不同"><a href="#9-6-imp和exp使用的字符集不同" class="headerlink" title="9.6 imp和exp使用的字符集不同"></a>9.6 imp和exp使用的字符集不同</h3><blockquote>
+<p>&emsp;&emsp;如果字符集不同, 导入会失败, 可以改变unix环境变量或者NT注册表里NLS_LANG相关信息. 导入完成后再改回来.</p>
+</blockquote>
+<h3 id="9-7-imp和exp版本不能往上兼容"><a href="#9-7-imp和exp版本不能往上兼容" class="headerlink" title="9.7 imp和exp版本不能往上兼容"></a>9.7 imp和exp版本不能往上兼容</h3><blockquote>
+<p>可以从低版本导入高版本，但不能从高版本导入到低版本。<br>如果遇到迁移因版本不同的问题，可以用低版本的export 导出，到导入到低版本。</p>
+</blockquote>
+<h3 id="9-8-导出统计信息的问题。"><a href="#9-8-导出统计信息的问题。" class="headerlink" title="9.8 导出统计信息的问题。"></a>9.8 导出统计信息的问题。</h3><blockquote>
+<p>&emsp;&emsp;如果导出统计信息,在只导出部分数据,或不导出数据时,导出统计信息会报错.另如果未导出统计信息,但导入时,需导入统计信息<br>,那此时,导入后,统计信息会被锁住,而无法更新统计信息.<br>&emsp;&emsp;此时,我们可使用包dbms_stats.unlock_schema_stats来解锁.最好的办法是,在exp,imp时,加入参数statistics=none,不exp,imp统计信息,在导入完成后,在重新收集统计信息.</p>
+</blockquote>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">BEGIN</span>
+    DBMS_STATS<span class="token punctuation">.</span>gather_database_stats<span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+<span class="token operator">/</span>
+
+<span class="token keyword">BEGIN</span>
+    DBMS_STATS<span class="token punctuation">.</span>gather_schema_stats <span class="token punctuation">(</span><span class="token string">'ITPUX02'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+<span class="token operator">/</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/oracle/oracle-shu-ju-ku-luo-ji-bei-fen-hui-fu-qian-yi-zhi-exp-yu-imp/">https://gin.sh/oracle/oracle-shu-ju-ku-luo-ji-bei-fen-hui-fu-qian-yi-zhi-exp-yu-imp/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Oracle/">
+                                    <span class="chip bg-color">Oracle</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%A4%87%E4%BB%BD%E5%AE%B9%E7%81%BE/">
+                                    <span class="chip bg-color">备份容灾</span>
+                                </a>
+                            
+                                <a href="/tags/Exp/">
+                                    <span class="chip bg-color">Exp</span>
+                                </a>
+                            
+                                <a href="/tags/Imp/">
+                                    <span class="chip bg-color">Imp</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/oracle/oracle-shu-ju-ku-luo-ji-bei-fen-hui-fu-qian-yi-zhi-exp-yu-imp/';
+        this.page.identifier = '/oracle/oracle-shu-ju-ku-luo-ji-bei-fen-hui-fu-qian-yi-zhi-exp-yu-imp/';
+        this.page.title = 'Oracle数据库逻辑备份恢复迁移之exp与imp';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/oracle/oracle-zhi-ddl-he-dui-xiang-guan-li/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/18.jpg" class="responsive-img" alt="Oracle之DDL和对象管理">
+                        
+                        <span class="card-title">Oracle之DDL和对象管理</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-10-02
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Oracle/" class="post-category">
+                                    Oracle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle/">
+                        <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                    <a href="/tags/SQL/">
+                        <span class="chip bg-color">SQL</span>
+                    </a>
+                    
+                    <a href="/tags/DDL/">
+                        <span class="chip bg-color">DDL</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/oracle/oracle-shu-ju-ku-luo-ji-bei-fen-hui-fu-qian-yi-zhi-expdp-yu-impdp/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/16.jpg" class="responsive-img" alt="Oracle数据库逻辑备份恢复迁移之expdp与impdp">
+                        
+                        <span class="card-title">Oracle数据库逻辑备份恢复迁移之expdp与impdp</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-10-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Oracle/" class="post-category">
+                                    Oracle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle/">
+                        <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%87%E4%BB%BD%E5%AE%B9%E7%81%BE/">
+                        <span class="chip bg-color">备份容灾</span>
+                    </a>
+                    
+                    <a href="/tags/Expdp/">
+                        <span class="chip bg-color">Expdp</span>
+                    </a>
+                    
+                    <a href="/tags/Impdp/">
+                        <span class="chip bg-color">Impdp</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

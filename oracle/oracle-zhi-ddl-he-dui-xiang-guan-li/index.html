@@ -1,0 +1,1870 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Oracle之DDL和对象管理, Gin Bar">
+    <meta name="description" content="这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Oracle之DDL和对象管理 | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/medias/featureimages/18.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Oracle之DDL和对象管理</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Oracle/">
+                                <span class="chip bg-color">Oracle</span>
+                            </a>
+                        
+                            <a href="/tags/SQL/">
+                                <span class="chip bg-color">SQL</span>
+                            </a>
+                        
+                            <a href="/tags/DDL/">
+                                <span class="chip bg-color">DDL</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Oracle/" class="post-category">
+                                Oracle
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2018-10-02
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    23 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="SQL语言之DDL和对象管理"><a href="#SQL语言之DDL和对象管理" class="headerlink" title="SQL语言之DDL和对象管理"></a>SQL语言之DDL和对象管理</h1><p><a href="https://docs.oracle.com/cd/E11882_01/index.htm" target="_blank" rel="noopener">Oracle 11G R2 官方文档</a></p>
+<h2 id="1-介绍用户模拟下可以访问的模式对象"><a href="#1-介绍用户模拟下可以访问的模式对象" class="headerlink" title="1 介绍用户模拟下可以访问的模式对象"></a>1 介绍用户模拟下可以访问的模式对象</h2><pre class="line-numbers language-sql"><code class="language-sql">  <span class="token keyword">SELECT</span> object_type<span class="token punctuation">,</span> <span class="token function">COUNT</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
+    <span class="token keyword">FROM</span> user_objects
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> object_type<span class="token punctuation">;</span>
+
+  <span class="token keyword">SELECT</span> object_type<span class="token punctuation">,</span> <span class="token function">COUNT</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span>
+    <span class="token keyword">FROM</span> all_objects
+<span class="token keyword">GROUP</span> <span class="token keyword">BY</span> object_type<span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> <span class="token keyword">DISTINCT</span> owner
+  <span class="token keyword">FROM</span> all_objects
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="2-研究模式中的数据类型"><a href="#2-研究模式中的数据类型" class="headerlink" title="2 研究模式中的数据类型"></a>2 研究模式中的数据类型</h2><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">-- 1.DESC</span>
+<span class="token comment" spellcheck="true">-- 2.SQL</span>
+<span class="token keyword">SELECT</span> column_name<span class="token punctuation">,</span> data_type
+  <span class="token keyword">FROM</span> user_tab_columns
+ <span class="token keyword">WHERE</span> table_name <span class="token operator">=</span> <span class="token string">'EMPLOYEES'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> <span class="token keyword">DISTINCT</span> data_type
+  <span class="token keyword">FROM</span> user_tab_columns
+ <span class="token keyword">WHERE</span> table_name <span class="token operator">=</span> <span class="token string">'EMPLOYEES'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="3-表的创建与管理"><a href="#3-表的创建与管理" class="headerlink" title="3 表的创建与管理"></a>3 表的创建与管理</h2><h3 id="3-1-表的创建"><a href="#3-1-表的创建" class="headerlink" title="3.1 表的创建"></a>3.1 表的创建</h3><ul>
+<li>语法</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">Create</span> <span class="token keyword">table</span> <span class="token punctuation">[</span><span class="token keyword">schema</span><span class="token punctuation">,</span><span class="token punctuation">]</span> table_name<span class="token punctuation">(</span>
+column_name data_type <span class="token punctuation">[</span><span class="token keyword">default</span> express<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token keyword">constraint</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token punctuation">,</span>column_name data_type <span class="token punctuation">[</span><span class="token keyword">default</span> express<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token keyword">constraint</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token punctuation">,</span>column_name data_type <span class="token punctuation">[</span><span class="token keyword">default</span> express<span class="token punctuation">]</span> <span class="token punctuation">[</span><span class="token keyword">constraint</span><span class="token punctuation">]</span><span class="token punctuation">]</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">--1.表的创建与结构变更</span>
+<span class="token comment" spellcheck="true">--01.工具</span>
+<span class="token comment" spellcheck="true">--A：创建表</span>
+<span class="token comment" spellcheck="true">--B：写入数据</span>
+<span class="token comment" spellcheck="true">--C：更改结构</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>SQL 语法</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--创建sql02,sql03,sql04</span>
+ <span class="token comment" spellcheck="true">--创建sql02,sql03,sql04</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> SQL02
+<span class="token punctuation">(</span>
+    sql02_id        NUMBER <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql02_id2       NUMBER <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql02_date      <span class="token keyword">DATE</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql02_status    VARCHAR2 <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql02_number NUMBER <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> SQL03
+<span class="token punctuation">(</span>
+    sql03_id1    NUMBER <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql03_id2    NUMBER <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql03_id3    NUMBER <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> sql03
+    <span class="token keyword">MODIFY</span> <span class="token punctuation">(</span>sql03_id3 VARCHAR2 <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> SQL04
+<span class="token punctuation">(</span>
+    sql04_id        NUMBER <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql04_desc      VARCHAR2 <span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql04_status    VARCHAR2 <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql04_price     NUMBER <span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql04_date      <span class="token keyword">DATE</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    sql04_count     NUMBER <span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-2-表的重命名"><a href="#3-2-表的重命名" class="headerlink" title="3.2 表的重命名"></a>3.2 表的重命名</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">RENAME</span> sql044 <span class="token keyword">TO</span> sql04<span class="token punctuation">;</span>
+
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> SQL04
+    <span class="token keyword">MODIFY</span> sql04_count NUMBER <span class="token punctuation">(</span><span class="token number">18</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> SQL04
+    <span class="token keyword">RENAME</span> <span class="token keyword">COLUMN</span> sql04_count <span class="token keyword">TO</span> SQL04_COUNT2<span class="token punctuation">;</span>
+
+<span class="token keyword">ALTER</span> <span class="token keyword">TABLE</span> SQL04
+    <span class="token keyword">RENAME</span> <span class="token keyword">COLUMN</span> sql04_count02 <span class="token keyword">TO</span> SQL04_COUNT<span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> tab 
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> user_tables
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-3-表的复制"><a href="#3-3-表的复制" class="headerlink" title="3.3 表的复制"></a>3.3 表的复制</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> itpux05
+<span class="token keyword">AS</span>
+    <span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> sql04<span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> sql01<span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> itpux06
+<span class="token keyword">AS</span>
+    <span class="token keyword">SELECT</span> <span class="token operator">*</span>
+      <span class="token keyword">FROM</span> sql01
+     <span class="token keyword">WHERE</span> sql01_id <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">;</span>
+
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> itpux06
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-4-表的截断"><a href="#3-4-表的截断" class="headerlink" title="3.4 表的截断"></a>3.4 表的截断</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--100g delete 2h,truncate 2 分钟。</span>
+<span class="token keyword">TRUNCATE</span> <span class="token keyword">TABLE</span> itpux07<span class="token punctuation">;</span>
+<span class="token keyword">SELECT</span> <span class="token operator">*</span> <span class="token keyword">FROM</span> itpux07
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-4-表的删除"><a href="#3-4-表的删除" class="headerlink" title="3.4 表的删除"></a>3.4 表的删除</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> itpux06<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="3-4-删除表的定义"><a href="#3-4-删除表的定义" class="headerlink" title="3.4 .删除表的定义"></a>3.4 .删除表的定义</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> table_name <span class="token keyword">CASCADE</span> CONSTRAINTS<span class="token punctuation">;</span>              <span class="token comment" spellcheck="true">--相关的视图，约束，等相关所有的关系对象。</span>
+<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> table_name <span class="token keyword">PURGE</span><span class="token punctuation">;</span>                            <span class="token comment" spellcheck="true">--释放资源，不经过回收站。</span>
+<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> itpux05 <span class="token keyword">CASCADE</span> CONSTRAINTS<span class="token punctuation">;</span>
+<span class="token keyword">DROP</span> <span class="token keyword">TABLE</span> itpux05 <span class="token keyword">PURGE</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="4-簇的概念与介绍"><a href="#4-簇的概念与介绍" class="headerlink" title="4 簇的概念与介绍"></a>4 簇的概念与介绍</h2><blockquote>
+<p>簇(cluster)其实就是一组表，由一组共享相同数据块的多个表组成，将经常一起使用的表<br>组合在一起成簇可以提高处理效率；在一个簇中的表就叫做簇表。</p>
+</blockquote>
+<ul>
+<li>不宜用聚簇表的情况</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token number">1</span><span class="token punctuation">)</span>如果预料到聚簇中的表会大量修改<span class="token punctuation">,</span>聚簇表会对DML 的性能产生负面影响
+<span class="token number">2</span><span class="token punctuation">)</span>非常不适合对单表的全表扫描<span class="token punctuation">,</span>因为只能引起对其它表的全表扫描
+<span class="token number">3</span><span class="token punctuation">)</span>频繁对表进行<span class="token keyword">TRUNCATE</span> 和加载<span class="token punctuation">,</span>因为聚簇中的表是不能<span class="token keyword">TRUNCATE</span> 的，只能
+<span class="token keyword">TRUNCATE</span> 簇
+<span class="token number">4</span><span class="token punctuation">)</span>如果表只是偶尔被连接或者它们的公共列经常被修改，则不要聚簇表
+<span class="token number">5</span><span class="token punctuation">)</span>如果经常从所有有相同聚簇键值的表查询出的结果数据超过一个或两个Oracle 块，
+则不要聚簇表
+<span class="token number">6</span><span class="token punctuation">)</span>如果空间不够，并且不能为将要插入的新记录分配额外的空间，那么不要使用聚簇
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="5-临时表的创建与使用"><a href="#5-临时表的创建与使用" class="headerlink" title="5 临时表的创建与使用"></a>5 临时表的创建与使用</h2><h3 id="5-1-会话级临时表"><a href="#5-1-会话级临时表" class="headerlink" title="5.1 会话级临时表"></a>5.1 会话级临时表</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--会话结束自动清空数据</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">GLOBAL</span> <span class="token keyword">TEMPORARY</span> <span class="token keyword">TABLE</span> table_name
+<span class="token punctuation">(</span>
+    col1 type1<span class="token punctuation">,</span>
+    col2 type2<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">on</span> <span class="token keyword">commit</span> preserve <span class="token keyword">rows</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="5-2-事务级临时表"><a href="#5-2-事务级临时表" class="headerlink" title="5.2 事务级临时表"></a>5.2 事务级临时表</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--事务结束（commit,rollback） ，清除数据。</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">GLOBAL</span> <span class="token keyword">TEMPORARY</span> <span class="token keyword">TABLE</span> table_name
+<span class="token punctuation">(</span>
+    col1 type1<span class="token punctuation">,</span>
+    col2 type2<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span>
+<span class="token punctuation">)</span>
+<span class="token keyword">on</span> <span class="token keyword">commit</span> <span class="token keyword">delete</span> <span class="token keyword">rows</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="6-索引的创建与管理"><a href="#6-索引的创建与管理" class="headerlink" title="6 索引的创建与管理"></a>6 索引的创建与管理</h2><h2 id="6-1-索引分类"><a href="#6-1-索引分类" class="headerlink" title="6.1 索引分类"></a>6.1 索引分类</h2><ul>
+<li><p>逻辑分类</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token number">1</span><span class="token punctuation">.</span>单列或多列
+<span class="token number">2</span><span class="token punctuation">.</span>唯一索引和非唯一索引
+<span class="token number">3</span><span class="token punctuation">.</span>函数索引
+Doman
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>物理分类<br><code>`</code>sql<br>物理分类:<br>B-TREE<br>Bitmap</p>
+</li>
+</ul>
+<p>B<em>Tree 索引<br>B</em>Tree 索引是最常见的索引结构，默认建立的索引就是这种类型的索引。</p>
+<p>DML 语句：<br>Create index indexname on tablename(columnname[columnname…])<br>Bitmap 索引<br>位图索引主要用于决策支持系统或静态数据，不支持行级锁定</p>
+<pre><code>## 6.2 索引的日常管理
+* 基本语法
+```sql
+CREATE [UNIQUE] | [BITMAP] INDEX index_name --unique 表示唯一索引
+ON table_name([column1 [ASC|DESC],column2 --bitmap，创建位图索引
+[ASC|DESC],…] | [express])
+[TABLESPACE tablespace_name]
+[PCTFREE n1] --指定索引在数据块中空闲空间
+[STORAGE (INITIAL n2)]
+[NOLOGGING] --表示创建和重建索引时允许
+对表做DML 操作，默认情况下不应该使用
+[NOLINE]
+[NOSORT]; --表示创建索引时不进行排序，
+默认不适用，如果数据已经是按照该索引顺序排列的可以使用
+</code></pre><ul>
+<li>1.添加/创建索引<br><code>`</code>sql<br>–工具</li>
+</ul>
+<p>CREATE INDEX cust_name_i1<br>    ON SQL01 (sql01_name);       –单列索引</p>
+<p>CREATE INDEX cust_name_i1<br>    ON SQL01 (sql01_name)<br>    TABLESPACE ITPUX;            –单列<br>索引指定表空间<br>–命令</p>
+<p>CREATE INDEX cust_name_i2<br>    ON sql01 (sql01_name, sql01_status);    –组合索引</p>
+<p>CREATE BITMAP INDEX sql01_level_i3<br>    ON sql01 (sql01_level);      –位图索引</p>
+<pre><code>
+* 2.修改索引
+```sql
+--重命名索引
+
+ALTER INDEX cust_name_i1
+    RENAME TO idx1_sql01_name;
+
+--合并索引
+
+ALTER INDEX idx1_sql01_name
+    COALESCE;
+</code></pre><ul>
+<li>3.重建索引<br><code>`</code>sql<br>–重命名索引</li>
+</ul>
+<p>–删除原来的索引，重新建立索引。<br>DROP INDEX idx1_sql01_name;</p>
+<p>CREATE INDEX idx1_sql01_name<br>    ON SQL01 (sql01_name);</p>
+<p>–直接rebuild</p>
+<p>ALTER INDEX idx1_sql01_name<br>    REBUILD;                                    –会锁表。</p>
+<p>ALTER INDEX idx1_sql01_name<br>    REBUILD ONLINE;</p>
+<pre><code>
+* 4.删除索引
+```sql
+DROP INDEX idx1_sql01_name;
+</code></pre><ul>
+<li>5.查看索引<br><code>`</code>sql<br>–select * from user_indexes;</li>
+</ul>
+<p>SELECT *<br>  FROM dba_indexes<br> WHERE owner = ‘ITPUX’;</p>
+<p>SELECT *<br>  FROM dba_indexes<br> WHERE table_name = ‘SQL01’;</p>
+<p>–select <em> from all_indexes;<br>–select </em> from user_ind_columns;</p>
+<p>SELECT *<br>  FROM dba_ind_columns<br> WHERE index_owner = ‘ITPUX’ AND table_name = ‘SQL01’;</p>
+<p>–select * from all_ind_columns;</p>
+<p>SELECT index_name,<br>       column_name,<br>       index_type,<br>       uniqueness,<br>       tablespace_name<br>  FROM dba_indexes NATURAL JOIN dba_ind_columns<br> WHERE table_name = ‘SQL01’;</p>
+<pre><code>## 7 约束的创建与管理
+### 7.1  5种约束
+
+* 1.not null (非空约束)
+```sql
+--1.1 创建表的时候
+
+CREATE TABLE itpux01
+(
+    id    NUMBER NOT NULL PRIMARY KEY,
+    name VARCHAR2 (20)
+);
+
+--1.2 在已经创建的表加添加
+
+CREATE TABLE itpux02
+(
+    id NUMBER,
+    name VARCHAR2 (20)
+);
+
+ALTER TABLE itpux02
+    MODIFY id NOT NULL;
+
+--1.3 验证。
+
+INSERT INTO itpux02
+     VALUES (NULL, &#39;name&#39;);
+
+INSERT INTO itpux02
+     VALUES (1, &#39;name&#39;);
+
+SELECT * FROM itpux02;
+
+--1.4 删除
+
+ALTER TABLE itpux02
+    MODIFY id NULL;
+
+INSERT INTO itpux02
+     VALUES (NULL, &#39;name&#39;);
+
+SELECT * FROM itpux02;
+
+INSERT INTO itpux02
+     VALUES (2, &#39;name&#39;);
+</code></pre><ul>
+<li>2.primary key 约束<br><code>`</code>sql<br>DROP TABLE itpux01;<br>CREATE TABLE itpux01<br>(<br>  id    NUMBER NOT NULL PRIMARY KEY,<br>  name VARCHAR2 (20)<br>);<br>–1.2 在已经创建的表加添加<br>DROP TABLE itpux02;</li>
+</ul>
+<p>CREATE TABLE itpux02<br>(<br>    id NUMBER,<br>    name VARCHAR2 (20)<br>);</p>
+<p>ALTER TABLE itpux02<br>    ADD CONSTRAINT itpux02_id_con PRIMARY KEY (id); –建议命名<br>–alter table itpux02 drop constraint itpux02_id_con;</p>
+<p>ALTER TABLE itpux02<br>    ADD PRIMARY KEY (id);</p>
+<p>–1.3 删除</p>
+<p>ALTER TABLE itpux02<br>    DROP CONSTRAINT itpux02_id_con;</p>
+<p>ALTER TABLE itpux02<br>    DROP CONSTRAINT SYS_C0011169;</p>
+<pre><code>
+* 3.unique 约束
+```sql
+--3.1 创建表的时候
+
+CREATE TABLE itpux03
+(
+    id      NUMBER NOT NULL,
+    name    VARCHAR2 (20) UNIQUE
+);
+
+INSERT INTO itpux03
+     VALUES (1, &#39;name1&#39;);
+
+INSERT INTO itpux03
+     VALUES (2, &#39;name2&#39;);
+
+--3.2 删除
+
+ALTER TABLE itpux03
+    DROP UNIQUE (name);
+
+INSERT INTO itpux03
+     VALUES (3, &#39;name2&#39;);
+
+--3.3 后期添加
+
+ALTER TABLE itpux03
+    ADD UNIQUE (name);
+
+DELETE FROM itpux03
+      WHERE id = 3;
+
+ALTER TABLE itpux03
+    ADD UNIQUE (name);
+</code></pre><ul>
+<li>4.Check 约束<br><code>`</code>sql<br>–4.1 新建表添加约束</li>
+</ul>
+<p>CREATE TABLE itpux04<br>(<br>    id     NUMBER NOT NULL PRIMARY KEY,<br>    name VARCHAR2 (20),<br>    age    NUMBER CONSTRAINT itpux04_age_con CHECK (age &gt; 17)<br>);</p>
+<p>INSERT INTO itpux04<br>     VALUES (1, ‘mm’, 16);</p>
+<p>INSERT INTO itpux04<br>     VALUES (2, ‘mm’, 18);</p>
+<p>–4.2 删除</p>
+<p>ALTER TABLE itpux04<br>    DROP CONSTRAINT itpux04_age_con;</p>
+<p>–4.3 后期<br>alter table itpux04 add constraint itpux04_age_con check(age&gt;17);</p>
+<pre><code>
+* 5.Foreign key 约束
+```sql
+CREATE TABLE itpux051
+(
+    jobid    NUMBER NOT NULL PRIMARY KEY,
+    name1 VARCHAR2 (20),
+    age NUMBER (3)
+);
+
+CREATE TABLE itpux052
+(
+    no      NUMBER NOT NULL PRIMARY KEY,
+    dcname VARCHAR2 (20),
+    dcid    NUMBER REFERENCES itpux051 (jobid)
+);
+
+INSERT INTO itpux052
+     VALUES (1, &#39;dc1008&#39;, 20161218);                                                  --error
+
+INSERT INTO itpux051
+     VALUES (20161218, &#39;风哥&#39;, 31);
+
+INSERT INTO itpux052
+     VALUES (1, &#39;dc1008&#39;, 20161218);
+
+SELECT * FROM itpux051;
+
+SELECT * FROM itpux052;
+
+--删除
+
+ALTER TABLE itpux052
+    DROP CONSTRAINT SYS_C0011182;
+
+DROP TABLE itpux051;
+DROP TABLE itpux051 CASCADE CONSTRAINTS;
+--后期增加
+
+ALTER TABLE itpux052
+    ADD CONSTRAINT itpux052_dcid_con FOREIGN KEY (dcid)
+        REFERENCES itpux051 (jobid);
+</code></pre><h3 id="7-1-约束的管理"><a href="#7-1-约束的管理" class="headerlink" title="7.1  约束的管理"></a>7.1  约束的管理</h3><ul>
+<li>1.约束表级定义与列级定义<br><code>`</code>sql<br>–1.1 表级定义<br>CREATE TABLE itpux08<br>(<br>  id NUMBER (8),<br>  name VARCHAR2 (50),<br>  CONSTRAINT pk_itpux08_id PRIMARY KEY (id)<br>);</li>
+</ul>
+<p>–1.2 列级定义<br>CREATE TABLE itpux09<br>(<br>    id    NUMBER (8) CONSTRAINT pk_itpux09_id PRIMARY KEY,<br>    name VARCHAR2 (50)<br>);</p>
+<pre><code>
+* 2.约束的disable/enable,validate/novalidate 的区别
+```sql
+--disable 禁用
+--disable validate --关闭后，不能增删改
+--disable novalidate --关闭后，可以增删改
+--enable 启用
+--enable validate --启用后，进行所有约束，有的，新加的
+--enable novalidate --启用后，对新加入的约束，对旧的不约束
+--2.1 非主键的
+
+CREATE TABLE itpux06
+(
+    id     NUMBER NOT NULL PRIMARY KEY,
+    name VARCHAR2 (20),
+    age    NUMBER CONSTRAINT itpux06_age_con CHECK (age &gt; 17)
+);
+
+ALTER TABLE itpux06
+    DISABLE CONSTRAINT itpux06_age_con;   --novalidate
+
+INSERT INTO itpux06
+     VALUES (2, &#39;name2&#39;, 18);
+
+ALTER TABLE itpux06
+    ENABLE CONSTRAINT itpux06_age_con;     --validate
+
+ALTER TABLE itpux06
+    DISABLE VALIDATE CONSTRAINT itpux06_age_con;                                                                 --validate
+
+INSERT INTO itpux06
+     VALUES (3, &#39;name3&#39;, 18);              --error
+
+ALTER TABLE itpux06
+    ENABLE CONSTRAINT itpux06_age_con;     --validate
+
+INSERT INTO itpux06
+     VALUES (3, &#39;name3&#39;, 18);
+
+ALTER TABLE itpux06
+    DISABLE CONSTRAINT itpux06_age_con;    --novalidate
+
+INSERT INTO itpux06
+     VALUES (4, &#39;name4&#39;, 16);
+
+ALTER TABLE itpux06
+    ENABLE CONSTRAINT itpux06_age_con;     --errpr
+
+ALTER TABLE itpux06
+    ENABLE NOVALIDATE CONSTRAINT itpux06_age_con;
+
+--2.2 主键的
+
+CREATE TABLE itpux07
+(
+    id NUMBER,
+    name VARCHAR2 (20)
+);
+
+ALTER TABLE itpux07
+    ADD CONSTRAINT itpux07_id_con PRIMARY KEY (id);
+
+INSERT INTO itpux07
+     VALUES (1, &#39;name1&#39;);
+
+ALTER TABLE itpux07
+    DISABLE CONSTRAINT itpux07_id_con;    --novalidate
+
+INSERT INTO itpux07
+     VALUES (1, &#39;name2&#39;);
+
+SELECT * FROM itpux07;
+
+ALTER TABLE itpux07
+    ENABLE CONSTRAINT itpux07_id_con;    --error
+
+ALTER TABLE itpux07
+    ENABLE NOVALIDATE CONSTRAINT itpux07_id_con;                                                                 --error
+
+CREATE INDEX idx_itpux07_id
+    ON itpux07 (id);
+
+ALTER TABLE itpux07
+    ENABLE NOVALIDATE CONSTRAINT itpux07_id_con;                                                                 --ok
+
+SELECT * FROM itpux07;
+</code></pre><h3 id="7-3-显示约束的信息"><a href="#7-3-显示约束的信息" class="headerlink" title="7.3 显示约束的信息"></a>7.3 显示约束的信息</h3><ul>
+<li><p>1.约束的数据字典</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> all_constraints<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_constraints<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> user_constraints<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token keyword">distinct</span> constraint_type <span class="token keyword">from</span> user_constraints <span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">-- R references : column</span>
+<span class="token comment" spellcheck="true">-- U unique : column</span>
+<span class="token comment" spellcheck="true">-- P primary key : column</span>
+<span class="token comment" spellcheck="true">-- C check : column</span>
+<span class="token comment" spellcheck="true">-- O read only on a view : object</span>
+<span class="token comment" spellcheck="true">-- V Check on a view : object</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> all_cons_columns<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_cons_columns<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> user_cons_columns<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_constraints <span class="token keyword">where</span> table_name<span class="token operator">=</span><span class="token string">'ITPUX08'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>2.约束的可延迟属性<br><code>`</code>sql<br>select * from dba_constraints where table_name=’ITPUX08’;</p>
+</li>
+</ul>
+<p>–DEFERRABLE(延迟条件): NOT DEFERRABLE(默认，立即验证), DEFERRABLE（提<br>交时验证）<br>–DEFERRED ： IMMEDIATE(默认，立即验证)，DEFERRED（提交时才验证）,<br>–set constraint 名字immediate;<br>–用途：物化视图，级联更新。</p>
+<p>create table itpux10(<br>id number not null primary key DEFERRABLE initially IMMEDIATE,<br>name varchar2(20),<br>age number constraint itpux10_age_con check(age&gt;17) DEFERRABLE<br>initially DEFERRED);</p>
+<p>select * from dba_constraints where table_name=’ITPUX10’;</p>
+<pre><code>## 8 视图的创建与管理
+### 8.1 语法
+```sql
+CREATE [OR REPLACE] [FORCE|NOFORCE] VIEW view_name
+[(alias[, alias]...)]
+AS subquery
+[WITH CHECK OPTION [CONSTRAINT constraint]]
+[WITH READ ONLY]
+OR REPLACE ：若所创建的试图已经存在，ORACLE 自动重建该视图；
+FORCE ：不管基表是否存在ORACLE 都会自动创建该视图；
+NOFORCE ：只有基表都存在ORACLE 才会创建该视图：
+alias ：为视图产生的列定义的别名；
+subquery ：一条完整的SELECT 语句，可以在该语句中定义别名；
+WITH CHECK OPTION ：插入或修改的数据行必须满足视图定义的约束；
+WITH READ ONLY ：该视图上不能进行任何DML 操作。
+-- O read only on a view : object
+-- V Check OPTION on a view : object
+</code></pre><h2 id="9-同义词创建和使用"><a href="#9-同义词创建和使用" class="headerlink" title="9 同义词创建和使用"></a>9 同义词创建和使用</h2><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--1.创建同义词</span>
+<span class="token keyword">create</span> synonym yg_s <span class="token keyword">for</span> yg_v<span class="token punctuation">;</span>
+<span class="token keyword">create</span> synonym bm_s <span class="token keyword">for</span> bm_v<span class="token punctuation">;</span>
+<span class="token keyword">create</span> synonym bm_sum_s <span class="token keyword">for</span> bm_sum_v<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> yg_s<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> bm_s<span class="token punctuation">;</span>
+<span class="token keyword">drop</span> <span class="token keyword">view</span> yg_v<span class="token punctuation">;</span>
+<span class="token keyword">drop</span> <span class="token keyword">view</span> bm_v<span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">view</span> bm_sum_v compile<span class="token punctuation">;</span>
+<span class="token keyword">drop</span> <span class="token keyword">view</span> bm_sum_v<span class="token punctuation">;</span>
+<span class="token keyword">alter</span> synonym yg_s compile<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">--2.删除同义词</span>
+<span class="token keyword">drop</span> synonym yg_s<span class="token punctuation">;</span>
+<span class="token keyword">drop</span> synonym bm_s<span class="token punctuation">;</span>
+<span class="token keyword">drop</span> synonym bm_sum_s<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">--3.查看同义词</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_synonyms <span class="token keyword">where</span> owner<span class="token operator">=</span><span class="token string">'ITPUX'</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> all_synonyms
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> user_synonyms
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> scott<span class="token punctuation">.</span>emp<span class="token punctuation">;</span>
+<span class="token keyword">create</span> synonym emp_s <span class="token keyword">for</span> scott<span class="token punctuation">.</span>emp<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp_s<span class="token punctuation">;</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> emp <span class="token keyword">as</span> <span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> scott<span class="token punctuation">.</span>emp<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> emp<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">--4.权限</span>
+<span class="token keyword">grant</span> <span class="token keyword">create</span> synonym <span class="token keyword">to</span> itpux01<span class="token punctuation">;</span>
+<span class="token keyword">grant</span> <span class="token keyword">create</span> <span class="token keyword">any</span> synonym <span class="token keyword">to</span> itpux01<span class="token punctuation">;</span>
+<span class="token keyword">grant</span> <span class="token keyword">create</span> <span class="token keyword">public</span> synonym <span class="token keyword">to</span> itpux01<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="10-序列创建和使用"><a href="#10-序列创建和使用" class="headerlink" title="10 序列创建和使用."></a>10 序列创建和使用.</h2><h3 id="10-1-语法"><a href="#10-1-语法" class="headerlink" title="10.1 语法"></a>10.1 语法</h3><pre class="line-numbers language-sql"><code class="language-sql">创建序列：
+<span class="token number">1</span>、要有创建序列的权限<span class="token keyword">create</span> sequence 或<span class="token keyword">create</span> <span class="token keyword">any</span> sequence
+<span class="token number">2</span>、创建序列的语法
+<span class="token keyword">CREATE</span> SEQUENCE sequence <span class="token comment" spellcheck="true">//创建序列名称</span>
+        <span class="token punctuation">[</span>INCREMENT <span class="token keyword">BY</span> n<span class="token punctuation">]</span> <span class="token comment" spellcheck="true">//递增的序列值是n 如果n 是正数就递增,如果是负数</span>
+        就递减默认是<span class="token number">1</span>
+        <span class="token punctuation">[</span><span class="token keyword">START</span> <span class="token keyword">WITH</span> n<span class="token punctuation">]</span> <span class="token comment" spellcheck="true">//开始的值,递增默认是minvalue 递减是maxvalue</span>
+        <span class="token punctuation">[</span>{MAXVALUE n <span class="token operator">|</span> NOMAXVALUE}<span class="token punctuation">]</span> <span class="token comment" spellcheck="true">//最大值</span>
+        <span class="token punctuation">[</span>{MINVALUE n <span class="token operator">|</span> NOMINVALUE}<span class="token punctuation">]</span> <span class="token comment" spellcheck="true">//最小值</span>
+        <span class="token punctuation">[</span>{CYCLE <span class="token operator">|</span> <span class="token keyword">NOCYCLE</span>}<span class="token punctuation">]</span> <span class="token comment" spellcheck="true">//循环/不循环</span>
+        <span class="token punctuation">[</span>{CACHE n <span class="token operator">|</span> NOCACHE}<span class="token punctuation">]</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true">//分配并存入到内存中</span>
+    NEXTVAL 返回序列中下一个有效的值，任何用户都可以引用
+    CURRVAL 中存放序列的当前值
+    NEXTVAL 应在CURRVAL 之前指定，二者应同时有效
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="10-2-日常使用"><a href="#10-2-日常使用" class="headerlink" title="10.2 日常使用"></a>10.2 日常使用</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--创建普通序列</span>
+<span class="token keyword">create</span> sequence seql <span class="token keyword">start</span> <span class="token keyword">with</span> <span class="token number">10</span> nocache maxvalue <span class="token number">15</span> cycle<span class="token punctuation">;</span>
+<span class="token keyword">create</span> sequence seql1
+<span class="token comment" spellcheck="true">--创建一个带主键的表</span>
+<span class="token keyword">drop</span> <span class="token keyword">table</span> seqtest
+<span class="token keyword">create</span> <span class="token keyword">table</span> seqtest<span class="token punctuation">(</span>
+    <span class="token number">c1</span> number<span class="token punctuation">,</span>
+    <span class="token number">c2</span> varchar2<span class="token punctuation">(</span><span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">table</span> seqtest <span class="token keyword">add</span> <span class="token keyword">constraint</span> seqtest_pk <span class="token keyword">primary</span> <span class="token keyword">key</span> <span class="token punctuation">(</span><span class="token number">c1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">create</span> sequence seq_test_pk_s
+    minvalue <span class="token number">1</span>
+    maxvalue <span class="token number">9999999999999999</span>
+    <span class="token keyword">start</span> <span class="token keyword">with</span> <span class="token number">1</span>
+    increment <span class="token keyword">by</span> <span class="token number">1</span>
+    cache <span class="token number">20</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--间断</span>
+A:
+<span class="token keyword">insert</span> <span class="token keyword">into</span> seqtest <span class="token keyword">values</span> <span class="token punctuation">(</span>seq_test_pk_s<span class="token punctuation">.</span>nextval<span class="token punctuation">,</span><span class="token string">'11'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">commit</span><span class="token punctuation">;</span>
+
+B:
+<span class="token keyword">insert</span> <span class="token keyword">into</span> seqtest <span class="token keyword">values</span> <span class="token punctuation">(</span>seq_test_pk_s<span class="token punctuation">.</span>nextval<span class="token punctuation">,</span><span class="token string">'22'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+A:
+<span class="token keyword">insert</span> <span class="token keyword">into</span> seqtest <span class="token keyword">values</span> <span class="token punctuation">(</span>seq_test_pk_s<span class="token punctuation">.</span>nextval<span class="token punctuation">,</span><span class="token string">'33'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">commit</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> seqtest<span class="token punctuation">;</span>
+B:
+<span class="token keyword">rollback</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> seqtest<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--删除</span>
+<span class="token keyword">drop</span> <span class="token keyword">table</span> seqtest
+<span class="token keyword">drop</span> sequence SEQ_TEST_PK_S
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="11-存储过程创建和使用"><a href="#11-存储过程创建和使用" class="headerlink" title="11 存储过程创建和使用"></a>11 存储过程创建和使用</h2><h3 id="11-1-语法"><a href="#11-1-语法" class="headerlink" title="11.1 语法"></a>11.1 语法</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token punctuation">[</span><span class="token operator">OR</span> REPLACE<span class="token punctuation">]</span> <span class="token keyword">PROCEDURE</span> procedure_name
+<span class="token punctuation">[</span><span class="token punctuation">(</span>parameter1<span class="token punctuation">[</span>model<span class="token punctuation">]</span> datatype1<span class="token punctuation">,</span> parameter2 <span class="token punctuation">[</span>model<span class="token punctuation">]</span> datatype2<span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token operator">IS</span><span class="token punctuation">[</span><span class="token keyword">AS</span><span class="token punctuation">]</span>
+<span class="token keyword">BEGIN</span>
+PL<span class="token operator">/</span>SQL<span class="token punctuation">;</span>
+<span class="token keyword">END</span> <span class="token punctuation">[</span>procedure_name<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="11-2日常使用"><a href="#11-2日常使用" class="headerlink" title="11.2日常使用"></a>11.2日常使用</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--1.编写存储过程</span>
+<span class="token comment" spellcheck="true">--显示当前系统时间</span>
+<span class="token comment" spellcheck="true">--通过pl/sql dev 菜单</span>
+<span class="token comment" spellcheck="true">--手写</span>
+<span class="token keyword">create</span> <span class="token operator">or</span> replace <span class="token keyword">procedure</span> print_sysdate
+<span class="token operator">is</span>
+<span class="token keyword">begin</span>
+    dbms_output<span class="token punctuation">.</span>put_line<span class="token punctuation">(</span>sysdate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">end</span> print_sysdate<span class="token punctuation">;</span>
+<span class="token operator">/</span>
+<span class="token comment" spellcheck="true">--2.存储过程的调用</span>
+<span class="token comment" spellcheck="true">--sqlplus,pl/sql 代码块</span>
+<span class="token keyword">exec</span> print_sysdate<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--set serverout on;</span>
+<span class="token comment" spellcheck="true">--exec print_sysdate();</span>
+
+<span class="token comment" spellcheck="true">--3.存储过程的删除</span>
+<span class="token keyword">drop</span> <span class="token keyword">procedure</span> test1<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--4.编译存储过程</span>
+<span class="token comment" spellcheck="true">--界面</span>
+<span class="token comment" spellcheck="true">--命令</span>
+<span class="token keyword">alter</span> <span class="token keyword">procedure</span> print_sysdate compile<span class="token punctuation">;</span>
+
+
+<span class="token comment" spellcheck="true">--5.查询存储过程</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_objects <span class="token keyword">where</span> object_type<span class="token operator">=</span><span class="token string">'PROCEDURE'</span> <span class="token operator">and</span>
+owner<span class="token operator">=</span><span class="token string">'ITPUX'</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> all_objects <span class="token keyword">where</span> object_type<span class="token operator">=</span><span class="token string">'PROCEDURE'</span> <span class="token operator">and</span> owner<span class="token operator">=</span><span class="token string">'ITPUX'</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> user_objects <span class="token keyword">where</span> object_type<span class="token operator">=</span><span class="token string">'PROCEDURE'</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">--6.查看存储过程的内容</span>
+<span class="token comment" spellcheck="true">--界面</span>
+<span class="token comment" spellcheck="true">--命令</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> user_source <span class="token keyword">where</span> name<span class="token operator">=</span><span class="token string">'PRINT_SYSDATE'</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_source <span class="token keyword">where</span> owner<span class="token operator">=</span><span class="token string">'ITPUX'</span> <span class="token operator">and</span> name<span class="token operator">=</span><span class="token string">'PRINT_SYSDATE'</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> all_source<span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token keyword">text</span> <span class="token keyword">from</span> user_source <span class="token keyword">where</span> name<span class="token operator">=</span><span class="token string">'PRINT_SYSDATE'</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> dba_source <span class="token keyword">where</span> <span class="token keyword">type</span><span class="token operator">=</span><span class="token string">'PROCEDURE'</span> <span class="token operator">and</span> <span class="token keyword">text</span> <span class="token operator">like</span> <span class="token string">'%sysdate%'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="11-3-存储过程中事务处理"><a href="#11-3-存储过程中事务处理" class="headerlink" title="11.3 存储过程中事务处理"></a>11.3 存储过程中事务处理</h3><ul>
+<li>存储过程中事务处理<br><code>`</code>sql<br>–案例1 显示YG 表中员工人数的存储过程。<br>create or replace procedure yg_count<br>as<br>v_total number(10);<br>begin<br>  select count(*) into v_total from yg;<br>  dbms_output.put_line(‘员工总人数为：’||v_total);<br>end;<br>set serverout on;<br>execute yg_count;<br>–员工总人数为：107</li>
+</ul>
+<p>–案例2 存储过程中的增删改DML 事务操作。<br>–准备<br>create table itpux_st(id int,name varchar2(10));<br>insert into itpux_st values(1,’itpux01’);<br>insert into itpux_st values(2,’itpux02’);<br>commit;</p>
+<p>–2.1 增加<br>–创建过程<br>create or replace procedure pro_insert<br>(v_id int,v_name varchar2)<br>is<br>begin<br>    insert into itpux_st values(v_id,v_name);<br>commit;<br>end;<br>–执行<br>begin<br>    pro_insert(3,’itpux03’);<br>end;<br>–检查<br>select * from itpux_st;</p>
+<p>–2.2 删除<br>–创建过程<br>create or replace procedure pro_delete<br>(v_id int)<br>is<br>begin<br>    delete from itpux_st where id=v_id;<br>commit;<br>end;<br>–执行<br>begin<br>pro_delete(3);<br>end;<br>–检查<br>select * from itpux_st;</p>
+<p>–2.3 更新/更改<br>–创建过程<br>create or replace procedure pro_update<br>(v_id int,v_name varchar2)<br>is<br>begin<br>    update itpux_st set name=v_name where id=v_id;<br>commit;<br>end;<br>–执行<br>begin<br>    pro_update(2,’itpux02222’);<br>end;<br>–检查<br>select * from itpux_st;</p>
+<p>–2.4 查询<br>–创建过程<br>create or replace procedure pro_select<br>(v_id int) –定义输入变量<br>is<br>    v_name varchar2(10);–定义输出变量<br>begin<br>    select name into v_name from itpux_st where id=v_id;–执行查询<br>    dbms_output.put_line(‘学生姓名为：’||v_name);–输出结果<br>end;<br>–执行<br>–set serverout on;<br>begin<br>pro_select(2);<br>end;</p>
+<pre><code>
+## 12 触发器创建和使用
+* 1.触发器的语法
+```sql
+CREATE [OR REPLACE] TIGGER 触发器名触发时间触发事件
+    ON 表名/视图名
+    [FOR EACH ROW] //加上FOR EACH ROW 即为行级触发器，不加时为语句
+    级触发器
+    BEGIN
+    pl/sql 语句
+    END
+</code></pre><h3 id="12-1-DML-触发器及案例"><a href="#12-1-DML-触发器及案例" class="headerlink" title="12.1 DML 触发器及案例"></a>12.1 DML 触发器及案例</h3><ul>
+<li><p>语法</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token punctuation">[</span><span class="token operator">or</span> replace<span class="token punctuation">]</span> <span class="token keyword">trigger</span> 触发器名称
+  {before<span class="token operator">|</span><span class="token keyword">after</span>}
+  {<span class="token keyword">insert</span><span class="token operator">|</span><span class="token keyword">delete</span><span class="token operator">|</span><span class="token keyword">update</span><span class="token punctuation">[</span><span class="token keyword">of</span> <span class="token keyword">column</span> <span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token keyword">column</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">]</span>}
+  <span class="token operator">or</span> {<span class="token keyword">insert</span><span class="token operator">|</span><span class="token keyword">delete</span><span class="token operator">|</span><span class="token keyword">update</span><span class="token punctuation">[</span><span class="token keyword">of</span> <span class="token keyword">column</span> <span class="token punctuation">[</span><span class="token punctuation">,</span><span class="token keyword">column</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">]</span><span class="token punctuation">]</span>}
+  <span class="token keyword">on</span> <span class="token punctuation">[</span><span class="token keyword">schema</span><span class="token punctuation">.</span><span class="token punctuation">]</span> 表名<span class="token operator">|</span><span class="token punctuation">[</span><span class="token keyword">schema</span><span class="token punctuation">.</span><span class="token punctuation">]</span>视图
+  <span class="token punctuation">[</span><span class="token keyword">for each row</span><span class="token punctuation">]</span>
+  <span class="token punctuation">[</span><span class="token keyword">when</span> condition<span class="token punctuation">]</span>
+<span class="token keyword">begin</span>
+执行语句<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>1.设置一个添加记录就提示的触发器<br><code>`</code>sql<br>create or replace trigger t1<br>after insert on itpux.emp<br>  begin</p>
+<pre><code>  dbms_output.put_line(&#39;你向ITPUX.EMP 表中添加了一条数据&#39;);
+</code></pre><p>  end;<br>/</p>
+</li>
+</ul>
+<p>–验证<br>–set serverout on<br>insert into emp values(‘8000’,’itpux15’,’DBA’,’8001’,sysdate,’15000’,’0’,’30’);<br>insert into emp values(‘8002’,’itpux16’,’DBA’,’8002’,sysdate,’15000’,’0’,’30’);<br>–你向ITPUX.EMP 表中添加了一条数据</p>
+<pre><code>* 2.设置一个更改记录就提示的触发器
+```sql
+create or replace trigger t_update
+after update on itpux.emp
+for each row --提示每一条修改的记录
+    begin
+    dbms_output.put_line(&#39;你修改了ITPUX.EMP 表中多条数据&#39;);
+    end;
+/
+--验证
+--set serverout on
+select * from emp;
+update emp set job=&#39;DBA+SA+HR&#39; where ENAME in (&#39;itpux15&#39;,&#39;itpux16&#39;);
+--你修改了ITPUX.EMP 表中多条数据
+</code></pre><ul>
+<li>3.设置一个删除记录就提示的触发器<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token operator">or</span> replace <span class="token keyword">trigger</span> t_delete
+before <span class="token keyword">delete</span> <span class="token keyword">on</span> itpux<span class="token punctuation">.</span>emp
+<span class="token keyword">begin</span>
+<span class="token comment" spellcheck="true">--select to_char(sysdate,'day') from dual;</span>
+<span class="token keyword">if</span> to_char<span class="token punctuation">(</span>sysdate<span class="token punctuation">,</span><span class="token string">'day'</span><span class="token punctuation">)</span> <span class="token operator">in</span> <span class="token punctuation">(</span><span class="token string">'星期六'</span><span class="token punctuation">,</span><span class="token string">'星期天'</span><span class="token punctuation">)</span> <span class="token keyword">then</span>
+  dbms_output<span class="token punctuation">.</span>put_line<span class="token punctuation">(</span><span class="token string">'禁止在周末删除ITPUX.EMP 表数据'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  raise_application_error<span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">20001</span><span class="token punctuation">,</span><span class="token string">'禁止在周末删除ITPUX.EMP 表数据'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">--</span>
+<span class="token operator">-</span><span class="token number">20000</span><span class="token operator">~</span><span class="token number">20999</span>
+<span class="token keyword">end</span> <span class="token keyword">if</span><span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span>
+<span class="token operator">/</span>
+<span class="token comment" spellcheck="true">--验证</span>
+<span class="token comment" spellcheck="true">--set serverout on</span>
+<span class="token keyword">delete</span> <span class="token keyword">from</span> emp<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--ORA-20001: 禁止在周末删除ITPUX.EMP 表数据</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h3 id="12-2-DDL-触发器及案例"><a href="#12-2-DDL-触发器及案例" class="headerlink" title="12.2 DDL 触发器及案例"></a>12.2 DDL 触发器及案例</h3><ul>
+<li>语法<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token operator">or</span> replace <span class="token keyword">trigger</span> ddl 触发器名称
+<span class="token keyword">after</span> ddl <span class="token keyword">on</span> 方案名<span class="token punctuation">.</span><span class="token keyword">schema</span>
+<span class="token keyword">begin</span>
+  执行语句<span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>基本使用<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--SYSTEM 用户</span>
+<span class="token keyword">drop</span> <span class="token keyword">table</span> itpux_ddl01
+<span class="token keyword">create</span> <span class="token keyword">table</span> itpux_ddl01
+<span class="token punctuation">(</span>
+  dbname varchar2<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  event varchar2<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  username varchar2<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  client_ip varchar2<span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  ddl_time <span class="token keyword">date</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">create</span> <span class="token operator">or</span> replace <span class="token keyword">trigger</span> t_itpux_ddl01
+<span class="token keyword">after</span> ddl <span class="token keyword">on</span> itpux<span class="token punctuation">.</span><span class="token keyword">schema</span>
+<span class="token keyword">begin</span>
+  <span class="token keyword">insert</span> <span class="token keyword">into</span> itpux_ddl01 <span class="token keyword">values</span><span class="token punctuation">(</span>ora_database_name<span class="token punctuation">,</span>ora_sysevent<span class="token punctuation">,</span>ora_login_user<span class="token punctuation">,</span>ora_client_ip_address<span class="token punctuation">,</span>
+  sysdate<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--切换至ITPUX 用户</span>
+<span class="token keyword">create</span> <span class="token keyword">table</span> itpux012<span class="token punctuation">(</span>id number<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">select</span> <span class="token operator">*</span> <span class="token keyword">from</span> system<span class="token punctuation">.</span>itpux_ddl01<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="12-3-参考资料"><a href="#12-3-参考资料" class="headerlink" title="12.3 参考资料"></a>12.3 参考资料</h3><code>`</code>sql<br>系统触发器创建基本语法：<br>create or replace trigger 系统触发器名称<br>after[before] logon[logoff] on datebase<br>begin<br>  执行语句;<br>end;</li>
+</ul>
+<p>详细说明：<br>after 事件之后触发<br>before 事件之前触发<br>logon 登陆触发<br>logoff 登出触发<br>startup 开启系统触发<br>shutdown 关闭系统触发</p>
+<pre><code>```sql
+------------------------------参考资料---------------------------------------
+下面介绍一些常用的系统事件属性函数，和建立各种事件触发器的方法在建立系统事
+件触发器时，需要使用事件属性函数，
+常用的事件属性函数如下：
+ora_client_ip_address //返回客户端的ip
+ora_database_name //返回数据库名称
+ora_login_user //返回登陆用户名
+ora_sysevent //返回触发器的系统事件名
+ora_des_encrypted_password //返回用户des(md5)加密后的密码
+事件属性函数表
+Ora_client_ip_address 返回客户端的ip 地址
+Ora_database_name 返回当前数据库名
+Ora_des_encrypted_password 返回des 加密后的用户口令
+Ora_dict_obj_name 返回ddl 操作所对应的数据库对象名
+Ora_dict_obj_name_list(name_list out ora_name_list_t)返回在事件中被修改的对
+象名列表
+Ora_dict_obj_owner 返回ddl 操作所对应的对象的所有者名
+Ora_dict_obj_owner_list(owner_list out ora_name_list_t)返回在事件中被修改的对
+象的所有者列表
+Ora_dict_obj_type 返回ddl 操作所对应的数据库对象的类型
+Ora_grantee(user_list out ora_name_list_t)返回授权事件的授权者
+Ora_instance_num 返回例程号
+Ora_is_alter_column(column_name in varchar2)检测特定列是否被修改
+Ora_is_creating_nested_table 检测是否正在建立嵌套表
+Ora_is_drop_column(column_name in varchar2)检测特定列是否被删除
+Ora_is_servererror(error_number)检测是否返回了特定oracle 错误
+Ora_login_user 返回登录用户名
+Ora_sysevent 返回触发器的系统事件名
+系统触发器的种类和事件出现的时机（前或后）：
+事件允许的时机说明
+STARTUP AFTER 启动数据库实例之后触发
+SHUTDOWN BEFORE 关闭数据库实例之前触发（非正常关闭不触发）
+SERVERERROR AFTER 数据库服务器发生错误之后触发
+LOGON AFTER 成功登录连接到数据库后触发
+LOGOFF BEFORE 开始断开数据库连接之前触发
+CREATE BEFORE，AFTER 在执行CREATE 语句创建数据库对象之前、之后
+触发
+DROP BEFORE，AFTER 在执行DROP 语句删除数据库对象之前、之后触发
+ALTER BEFORE，AFTER 在执行ALTER 语句更新数据库对象之前、之后触发
+DDL BEFORE，AFTER 在执行大多数DDL 语句之前、之后触发
+GRANT BEFORE，AFTER 执行GRANT 语句授予权限之前、之后触发
+REVOKE BEFORE，AFTER 执行REVOKE 语句收权限之前、之后触犯发
+RENAME BEFORE，AFTER 执行RENAME 语句更改数据库对象名称之前、之
+后触犯发
+AUDIT/NOAUDIT BEFORE，AFTER 执行AUDIT 或NOAUDIT 进行审计或停
+止审计之前、之后触发
+特别说明：系统触发器的级别较高，由系统管理员来创建。
+------------------------------------------------------------------------------------
+</code></pre><h3 id="12-4-数据库系统触发器"><a href="#12-4-数据库系统触发器" class="headerlink" title="12.4 数据库系统触发器"></a>12.4 数据库系统触发器</h3><ul>
+<li>1.创建<br><code>`</code>sql<br>–记录登录数据库的用户名和IP<br>create table login_info (ip varchar(30),username varchar(30));<br>create or replace trigger logon_ip_info<br>after logon on database<br>declare<br>  ip varchar(30);<br>  user varchar(30);<br>begin<br>  select sys_context(‘USERENV’,’SESSION_USER’) into user from dual;<br>  select sys_context(‘USERENV’,’ip_address’) into ip from dual;<br>  insert into login_info values(ip,user);<br>end;<br>/</li>
+</ul>
+<p>select * from login_info;</p>
+<pre><code>* 2. 管理
+```sql
+--禁用
+alter trigger logon_ip_info disable;
+--启用
+alter trigger logon_ip_info enable;
+--编译
+alter trigger logon_ip_info compile;
+--删除
+drop trigger logon_ip_info;
+--查询
+select * from dba_objects where owner=&#39;ITPUX&#39; and object_type=&#39;TRIGGER&#39;;
+drop trigger ITPUX.T_UPDATE;
+drop trigger ITPUX.T_DELETE;
+drop trigger system.t_itpux_ddl01;
+</code></pre><h2 id="13-包的创建和使用"><a href="#13-包的创建和使用" class="headerlink" title="13 包的创建和使用"></a>13 包的创建和使用</h2><ul>
+<li>1 包定义（PACKAGE）<pre class="line-numbers language-sql"><code class="language-sql"><span class="token number">2.1</span> 包定义（PACKAGE）
+<span class="token keyword">CREATE</span> <span class="token punctuation">[</span><span class="token operator">OR</span> REPLACE<span class="token punctuation">]</span> PACKAGE package_name
+  {<span class="token operator">IS</span> <span class="token operator">|</span> <span class="token keyword">AS</span>}
+  <span class="token punctuation">[</span>公有数据类型定义<span class="token punctuation">]</span>
+  <span class="token punctuation">[</span>公有游标声明<span class="token punctuation">]</span>
+  <span class="token punctuation">[</span>公有变量、常量声明<span class="token punctuation">]</span>
+  <span class="token punctuation">[</span>公有子程序声明<span class="token punctuation">]</span>
+  <span class="token punctuation">[</span>package_name<span class="token punctuation">]</span><span class="token punctuation">;</span>
+定义包规范:
+<span class="token keyword">CREATE</span> <span class="token operator">OR</span> REPLACE
+package p_stu
+<span class="token keyword">as</span>
+<span class="token comment" spellcheck="true">--定义结构体</span>
+<span class="token keyword">type</span> re_stu <span class="token operator">is</span> record<span class="token punctuation">(</span>
+  rname student<span class="token punctuation">.</span>name<span class="token operator">%</span><span class="token keyword">type</span><span class="token punctuation">,</span>
+  rage student<span class="token punctuation">.</span>age<span class="token operator">%</span><span class="token keyword">type</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--定义游标</span>
+<span class="token keyword">type</span> c_stu <span class="token operator">is</span> ref <span class="token keyword">cursor</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--定义函数</span>
+<span class="token keyword">function</span> numAdd<span class="token punctuation">(</span>num1 number<span class="token punctuation">,</span>num2 number<span class="token punctuation">)</span><span class="token keyword">return</span> number<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--定义过程</span>
+<span class="token keyword">procedure</span> GetStuList<span class="token punctuation">(</span>cid <span class="token operator">in</span> varchar2<span class="token punctuation">,</span>c_st <span class="token keyword">out</span> c_stu<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">end</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><ol start="2">
+<li>包主体（PACKAGE BODY）<br><code>`</code>sql<br>CREATE [OR REPLACE] PACKAGE BODY package_name<br>{IS | AS}<br>[私有数据类型定义]<br>[私有变量、常量声明]<br>[私有子程序声明和定义]<br>[公有子程序定义]<br>BEGIN<br>执行部分(初始化部分)<br>END [package_name];</li>
+</ol>
+</li>
+</ul>
+<p>–1 创建包<br>create or replace package itpux_pkg<br>is<br>    procedure update_sal(e_name varchar2,newsal number);<br>    FUNCTION emp_sal_fun(e_name varchar2) return number;<br>end;<br>–2.3 包体<br>create or replace package body itpux_pkg is<br>procedure update_sal(e_name varchar2,newsal number)<br>is<br>begin<br>    update emp set sal=newsal where ename=e_name;<br>end;<br>function emp_sal_fun(e_name varchar2)<br>return number is<br>emp_sal number;<br>begin<br>    select sal<em>12+nvl(comm,0) into emp_sal from emp<br>where ename=e_name;<br>return emp_sal;<br>end;<br>end;<br>–2.4 执行包-调过程<br>set serveroutput on<br>    exec itpux_pkg.update_sal(‘itpux14’,2000);<br>commit;<br>select </em> from emp;<br>–查看itpux14 的记录<br>–2.5 执行包-调函数<br>declare<br>    v_emp_sal number(7,2);<br>begin<br>    v_emp_sal:=itpux_pkg.emp_sal_fun(‘itpux14’);<br>    dbms_output.put_line(‘ITPUX14 的年薪为: ‘||v_emp_sal);<br>end;<br>–ITPUX14 的年薪为: 24000<br>–2.6 删除包<br>select * from dba_objects where owner=’ITPUX’ and object_type=’PACKAGE’;<br>drop package ITPUX_PKG;<br>drop package ITPUXA_PKG;<br><code>`</code></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/oracle/oracle-zhi-ddl-he-dui-xiang-guan-li/">https://gin.sh/oracle/oracle-zhi-ddl-he-dui-xiang-guan-li/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Oracle/">
+                                    <span class="chip bg-color">Oracle</span>
+                                </a>
+                            
+                                <a href="/tags/SQL/">
+                                    <span class="chip bg-color">SQL</span>
+                                </a>
+                            
+                                <a href="/tags/DDL/">
+                                    <span class="chip bg-color">DDL</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/oracle/oracle-zhi-ddl-he-dui-xiang-guan-li/';
+        this.page.identifier = '/oracle/oracle-zhi-ddl-he-dui-xiang-guan-li/';
+        this.page.title = 'Oracle之DDL和对象管理';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/oracle/oracle-asm-shu-ju-ku-ri-chang-guan-li-wei-hu-shou-ce/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/19.jpg" class="responsive-img" alt="Oracle ASM数据库日常管理维护手册">
+                        
+                        <span class="card-title">Oracle ASM数据库日常管理维护手册</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-10-02
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Oracle/" class="post-category">
+                                    Oracle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle/">
+                        <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                    <a href="/tags/SQL/">
+                        <span class="chip bg-color">SQL</span>
+                    </a>
+                    
+                    <a href="/tags/DML/">
+                        <span class="chip bg-color">DML</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/oracle/oracle-shu-ju-ku-luo-ji-bei-fen-hui-fu-qian-yi-zhi-exp-yu-imp/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/16.jpg" class="responsive-img" alt="Oracle数据库逻辑备份恢复迁移之exp与imp">
+                        
+                        <span class="card-title">Oracle数据库逻辑备份恢复迁移之exp与imp</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-10-02
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Oracle/" class="post-category">
+                                    Oracle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle/">
+                        <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                    <a href="/tags/%E5%A4%87%E4%BB%BD%E5%AE%B9%E7%81%BE/">
+                        <span class="chip bg-color">备份容灾</span>
+                    </a>
+                    
+                    <a href="/tags/Exp/">
+                        <span class="chip bg-color">Exp</span>
+                    </a>
+                    
+                    <a href="/tags/Imp/">
+                        <span class="chip bg-color">Imp</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

@@ -1,0 +1,1204 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="kubernetes, yaml, Deployment">
+    <meta name="description" content="Kubernetes 的安装非常复杂，本文将会介绍 Deployment YAML 名词解释。">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Kubernetes Deployment YAML glossary | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/images/2019/Kubernetes-2.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Kubernetes Deployment YAML glossary</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Kubeadm/">
+                                <span class="chip bg-color">Kubeadm</span>
+                            </a>
+                        
+                            <a href="/tags/Kubernetes/">
+                                <span class="chip bg-color">Kubernetes</span>
+                            </a>
+                        
+                            <a href="/tags/YAML/">
+                                <span class="chip bg-color">YAML</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Kubernetes/" class="post-category">
+                                Kubernetes
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2020-01-17
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    5 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Kubernetes-Deployment-YAML-glossary"><a href="#Kubernetes-Deployment-YAML-glossary" class="headerlink" title="Kubernetes Deployment YAML glossary"></a>Kubernetes Deployment YAML glossary</h1><h2 id="Deployment-简述"><a href="#Deployment-简述" class="headerlink" title="Deployment 简述"></a>Deployment 简述</h2><p>:smile:</p>
+<p><code>Deployment</code> 为 <code>Pod</code> 和 <code>ReplicaSet</code> 提供了一个声明式定义 (declarative) 方法，用来替代以前的 <code>ReplicationController</code> 更方便的管理应用。<br>作为最常用的 <code>Kubernetes</code> 对象，<code>Deployment</code> 经常会用来创建 <code>ReplicaSet</code> 和 <code>Pod</code>，我们往往不会直接在集群中使用 <code>ReplicaSet</code> 部署一个新的微服务，一方面是因为 <code>ReplicaSet</code> 的功能其实不够强大，一些常见的更新、扩容和缩容运维操作都不支持，<code>Deployment</code> 的引入就是为了支持这些复杂的操作。</p>
+<h2 id="Deployment-API-版本对照表"><a href="#Deployment-API-版本对照表" class="headerlink" title="Deployment API 版本对照表"></a>Deployment API 版本对照表</h2><table>
+<thead>
+<tr>
+<th style="text-align:center">Kubernetes 版本</th>
+<th style="text-align:center">Deployment 版本</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">v1.5-v1.15</td>
+<td style="text-align:center">extensions/v1beta1</td>
+</tr>
+<tr>
+<td style="text-align:center">v1.7-v1.15</td>
+<td style="text-align:center">apps/v1beta1</td>
+</tr>
+<tr>
+<td style="text-align:center">v1.8-v1.15</td>
+<td style="text-align:center">apps/v1beta2</td>
+</tr>
+<tr>
+<td style="text-align:center">v1.9+</td>
+<td style="text-align:center">apps/v1</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Deployment-一个典型的用例"><a href="#Deployment-一个典型的用例" class="headerlink" title="Deployment 一个典型的用例"></a>Deployment 一个典型的用例</h2><p>一个典型的用例如下：</p>
+<ul>
+<li>使用 Deployment 来创建 ReplicaSet。ReplicaSet 在后台创建 pod。检查启动状态，看它是成功还是失败。</li>
+<li>然后，通过更新 Deployment 的 PodTemplateSpec 字段来声明 Pod 的新状态。这会创建一个新的 ReplicaSet，Deployment 会按照控制的速率将 pod 从旧的 ReplicaSet 移动到新的 ReplicaSet 中。</li>
+<li>如果当前状态不稳定，回滚到之前的 Deployment revision。每次回滚都会更新 Deployment 的 revision。</li>
+<li>扩容 Deployment 以满足更高的负载。</li>
+<li>暂停 Deployment 来应用 PodTemplateSpec 的多个修复，然后恢复上线。</li>
+<li>根据 Deployment 的状态判断上线是否 hang 住了。</li>
+<li>清除旧的不必要的 ReplicaSet。</li>
+</ul>
+<h2 id="创建-Deployment"><a href="#创建-Deployment" class="headerlink" title="创建 Deployment"></a>创建 Deployment</h2><p>Deployment yaml文件包含四个部分：</p>
+<ul>
+<li>apiVersion: 表示版本</li>
+<li>kind: 表示资源</li>
+<li>metadata: 表示元信息</li>
+<li>spec: 资源规范字段</li>
+</ul>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> apps/v1  <span class="token comment" spellcheck="true"># 指定api版本，此值必须在kubectl api-versions中  </span>
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Deployment  <span class="token comment" spellcheck="true"># 指定创建资源的角色/类型   </span>
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># 资源的元数据/属性 </span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> demo  <span class="token comment" spellcheck="true"># 资源的名字，在同一个namespace中必须唯一</span>
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> default <span class="token comment" spellcheck="true"># 部署在哪个namespace中</span>
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># 设定资源的标签</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> demo
+    <span class="token key atrule">version</span><span class="token punctuation">:</span> stable
+<span class="token key atrule">spec</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 资源规范字段</span>
+  <span class="token key atrule">replicas</span><span class="token punctuation">:</span> <span class="token number">1 </span><span class="token comment" spellcheck="true"># 声明副本数目</span>
+  <span class="token key atrule">revisionHistoryLimit</span><span class="token punctuation">:</span> <span class="token number">3 </span><span class="token comment" spellcheck="true"># 保留历史版本</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 选择器</span>
+    <span class="token key atrule">matchLabels</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 匹配标签</span>
+      <span class="token key atrule">app</span><span class="token punctuation">:</span> demo
+      <span class="token key atrule">version</span><span class="token punctuation">:</span> stable
+  <span class="token key atrule">strategy</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 策略</span>
+    <span class="token key atrule">rollingUpdate</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 滚动更新</span>
+      <span class="token key atrule">maxSurge</span><span class="token punctuation">:</span> 30% <span class="token comment" spellcheck="true"># 最大额外可以存在的副本数，可以为百分比，也可以为整数</span>
+      <span class="token key atrule">maxUnavailable</span><span class="token punctuation">:</span> 30% <span class="token comment" spellcheck="true"># 示在更新过程中能够进入不可用状态的 Pod 的最大值，可以为百分比，也可以为整数</span>
+    <span class="token key atrule">type</span><span class="token punctuation">:</span> RollingUpdate <span class="token comment" spellcheck="true"># 滚动更新策略</span>
+  <span class="token key atrule">template</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 模版</span>
+    <span class="token key atrule">metadata</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 资源的元数据/属性 </span>
+      <span class="token key atrule">annotations</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 自定义注解列表</span>
+        <span class="token key atrule">sidecar.istio.io/inject</span><span class="token punctuation">:</span> <span class="token string">"false"</span> <span class="token comment" spellcheck="true"># 自定义注解名字</span>
+      <span class="token key atrule">labels</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 设定资源的标签</span>
+        <span class="token key atrule">app</span><span class="token punctuation">:</span> demo
+        <span class="token key atrule">version</span><span class="token punctuation">:</span> stable
+    <span class="token key atrule">spec</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 资源规范字段</span>
+      <span class="token key atrule">containers</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> demo <span class="token comment" spellcheck="true"># 容器的名字   </span>
+        <span class="token key atrule">image</span><span class="token punctuation">:</span> demo<span class="token punctuation">:</span>v1 <span class="token comment" spellcheck="true"># 容器使用的镜像地址   </span>
+        <span class="token key atrule">imagePullPolicy</span><span class="token punctuation">:</span> IfNotPresent <span class="token comment" spellcheck="true"># 每次Pod启动拉取镜像策略，三个选择 Always、Never、IfNotPresent</span>
+                                      <span class="token comment" spellcheck="true"># Always，每次都检查；Never，每次都不检查（不管本地是否有）；IfNotPresent，如果本地有就不检查，如果没有就拉取 </span>
+        <span class="token key atrule">resources</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 资源管理</span>
+          <span class="token key atrule">limits</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 最大使用</span>
+            <span class="token key atrule">cpu</span><span class="token punctuation">:</span> 300m <span class="token comment" spellcheck="true"># CPU，1核心 = 1000m</span>
+            <span class="token key atrule">memory</span><span class="token punctuation">:</span> 500Mi <span class="token comment" spellcheck="true"># 内存，1G = 1024Mi</span>
+          <span class="token key atrule">requests</span><span class="token punctuation">:</span>  <span class="token comment" spellcheck="true"># 容器运行时，最低资源需求，也就是说最少需要多少资源容器才能正常运行</span>
+            <span class="token key atrule">cpu</span><span class="token punctuation">:</span> 100m
+            <span class="token key atrule">memory</span><span class="token punctuation">:</span> 100Mi
+        <span class="token key atrule">livenessProbe</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># pod 内部健康检查的设置</span>
+          <span class="token key atrule">httpGet</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 通过httpget检查健康，返回200-399之间，则认为容器正常</span>
+            <span class="token key atrule">path</span><span class="token punctuation">:</span> /healthCheck <span class="token comment" spellcheck="true"># URI地址</span>
+            <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080 </span><span class="token comment" spellcheck="true"># 端口</span>
+            <span class="token key atrule">scheme</span><span class="token punctuation">:</span> HTTP <span class="token comment" spellcheck="true"># 协议</span>
+            <span class="token comment" spellcheck="true"># host: 127.0.0.1 # 主机地址</span>
+          <span class="token key atrule">exec</span><span class="token punctuation">:</span> 
+            <span class="token key atrule">command</span><span class="token punctuation">:</span> 
+              <span class="token punctuation">-</span> cat 
+              <span class="token punctuation">-</span> /tmp/healthy
+          <span class="token key atrule">initialDelaySeconds</span><span class="token punctuation">:</span> <span class="token number">30 </span><span class="token comment" spellcheck="true"># 表明第一次检测在容器启动后多长时间后开始</span>
+          <span class="token key atrule">timeoutSeconds</span><span class="token punctuation">:</span> <span class="token number">5 </span><span class="token comment" spellcheck="true"># 检测的超时时间</span>
+          <span class="token key atrule">periodSeconds</span><span class="token punctuation">:</span> <span class="token number">30 </span><span class="token comment" spellcheck="true"># 检查间隔时间</span>
+          <span class="token key atrule">successThreshold</span><span class="token punctuation">:</span> <span class="token number">1 </span><span class="token comment" spellcheck="true"># 成功门槛</span>
+          <span class="token key atrule">failureThreshold</span><span class="token punctuation">:</span> <span class="token number">5 </span><span class="token comment" spellcheck="true"># 失败门槛，连接失败5次，pod杀掉，重启一个新的pod</span>
+        <span class="token key atrule">readinessProbe</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># Pod 准备服务健康检查设置</span>
+          <span class="token key atrule">httpGet</span><span class="token punctuation">:</span>
+            <span class="token key atrule">path</span><span class="token punctuation">:</span> /healthCheck
+            <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080</span>
+            <span class="token key atrule">scheme</span><span class="token punctuation">:</span> HTTP
+          <span class="token key atrule">initialDelaySeconds</span><span class="token punctuation">:</span> <span class="token number">30</span>
+          <span class="token key atrule">timeoutSeconds</span><span class="token punctuation">:</span> <span class="token number">5</span>
+          <span class="token key atrule">periodSeconds</span><span class="token punctuation">:</span> <span class="token number">10</span>
+          <span class="token key atrule">successThreshold</span><span class="token punctuation">:</span> <span class="token number">1</span>
+          <span class="token key atrule">failureThreshold</span><span class="token punctuation">:</span> <span class="token number">5</span>
+          <span class="token comment" spellcheck="true">#也可以用这种方法   </span>
+          <span class="token comment" spellcheck="true">#exec: 执行命令的方法进行监测，如果其退出码不为0，则认为容器正常   </span>
+          <span class="token comment" spellcheck="true">#  command:   </span>
+          <span class="token comment" spellcheck="true">#    - cat   </span>
+          <span class="token comment" spellcheck="true">#    - /tmp/health   </span>
+          <span class="token comment" spellcheck="true">#也可以用这种方法   </span>
+          <span class="token comment" spellcheck="true">#tcpSocket: # 通过tcpSocket检查健康  </span>
+          <span class="token comment" spellcheck="true">#  port: number </span>
+        <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+          <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> http <span class="token comment" spellcheck="true"># 名称</span>
+            <span class="token key atrule">containerPort</span><span class="token punctuation">:</span> <span class="token number">8080 </span><span class="token comment" spellcheck="true"># 容器开发对外的端口 </span>
+            <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP <span class="token comment" spellcheck="true"># 协议</span>
+      <span class="token key atrule">imagePullSecrets</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 镜像仓库拉取密钥</span>
+        <span class="token punctuation">-</span> <span class="token key atrule">name</span><span class="token punctuation">:</span> harbor<span class="token punctuation">-</span>certification
+      <span class="token key atrule">affinity</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 亲和性调试</span>
+        <span class="token key atrule">nodeAffinity</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 节点亲和力</span>
+          <span class="token key atrule">requiredDuringSchedulingIgnoredDuringExecution</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># pod 必须部署到满足条件的节点上</span>
+            <span class="token key atrule">nodeSelectorTerms</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 节点满足任何一个条件就可以</span>
+            <span class="token punctuation">-</span> <span class="token key atrule">matchExpressions</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 有多个选项，则只有同时满足这些逻辑选项的节点才能运行 pod</span>
+              <span class="token punctuation">-</span> <span class="token key atrule">key</span><span class="token punctuation">:</span> beta.kubernetes.io/arch
+                <span class="token key atrule">operator</span><span class="token punctuation">:</span> In
+                <span class="token key atrule">values</span><span class="token punctuation">:</span>
+                <span class="token punctuation">-</span> amd64
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Service yaml 名词解释：</p>
+<pre class="line-numbers language-yaml"><code class="language-yaml"><span class="token key atrule">apiVersion</span><span class="token punctuation">:</span> v1 <span class="token comment" spellcheck="true"># 指定api版本，此值必须在kubectl api-versions中 </span>
+<span class="token key atrule">kind</span><span class="token punctuation">:</span> Service <span class="token comment" spellcheck="true"># 指定创建资源的角色/类型 </span>
+<span class="token key atrule">metadata</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 资源的元数据/属性</span>
+  <span class="token key atrule">name</span><span class="token punctuation">:</span> demo <span class="token comment" spellcheck="true"># 资源的名字，在同一个namespace中必须唯一</span>
+  <span class="token key atrule">namespace</span><span class="token punctuation">:</span> default <span class="token comment" spellcheck="true"># 部署在哪个namespace中</span>
+  <span class="token key atrule">labels</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 设定资源的标签</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> demo
+<span class="token key atrule">spec</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 资源规范字段</span>
+  <span class="token key atrule">type</span><span class="token punctuation">:</span> ClusterIP <span class="token comment" spellcheck="true"># ClusterIP 类型</span>
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> <span class="token key atrule">port</span><span class="token punctuation">:</span> <span class="token number">8080 </span><span class="token comment" spellcheck="true"># service 端口</span>
+      <span class="token key atrule">targetPort</span><span class="token punctuation">:</span> http <span class="token comment" spellcheck="true"># 容器暴露的端口</span>
+      <span class="token key atrule">protocol</span><span class="token punctuation">:</span> TCP <span class="token comment" spellcheck="true"># 协议</span>
+      <span class="token key atrule">name</span><span class="token punctuation">:</span> http <span class="token comment" spellcheck="true"># 端口名称</span>
+  <span class="token key atrule">selector</span><span class="token punctuation">:</span> <span class="token comment" spellcheck="true"># 选择器</span>
+    <span class="token key atrule">app</span><span class="token punctuation">:</span> demo
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a href="https://kubernetes.io/docs/concepts/workloads/controllers/deployment/" target="_blank" rel="noopener">https://kubernetes.io/docs/concepts/workloads/controllers/deployment/</a><br><a href="https://feisky.gitbooks.io/kubernetes/concepts/deployment.html" target="_blank" rel="noopener">https://feisky.gitbooks.io/kubernetes/concepts/deployment.html</a><br><a href="https://draveness.me/kubernetes-deployment" target="_blank" rel="noopener">https://draveness.me/kubernetes-deployment</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/kubernetes/kubernetes-deployment-yaml-glossary/">https://gin.sh/kubernetes/kubernetes-deployment-yaml-glossary/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Kubeadm/">
+                                    <span class="chip bg-color">Kubeadm</span>
+                                </a>
+                            
+                                <a href="/tags/Kubernetes/">
+                                    <span class="chip bg-color">Kubernetes</span>
+                                </a>
+                            
+                                <a href="/tags/YAML/">
+                                    <span class="chip bg-color">YAML</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/kubernetes/kubernetes-deployment-yaml-glossary/';
+        this.page.identifier = '/kubernetes/kubernetes-deployment-yaml-glossary/';
+        this.page.title = 'Kubernetes Deployment YAML glossary';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/kubernetes/kubernetes-deployment-strategies/">
+                    <div class="card-image">
+                        
+                        <img src="https://s.gin.sh/blog/kubernetes/cover/k4s_featured.png" class="responsive-img" alt="Kubernetes 上的应用部署策略">
+                        
+                        <span class="card-title">Kubernetes 上的应用部署策略</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            在 Kubernetes 中，有几种不同的发布应用程序的方法，有必要选择正确的策略以在应用程序更新期间使基础架构可靠。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-01-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Kubernetes/" class="post-category">
+                                    Kubernetes
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Kubernetes/">
+                        <span class="chip bg-color">Kubernetes</span>
+                    </a>
+                    
+                    <a href="/tags/Deployment/">
+                        <span class="chip bg-color">Deployment</span>
+                    </a>
+                    
+                    <a href="/tags/DevOps/">
+                        <span class="chip bg-color">DevOps</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/golang/go-gc-20-asks/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/8.jpg" class="responsive-img" alt="Go GC 20 问">
+                        
+                        <span class="card-title">Go GC 20 问</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2020-01-06
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Golang/" class="post-category">
+                                    Golang
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                    <a href="/tags/Goruntime/">
+                        <span class="chip bg-color">Goruntime</span>
+                    </a>
+                    
+                    <a href="/tags/GC/">
+                        <span class="chip bg-color">GC</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

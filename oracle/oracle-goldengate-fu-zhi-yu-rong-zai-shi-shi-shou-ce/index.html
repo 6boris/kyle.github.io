@@ -1,0 +1,1614 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Oracle Goldengate数据库复制与容灾实施, Gin Bar">
+    <meta name="description" content="这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Oracle Goldengate数据库复制与容灾实施 | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/medias/featureimages/14.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Oracle Goldengate数据库复制与容灾实施</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Oracle/">
+                                <span class="chip bg-color">Oracle</span>
+                            </a>
+                        
+                            <a href="/tags/GoldenGate/">
+                                <span class="chip bg-color">GoldenGate</span>
+                            </a>
+                        
+                            <a href="/tags/%E5%A4%87%E4%BB%BD%E5%AE%B9%E7%81%BE/">
+                                <span class="chip bg-color">备份容灾</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Oracle/" class="post-category">
+                                Oracle
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2018-09-07
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    12 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="OracleGoldengate数据库复制与容灾实施"><a href="#OracleGoldengate数据库复制与容灾实施" class="headerlink" title="OracleGoldengate数据库复制与容灾实施"></a>OracleGoldengate数据库复制与容灾实施</h1><p><a href="https://docs.oracle.com/cd/E11882_01/index.htm" target="_blank" rel="noopener">Oracle 11G R2 官方文档</a></p>
+<h2 id="1-GoldenGate-文件系统-文件系统"><a href="#1-GoldenGate-文件系统-文件系统" class="headerlink" title="1.GoldenGate 文件系统-文件系统"></a>1.GoldenGate 文件系统-文件系统</h2><h3 id="1-1-安装OGG软件-源端-目标端"><a href="#1-1-安装OGG软件-源端-目标端" class="headerlink" title="1.1 安装OGG软件(源端-目标端)"></a>1.1 安装OGG软件(源端-目标端)</h3><pre class="line-numbers language-sql"><code class="language-sql">
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="1-2-创建OGG用户-源端-目标端"><a href="#1-2-创建OGG用户-源端-目标端" class="headerlink" title="1.2 创建OGG用户(源端-目标端)"></a>1.2 创建OGG用户(源端-目标端)</h3><ul>
+<li>源端</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLESPACE</span> ogg_tbs
+    DATAFILE <span class="token string">'/u01/oradata/orcl/ogg_tbs.dbf'</span>
+        SIZE <span class="token number">100</span> M
+        AUTOEXTEND <span class="token keyword">ON</span> <span class="token keyword">NEXT</span> <span class="token number">10</span> M MAXSIZE <span class="token number">500</span> M
+    LOGGING
+    EXTENT MANAGEMENT <span class="token keyword">LOCAL</span>
+    SEGMENT SPACE MANAGEMENT AUTO<span class="token punctuation">;</span>
+
+
+<span class="token keyword">CREATE</span> <span class="token keyword">USER</span> goldengate IDENTIFIED <span class="token keyword">BY</span> goldengate <span class="token keyword">DEFAULT</span> <span class="token keyword">TABLESPACE</span> ogg_tbs <span class="token keyword">TEMPORARY</span> <span class="token keyword">TABLESPACE</span> <span class="token keyword">temp</span> QUOTA UNLIMITED <span class="token keyword">ON</span> users<span class="token punctuation">;</span>
+
+<span class="token keyword">GRANT</span> <span class="token keyword">CONNECT</span><span class="token punctuation">,</span>RESOURCE <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">CREATE</span> <span class="token keyword">SESSION</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">ALTER</span> <span class="token keyword">SESSION</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">ALTER</span> <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">ALTER</span> SYSTEM <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">INSERT</span> <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span><span class="token punctuation">,</span><span class="token keyword">UPDATE</span> <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span><span class="token punctuation">,</span><span class="token keyword">DELETE</span> <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span><span class="token punctuation">,</span><span class="token keyword">LOCK</span> <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">SELECT</span> <span class="token keyword">ANY</span> <span class="token keyword">TRANSACTION</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">SELECT</span> <span class="token keyword">ANY</span> DICTIONARY <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> FLASHBACK <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> UNLIMITED <span class="token keyword">TABLESPACE</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">EXECUTE</span> <span class="token keyword">on</span> DBMS_FLASHBACK <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">EXECUTE</span> <span class="token keyword">on</span> DBMS_GOLDENGATE_AUTH <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> DBA <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">EXEC</span> dbms_goldengate_auth<span class="token punctuation">.</span>grant_admin_privilege<span class="token punctuation">(</span><span class="token string">'GOLDENGATE'</span><span class="token punctuation">,</span><span class="token string">'*'</span><span class="token punctuation">,</span><span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>目标端</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span> <span class="token keyword">TABLESPACE</span> ogg_tbs
+        DATAFILE <span class="token string">'/u01/oradata/itpux/ogg_tbs.dbf'</span>
+        SIZE <span class="token number">100</span> M
+    AUTOEXTEND <span class="token keyword">ON</span> <span class="token keyword">NEXT</span> <span class="token number">10</span> M MAXSIZE <span class="token number">500</span> M
+    LOGGING
+    EXTENT MANAGEMENT <span class="token keyword">LOCAL</span>
+    SEGMENT SPACE MANAGEMENT AUTO<span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">USER</span> goldengate IDENTIFIED <span class="token keyword">BY</span> goldengate <span class="token keyword">DEFAULT</span> <span class="token keyword">TABLESPACE</span> ogg_tbs <span class="token keyword">TEMPORARY</span> <span class="token keyword">TABLESPACE</span> <span class="token keyword">temp</span> QUOTA UNLIMITED <span class="token keyword">ON</span> users<span class="token punctuation">;</span>
+
+<span class="token keyword">GRANT</span> <span class="token keyword">CONNECT</span><span class="token punctuation">,</span>RESOURCE <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">CREATE</span> <span class="token keyword">SESSION</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">ALTER</span> <span class="token keyword">SESSION</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">ALTER</span> <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">ALTER</span> SYSTEM <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">INSERT</span> <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span><span class="token punctuation">,</span><span class="token keyword">UPDATE</span> <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span><span class="token punctuation">,</span><span class="token keyword">DELETE</span> <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span><span class="token punctuation">,</span><span class="token keyword">LOCK</span> <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">SELECT</span> <span class="token keyword">ANY</span> <span class="token keyword">TRANSACTION</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">SELECT</span> <span class="token keyword">ANY</span> DICTIONARY <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> FLASHBACK <span class="token keyword">ANY</span> <span class="token keyword">TABLE</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> UNLIMITED <span class="token keyword">TABLESPACE</span> <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">EXECUTE</span> <span class="token keyword">on</span> DBMS_FLASHBACK <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">EXECUTE</span> <span class="token keyword">on</span> DBMS_GOLDENGATE_AUTH <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> DBA <span class="token keyword">TO</span> GOLDENGATE<span class="token punctuation">;</span>
+<span class="token keyword">EXEC</span> dbms_goldengate_auth<span class="token punctuation">.</span>grant_admin_privilege<span class="token punctuation">(</span><span class="token string">'GOLDENGATE'</span><span class="token punctuation">,</span><span class="token string">'*'</span><span class="token punctuation">,</span><span class="token boolean">TRUE</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-3-创建测试用户-源端-目标端"><a href="#1-3-创建测试用户-源端-目标端" class="headerlink" title="1.3 创建测试用户(源端-目标端)"></a>1.3 创建测试用户(源端-目标端)</h3><ul>
+<li>源端</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span>  <span class="token keyword">TABLESPACE</span> <span class="token string">"KYLE"</span>
+    DATAFILE <span class="token string">'/u01/app/oracle/oradata/orcl/kyle01.dbf'</span>
+        SIZE <span class="token number">100</span> M
+        AUTOEXTEND <span class="token keyword">ON</span> <span class="token keyword">NEXT</span> <span class="token number">10</span> M MAXSIZE <span class="token number">500</span> M
+    LOGGING
+    EXTENT MANAGEMENT <span class="token keyword">LOCAL</span>
+    SEGMENT SPACE MANAGEMENT AUTO<span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">USER</span> <span class="token string">"KYLE"</span>
+    PROFILE <span class="token string">"DEFAULT"</span> 
+    IDENTIFIED <span class="token keyword">BY</span> <span class="token string">"kyle"</span> 
+    <span class="token keyword">DEFAULT</span> <span class="token keyword">TABLESPACE</span> <span class="token string">"KYLE"</span> 
+    <span class="token keyword">TEMPORARY</span> <span class="token keyword">TABLESPACE</span> <span class="token string">"TEMP"</span> 
+    ACCOUNT UNLOCK<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">--测试数据</span>
+<span class="token keyword">SELECT</span> table_name <span class="token keyword">FROM</span> user_tables<span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> SEQUENCE seq_kyle <span class="token keyword">START</span> <span class="token keyword">WITH</span> <span class="token number">1</span> INCREMENT <span class="token keyword">BY</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> kyle01 <span class="token punctuation">(</span>id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> rand <span class="token keyword">INT</span> <span class="token punctuation">,</span> name VARCHAR2<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> kyle02 <span class="token punctuation">(</span>id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> rand <span class="token keyword">INT</span> <span class="token punctuation">,</span> name VARCHAR2<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span> kyle03 <span class="token punctuation">(</span>id <span class="token keyword">INT</span> <span class="token keyword">PRIMARY</span> <span class="token keyword">KEY</span><span class="token punctuation">,</span> rand <span class="token keyword">INT</span> <span class="token punctuation">,</span> name VARCHAR2<span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> kyle01 <span class="token keyword">VALUES</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token string">'Kyle01'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> kyle01 <span class="token keyword">VALUES</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">,</span><span class="token string">'Kyle02'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> kyle01 <span class="token keyword">VALUES</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token number">3</span><span class="token punctuation">,</span><span class="token string">'Kyle03'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">INSERT</span> <span class="token keyword">INTO</span> kyle01 <span class="token keyword">VALUES</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token number">4</span><span class="token punctuation">,</span><span class="token string">'Kyle04'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">DECLARE</span>
+  rnd number<span class="token punctuation">(</span><span class="token number">9</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">BEGIN</span>
+   <span class="token keyword">for</span> i <span class="token operator">in</span> <span class="token number">1</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token number">20000</span> loop
+     <span class="token keyword">IF</span> MOD<span class="token punctuation">(</span>i<span class="token punctuation">,</span><span class="token number">2000</span><span class="token punctuation">)</span><span class="token operator">=</span><span class="token number">0</span> <span class="token keyword">THEN</span>
+         <span class="token keyword">commit</span><span class="token punctuation">;</span>
+     <span class="token keyword">ELSE</span>
+         <span class="token keyword">insert</span> <span class="token keyword">into</span> kyle03 <span class="token keyword">values</span><span class="token punctuation">(</span>seq_kyle<span class="token punctuation">.</span>nextval<span class="token punctuation">,</span>i<span class="token operator">*</span>dbms_random<span class="token punctuation">.</span><span class="token keyword">value</span><span class="token punctuation">,</span><span class="token string">'Kyle Is Testing'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">END</span> <span class="token keyword">IF</span><span class="token punctuation">;</span>
+   <span class="token keyword">END</span> LOOP<span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+<span class="token operator">/</span>
+
+<span class="token keyword">BEGIN</span>
+   LOOP
+    <span class="token keyword">delete</span> <span class="token keyword">from</span> kyle03 <span class="token keyword">where</span> rownum<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+     <span class="token keyword">commit</span><span class="token punctuation">;</span>
+     <span class="token keyword">insert</span> <span class="token keyword">into</span> kyle03 <span class="token keyword">values</span><span class="token punctuation">(</span>seq_kyle<span class="token punctuation">.</span>nextval<span class="token punctuation">,</span><span class="token number">200000</span><span class="token operator">*</span>dbms_random<span class="token punctuation">.</span><span class="token keyword">value</span><span class="token punctuation">,</span><span class="token string">'MACLEAN IS UPDATING'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">commit</span><span class="token punctuation">;</span>
+     <span class="token keyword">insert</span> <span class="token keyword">into</span> kyle03 <span class="token keyword">values</span><span class="token punctuation">(</span>seq_kyle<span class="token punctuation">.</span>nextval<span class="token punctuation">,</span><span class="token number">300000</span><span class="token operator">*</span>dbms_random<span class="token punctuation">.</span><span class="token keyword">value</span><span class="token punctuation">,</span><span class="token string">'MACLEAN IS UPDATING'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">commit</span><span class="token punctuation">;</span>
+    <span class="token keyword">update</span> kyle03 <span class="token keyword">set</span> rand<span class="token operator">=</span>rand<span class="token operator">+</span><span class="token number">10</span> <span class="token keyword">where</span> rownum<span class="token operator">=</span><span class="token number">1</span><span class="token punctuation">;</span>
+    <span class="token keyword">commit</span><span class="token punctuation">;</span>
+     dbms_lock<span class="token punctuation">.</span>sleep<span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+     <span class="token keyword">END</span> loop<span class="token punctuation">;</span>
+<span class="token keyword">END</span><span class="token punctuation">;</span>
+
+<span class="token operator">/</span>
+
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>目标端</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">CREATE</span>  <span class="token keyword">TABLESPACE</span> <span class="token string">"KYLE"</span>
+    DATAFILE <span class="token string">'/u01/oradata/itpux/kyle01.dbf'</span>
+        SIZE <span class="token number">100</span> M
+        AUTOEXTEND <span class="token keyword">ON</span> <span class="token keyword">NEXT</span> <span class="token number">10</span> M MAXSIZE <span class="token number">500</span> M
+    LOGGING
+    EXTENT MANAGEMENT <span class="token keyword">LOCAL</span>
+    SEGMENT SPACE MANAGEMENT AUTO<span class="token punctuation">;</span>
+
+<span class="token keyword">CREATE</span> <span class="token keyword">USER</span> <span class="token string">"KYLE"</span>
+    PROFILE <span class="token string">"DEFAULT"</span> 
+    IDENTIFIED <span class="token keyword">BY</span> <span class="token string">"kyle"</span> 
+    <span class="token keyword">DEFAULT</span> <span class="token keyword">TABLESPACE</span> <span class="token string">"KYLE"</span> 
+    <span class="token keyword">TEMPORARY</span> <span class="token keyword">TABLESPACE</span> <span class="token string">"TEMP"</span> 
+    ACCOUNT UNLOCK<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-4-数据导入导出"><a href="#1-4-数据导入导出" class="headerlink" title="1.4 数据导入导出"></a>1.4 数据导入导出</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> directory bakdir <span class="token keyword">as</span> <span class="token string">'/home/oracle'</span><span class="token punctuation">;</span>
+<span class="token keyword">grant</span> <span class="token keyword">read</span><span class="token punctuation">,</span><span class="token keyword">write</span> <span class="token keyword">on</span> directory bakdir <span class="token keyword">to</span> system<span class="token punctuation">;</span>
+<span class="token keyword">grant</span> <span class="token keyword">create</span> <span class="token keyword">any</span> directory <span class="token keyword">to</span> system<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">--导出结构</span>
+<span class="token keyword">CREATE</span> DIRECTORY BAKDIR <span class="token keyword">AS</span> <span class="token string">'/home/oracle'</span><span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">READ</span><span class="token punctuation">,</span><span class="token keyword">WRITE</span> <span class="token keyword">ON</span> DIRECTORY BAKDIR <span class="token keyword">TO</span> SYSTEM<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">CREATE</span> <span class="token keyword">ANY</span> DIRECTORY <span class="token keyword">TO</span> SYSTEM<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--导出某个或多个schema</span>
+expdp system<span class="token operator">/</span>jia  DIRECTORY<span class="token operator">=</span>bakdir <span class="token keyword">DUMPFILE</span><span class="token operator">=</span>expdp_schema_kyle<span class="token punctuation">.</span>dmp LOGFILE<span class="token operator">=</span>expdp_schema_kyle<span class="token punctuation">.</span>log SCHEMAS<span class="token operator">=</span>kyle
+impdp system<span class="token operator">/</span>jia  DIRECTORY<span class="token operator">=</span>bakdir <span class="token keyword">DUMPFILE</span><span class="token operator">=</span>expdp_schema_kyle<span class="token punctuation">.</span>dmp LOGFILE<span class="token operator">=</span>expdp_schema_kyle<span class="token punctuation">.</span>log TABLE_EXISTS_ACTION<span class="token operator">=</span><span class="token keyword">truncate</span> SCHEMAS<span class="token operator">=</span>kyle
+scp <span class="token operator">/</span>home<span class="token operator">/</span>oracle<span class="token operator">/</span>expdp_schema_kyle<span class="token punctuation">.</span>dmp orcl<span class="token number">-122</span>:<span class="token operator">/</span>home<span class="token operator">/</span>oracle<span class="token operator">/</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-5-配置环境变量"><a href="#1-5-配置环境变量" class="headerlink" title="1.5 配置环境变量"></a>1.5 配置环境变量</h3><pre class="line-numbers language-sql"><code class="language-sql">alias sqlplus<span class="token operator">=</span><span class="token string">"rlwrap sqlplus"</span>
+alias ggsci<span class="token operator">=</span><span class="token string">"rlwrap ggsci"</span>
+alias rman<span class="token operator">=</span><span class="token string">"rlwrap rman"</span>
+alias asmcmd<span class="token operator">=</span><span class="token string">"rlwrap asmcmd"</span>
+
+LD_LIBRARY_PATH<span class="token operator">=</span>$ORACLE_HOME<span class="token operator">/</span>lib:<span class="token operator">/</span>lib:<span class="token operator">/</span>usr<span class="token operator">/</span>lib<span class="token punctuation">;</span> export LD_LIBRARY_PATH
+CLASSPATH<span class="token operator">=</span><span class="token operator">/</span>ggs:$ORACLE_HOME<span class="token operator">/</span>JRE:$ORACLE_HOME<span class="token operator">/</span>jlib:$ORACLE_HOME<span class="token operator">/</span>rdbms<span class="token operator">/</span>jlib<span class="token punctuation">;</span> export CLASSPATH
+OGG_PATH<span class="token operator">=</span><span class="token operator">/</span>u01<span class="token operator">/</span>ggs export OGG_PATH
+PATH<span class="token operator">=</span><span class="token punctuation">.</span>:$PATH:$OGG_PATH:$HOME<span class="token operator">/</span>bin:$ORACLE_BASE<span class="token operator">/</span>product<span class="token operator">/</span><span class="token number">11.2</span><span class="token punctuation">.</span><span class="token number">0</span><span class="token operator">/</span>db_1<span class="token operator">/</span>bin:$ORACLE_HOME<span class="token operator">/</span>bin<span class="token punctuation">;</span> export PATH
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-6-修改系统参数开启归档"><a href="#1-6-修改系统参数开启归档" class="headerlink" title="1.6 修改系统参数开启归档"></a>1.6 修改系统参数开启归档</h3><pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">ALTER</span> SYSTEM <span class="token keyword">SET</span> ENABLE_GOLDENGATE_REPLICATION <span class="token operator">=</span> <span class="token boolean">TRUE</span> SCOPE<span class="token operator">=</span>BOTH<span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">add</span> supplemental log <span class="token keyword">data</span><span class="token punctuation">;</span>
+<span class="token keyword">alter</span> <span class="token keyword">database</span> <span class="token keyword">force</span> logging<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-7-配置OGG-源端"><a href="#1-7-配置OGG-源端" class="headerlink" title="1.7 配置OGG(源端)"></a>1.7 配置OGG(源端)</h3><ul>
+<li>1.创建目录</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> subdirs
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>2.配置MGR</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">GGSCI<span class="token operator">></span>
+EDIT PARAMS mgr
+PORT <span class="token number">7809</span>
+AUTOSTART ER <span class="token operator">*</span> 
+AUTORESTART ER <span class="token operator">*</span><span class="token punctuation">,</span> RETRIES <span class="token number">3</span><span class="token punctuation">,</span> WAITMINUTES <span class="token number">3</span><span class="token punctuation">,</span> RESETMINUTES <span class="token number">15</span>
+PURGEOLDEXTRACTS <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token comment" spellcheck="true">/*, USECHECKPOINTS, MINKEEPDAYS 2
+*/</span>
+<span class="token comment" spellcheck="true">--端口 7809</span>
+<span class="token comment" spellcheck="true">--自动启动 ER(EXTARCT REPLACT)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>3.配置检查点</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--GLOBALS储存了运行的一些信息</span>
+GGSCI<span class="token operator">></span> EDIT PARAMS <span class="token punctuation">.</span><span class="token operator">/</span>GLOBALS
+CHECKPOINTTABLE goldengate<span class="token punctuation">.</span><span class="token keyword">checkpoint</span>
+GGSCI<span class="token operator">></span> dblogin userid goldengate<span class="token punctuation">,</span>password goldengate
+GGSCI<span class="token operator">></span> <span class="token keyword">ADD</span> CHECKPOINTTABLE goldengate<span class="token punctuation">.</span><span class="token keyword">checkpoint</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>4.添加补充日志</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--ADD TRANDATA itpux.*</span>
+<span class="token keyword">ADD</span> SCHEMATRANDATA kyle
+<span class="token comment" spellcheck="true">--配置ddl 的时候，一定要用ADD SCHEMATRANDATA</span>
+<span class="token comment" spellcheck="true">--如果不用ddl,可以用ADD TRANDATA</span>
+info SCHEMATRANDATA kyle
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>5.配置extract进程</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--建立EXTRACT目录</span>
+mkdir <span class="token operator">-</span>p <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token operator">/</span>rkyle
+mkdir <span class="token operator">-</span>p <span class="token punctuation">.</span><span class="token operator">/</span>dirrpt<span class="token operator">/</span>rkyle
+mkdir <span class="token operator">-</span>p <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token operator">/</span>ekyle
+mkdir <span class="token operator">-</span>p <span class="token punctuation">.</span><span class="token operator">/</span>dirrpt<span class="token operator">/</span>ekyle
+
+GGSCI<span class="token operator">></span>
+EDIT PARAMS ekyle
+
+setenv<span class="token punctuation">(</span>NLS_LANG<span class="token operator">=</span><span class="token string">"AMERICAN_AMERICA.ZHS16GBK"</span><span class="token punctuation">)</span>
+setenv<span class="token punctuation">(</span>ORACLE_SID<span class="token operator">=</span><span class="token string">"itpux"</span><span class="token punctuation">)</span>
+EXTRACT ekyle
+DDL INCLUDE <span class="token keyword">ALL</span>
+DDLOPTIONS ADDTRANDATA<span class="token punctuation">,</span>REPORT
+USERID goldengate<span class="token punctuation">,</span> PASSWORD goldengate
+EXTTRAIL <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token operator">/</span>ekyle<span class="token operator">/</span>ex
+TRANLOGOPTIONS excludeuser goldengate
+TRANLOGOPTIONS convertucs2clobs
+WARNLONGTRANS 12h<span class="token punctuation">,</span>CHECKINTERVAL 30m
+DISCARDFILE <span class="token punctuation">.</span><span class="token operator">/</span>dirrpt<span class="token operator">/</span>ekyle<span class="token operator">/</span>ekyle<span class="token punctuation">.</span>dsc<span class="token punctuation">,</span> APPEND<span class="token punctuation">,</span> MEGABYTES <span class="token number">200</span>
+<span class="token keyword">TABLE</span> kyle<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">--设置语言</span>
+<span class="token comment" spellcheck="true">--设置SID</span>
+<span class="token comment" spellcheck="true">--设置EXTRACT名称不能操作过8个字符</span>
+<span class="token comment" spellcheck="true">--抽取所有的DDL操作</span>
+<span class="token comment" spellcheck="true">--</span>
+<span class="token comment" spellcheck="true">--定义OGG使用用户</span>
+<span class="token comment" spellcheck="true">--设置抽取目录</span>
+<span class="token comment" spellcheck="true">--排除用于管理抽取的OGG用户</span>
+<span class="token comment" spellcheck="true">--某某参数，可以传输大字段</span>
+<span class="token comment" spellcheck="true">--设置告警阈值</span>
+<span class="token comment" spellcheck="true">--配置文件存放位置</span>
+<span class="token comment" spellcheck="true">--抽取的表</span>
+
+<span class="token comment" spellcheck="true">--添加一个抽取进程</span>
+<span class="token comment" spellcheck="true">--THREADS 2表示源端有2个RAC节点</span>
+<span class="token keyword">ADD</span> EXTRACT ekyle<span class="token punctuation">,</span> TRANLOG<span class="token punctuation">,</span> <span class="token keyword">BEGIN</span> NOW
+<span class="token keyword">ADD</span> EXTRACT ekyle<span class="token punctuation">,</span> TRANLOG<span class="token punctuation">,</span> <span class="token keyword">BEGIN</span> NOW<span class="token punctuation">,</span> THREADS <span class="token number">2</span>
+<span class="token comment" spellcheck="true">--添加一个队列文件</span>
+GGSCI<span class="token operator">></span>
+<span class="token keyword">ADD</span> EXTTRAIL <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token operator">/</span>ekyle<span class="token operator">/</span>ex<span class="token punctuation">,</span> EXTRACT ekyle<span class="token punctuation">,</span> MEGABYTES <span class="token number">200</span>
+
+<span class="token comment" spellcheck="true">--启动停止测试</span>
+GGSCI<span class="token operator">></span>
+<span class="token keyword">START</span> ekyle
+STOP ekyle
+<span class="token keyword">VIEW</span> REPORT ekyle
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>6.配置PUMP进程</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token number">cd</span> <span class="token operator">/</span>u01<span class="token operator">/</span>ggs
+mkdir <span class="token operator">-</span>p <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token operator">/</span>ekyle
+mkdir <span class="token operator">-</span>p <span class="token punctuation">.</span><span class="token operator">/</span>dirrpt<span class="token operator">/</span>ekyle
+
+GGSCI<span class="token operator">></span>
+EDIT PARAMS pkyle
+
+setenv<span class="token punctuation">(</span>NLS_LANG<span class="token operator">=</span><span class="token string">"AMERICAN_AMERICA.ZHS16GBK"</span><span class="token punctuation">)</span>
+setenv<span class="token punctuation">(</span>ORACLE_SID<span class="token operator">=</span><span class="token string">"orcl"</span><span class="token punctuation">)</span>
+EXTRACT pkyle
+USERID goldengate<span class="token punctuation">,</span>PASSWORD goldengate
+PASSTHRU                        
+RMTHOST <span class="token number">172.17</span><span class="token punctuation">.</span><span class="token number">0.122</span><span class="token punctuation">,</span>MGRPORT <span class="token number">7809</span>
+RMTTRAIL <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token operator">/</span>rkyle<span class="token operator">/</span>re
+DISCARDFILE <span class="token punctuation">.</span><span class="token operator">/</span>dirrpt<span class="token operator">/</span>rkyle<span class="token operator">/</span>rkyle<span class="token punctuation">.</span>dsc<span class="token punctuation">,</span> APPEND<span class="token punctuation">,</span> MEGABYTES <span class="token number">200</span>
+<span class="token keyword">TABLE</span> ekyle<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">--</span>
+<span class="token comment" spellcheck="true">--</span>
+<span class="token comment" spellcheck="true">--</span>
+<span class="token comment" spellcheck="true">-- 禁止extract与数据库交互，适合于PUMP传输进程</span>
+<span class="token comment" spellcheck="true">-- 远端的IP,端口</span>
+<span class="token comment" spellcheck="true">-- 指定写入到远程目标端的哪个队列</span>
+<span class="token comment" spellcheck="true">-- 指定报错输出文件</span>
+<span class="token comment" spellcheck="true">-- 指定传输表</span>
+
+
+<span class="token comment" spellcheck="true">--增加pump 进程(指定本地trail 文件)</span>
+GGSCI<span class="token operator">></span>
+<span class="token keyword">ADD</span> EXTRACT pkyle<span class="token punctuation">,</span>EXTTRAILSOURCE <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token operator">/</span>ekyle<span class="token operator">/</span>ex
+
+<span class="token comment" spellcheck="true">--增加rmttail 文件</span>
+GGSCI<span class="token operator">></span>
+<span class="token keyword">ADD</span> RMTTRAIL <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token operator">/</span>rkyle<span class="token operator">/</span>re<span class="token punctuation">,</span> EXTRACT pkyle<span class="token punctuation">,</span> MEGABYTES <span class="token number">200</span>
+<span class="token comment" spellcheck="true">--检查:</span>
+GGSCI<span class="token operator">></span>
+INFO  pkyle
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="1-8-配置OGG-目标端"><a href="#1-8-配置OGG-目标端" class="headerlink" title="1.8 配置OGG(目标端)"></a>1.8 配置OGG(目标端)</h3><ul>
+<li>1.配置mgr</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">GGSCI<span class="token operator">></span> EDIT PARAMS MGR
+PORT <span class="token number">7809</span>
+AUTOSTART ER <span class="token operator">*</span> 
+AUTORESTART ER <span class="token operator">*</span><span class="token punctuation">,</span> RETRIES <span class="token number">3</span><span class="token punctuation">,</span> WAITMINUTES <span class="token number">3</span><span class="token punctuation">,</span> RESETMINUTES <span class="token number">15</span>
+PURGEOLDEXTRACTS <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token comment" spellcheck="true">/*, USECHECKPOINTS, MINKEEPDAYS 2
+*/</span>
+GGSCI<span class="token operator">></span>
+<span class="token keyword">START</span> MGR
+STOP MGR
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>2.配置检查点</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">GGSCI<span class="token operator">></span> EDIT PARAMS <span class="token punctuation">.</span><span class="token operator">/</span>GLOBALS
+CHECKPOINTTABLE goldengate<span class="token punctuation">.</span><span class="token keyword">checkpoint</span>
+GGSCI<span class="token operator">></span> dblogin userid goldengate<span class="token punctuation">,</span>password goldengate
+GGSCI<span class="token operator">></span> <span class="token keyword">ADD</span> CHECKPOINTTABLE goldengate<span class="token punctuation">.</span><span class="token keyword">checkpoint</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>3.配置replicat进程<br><code>`</code>sql<br>cd /u01/ggs<br>mkdir -p ./dirdat/rkyle<br>mkdir -p ./dirrpt/rkyle</li>
+</ul>
+<p>ggsci&gt; edit params rkyle</p>
+<p>setenv(NLS_LANG=”AMERICAN_AMERICA.ZHS16GBK”)<br>setenv(ORACLE_SID=”itpux”)<br>REPLICAT rkyle<br>USERID goldengate,PASSWORD goldengate<br>handlecollisions<br>assumetargetdefs<br>DISCARDFILE ./dirrpt/rkyle/rkyle.dsc, APPEND, MEGABYTES 200<br>MAP kyle.<em>, target kyle.</em>;</p>
+<p>–添加replicat 进程<br>GGSCI&gt;<br>ADD REPLICAT rkyle EXTTRAIL ./dirdat/rkyle/re, CHECKPOINTTABLE goldengate.checkpoint<br>–启动相关进程(目标)<br>GGSCI&gt;<br>START rkyle<br>VIEW REPORT rkyle<br>INFO ALL<br>–启动相关进程(源端)<br>GGSCI&gt;<br>START rkyle<br>START pkyle<br>VIEW REPORT rkyle<br>VIEW REPORT pkyle<br>INFO ALL</p>
+<pre><code>
+### 1.9 disable 目标库所有的trigger、cascading delete、check、job
+```sql
+SET PAGESIZE 2000
+SET LINESIZE 100
+--Foreign key Constraints/Cascading Deletes
+SELECT    &#39;alter table &#39;
+       || owner
+       || &#39;.&#39;
+       || table_name
+       || &#39; DISABLE CONSTRAINT &#39;
+       || constraint_name
+       || &#39;;&#39;
+  FROM dba_constraints
+ WHERE     constraint_type = &#39;R&#39;
+       AND delete_rule = &#39;CASCADE&#39;
+       AND owner IN (&#39;KYLE&#39;,
+                     &#39;KYLE01&#39;);
+
+
+--查找生成并disable 约束(Check)：
+SELECT    &#39;alter table &#39;
+       || owner
+       || &#39;.&#39;
+       || table_name
+       || &#39; DISABLE CONSTRAINT &#39;
+       || constraint_name
+       || &#39;;&#39;
+  FROM dba_constraints
+ WHERE     constraint_type = &#39;C&#39;
+       AND owner IN (&#39;KYLE&#39;,
+                     &#39;KYLE01&#39;);
+
+--查找生成并disable trigger：
+SELECT &#39;alter trigger &#39; || owner || &#39;.&#39; || object_name || &#39; disable;&#39;
+  FROM dba_objects
+ WHERE     object_type = &#39;TRIGGER&#39;
+       AND owner IN (&#39;KYLE&#39;,
+                     &#39;KYLE01&#39;);
+
+
+--查找并disable job
+SELECT job,
+       next_date,
+       next_sec,
+       failures,
+       broken
+  FROM dba_jobs
+ WHERE SCHEMA_USER IN (&#39;KYLE&#39;,
+                       &#39;KYLE01&#39;);
+
+BEGIN
+    sys.DBMS_JOB.broken (job =&gt; 21, broken =&gt; TRUE);
+    COMMIT;
+END;
+
+
+--生成结果如下，然后在目标数据库中执行：
+alter table ... DISABLE CONSTRAINT SYS_C0017353;
+alter table ... DISABLE CONSTRAINT SYS_C0017355;…
+…
+alter trigger ... disable;
+alter trigger ... disable;
+alter trigger ... disable;
+--确认外键已经被禁用
+SELECT OWNER,
+       CONSTRAINT_NAME,
+       CONSTRAINT_TYPE,
+       STATUS
+  FROM dba_CONSTRAINTS
+ WHERE     CONSTRAINT_TYPE = &#39;R&#39;
+       AND status = &#39;ENABLED&#39;
+       AND owner IN (&#39;KYLE&#39;,
+                     &#39;KYLE01&#39;);
+--确认目标端目标表的主键可用:
+SELECT T1.STATUS,
+       T1.VALIDATED,
+       T2.status,
+       T1.constraint_name,
+       T1.owner
+  FROM dba_constraints T1, dba_objects T2
+ WHERE     T2.OBJECT_NAME = T1.constraint_name
+       AND T1.OWNER IN (&#39;KYLE&#39;,
+                        &#39;KYLE01&#39;);
+
+--验证job 确实被禁用
+SELECT job,
+       LOG_USER,
+       PRIV_USER,
+       SCHEMA_USER,
+       broken
+  FROM dba_jobs
+ WHERE schema_user IN (&#39;KYLE&#39;,
+                       &#39;KYLE01&#39;);
+
+SELECT OWNER, JOB_NAME, STATE
+  FROM DBA_SCHEDULER_JOBS
+ WHERE OWNER IN (&#39;KYLE&#39;,
+                 &#39;KYLE01&#39;);
+
+--确认trigger 已经全部关闭
+SELECT DISTINCT status
+  FROM dba_triggers
+ WHERE owner IN (&#39;KYLE&#39;,
+                 &#39;KYLE01&#39;);
+</code></pre><h2 id="2-添加DDL功能与加密"><a href="#2-添加DDL功能与加密" class="headerlink" title="2,.添加DDL功能与加密"></a>2,.添加DDL功能与加密</h2><h3 id="2-1-添加DDL功能"><a href="#2-1-添加DDL功能" class="headerlink" title="2.1 添加DDL功能"></a>2.1 添加DDL功能</h3><ul>
+<li>1.关闭所有OGG进程</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">STOP ekyle
+STOP pkyle
+STOP rkyle
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>2.用户的默认表空间不能自动SYSTEM表空间</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">set</span> PAGRSIZE <span class="token number">200</span>
+<span class="token keyword">set</span> LINESIZE <span class="token number">200</span>
+col USERNAME format A20
+col DEFAULT_TABLESPACE format A20 
+
+<span class="token keyword">SELECT</span> username<span class="token punctuation">,</span> default_tablespace <span class="token keyword">FROM</span> dba_users<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>3.关闭回收站并清空回收站</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--11G可以启动回收站，10G必须关闭回收站</span>
+<span class="token keyword">ALTER</span> SYSTEM <span class="token keyword">SET</span> recyclebin <span class="token operator">=</span> <span class="token keyword">off</span> SCOPE <span class="token operator">=</span> SPFILE<span class="token punctuation">;</span>
+<span class="token keyword">PURGE</span> DBA_RECYCLEBIN<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>4.指明支持DDL的对象放在那个SCHEMA下载</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">ggsci<span class="token operator">></span> edit params <span class="token punctuation">.</span><span class="token operator">/</span>GLOBALS
+GGSCHEMA goldengate
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>5.添加相关权限</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">GRANT</span> <span class="token keyword">EXECUTE</span> <span class="token keyword">ON</span> UTL_FILE <span class="token keyword">TO</span> goldengate<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> RESTRICTED <span class="token keyword">SESSION</span> <span class="token keyword">TO</span> goldengate<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> <span class="token keyword">CREATE</span> <span class="token keyword">TABLE</span><span class="token punctuation">,</span> <span class="token keyword">CREATE</span> SEQUENCE <span class="token keyword">TO</span> goldengate<span class="token punctuation">;</span>
+<span class="token keyword">GRANT</span> GGS_GGSUSER_ROLE <span class="token keyword">TO</span> goldengate<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>6.执行脚本（源目标）</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token number">cd</span> <span class="token operator">/</span>ggs
+sqlplus <span class="token string">"/as sysdba"</span>
+<span class="token variable">@marker_setup.sql</span>
+<span class="token variable">@ddl_setup.sql</span>
+<span class="token variable">@role_setup.sql</span>
+<span class="token keyword">GRANT</span> GGS_GGSUSER_ROLE <span class="token keyword">TO</span> goldengate<span class="token punctuation">;</span>
+<span class="token variable">@ddl_enable.sql</span>
+<span class="token variable">@$ORACLE_HOME</span><span class="token operator">/</span>rdbms<span class="token operator">/</span>admin<span class="token operator">/</span>dbmspool<span class="token punctuation">.</span>sql
+<span class="token variable">@ddl_pin.sql</span> goldengate
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>7.修改参数，增加DDL复制参数</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">ggsci <span class="token operator">></span>edit params eitpux01
+<span class="token comment" spellcheck="true">--DDL INCLUDE OBJNAME "ITPUX01.*"</span>
+DDL INCLUDE <span class="token keyword">ALL</span>
+DDLOPTIONS ADDTRANDATA<span class="token punctuation">,</span>REPORT
+
+ggsci <span class="token operator">></span>edit params ritpux01
+<span class="token comment" spellcheck="true">--DDL INCLUDE OBJNAME "ITPUX01.*"</span>
+DDL INCLUDE <span class="token keyword">ALL</span>
+DDLERROR <span class="token keyword">default</span> <span class="token keyword">ignore</span> retryop
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>8.启动进程</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">START</span> ekyle
+<span class="token keyword">START</span> pkyle
+<span class="token keyword">START</span> ryle
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>DDL其他功能</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--开启</span>
+ddl_enable<span class="token punctuation">.</span>sql
+<span class="token comment" spellcheck="true">--关闭</span>
+ddl_disable<span class="token punctuation">.</span>sql
+
+<span class="token comment" spellcheck="true">--清空DDL trace ggs_ddl_trace.log</span>
+ddl_cleartrace<span class="token punctuation">.</span>sql
+
+<span class="token comment" spellcheck="true">--ddl 参数：</span>
+optype alert
+objtype <span class="token string">"table"</span>
+ojbname <span class="token string">"user.tab*"</span>
+include mapped object <span class="token string">"*"</span><span class="token punctuation">;</span>
+exclude mapped object <span class="token string">"itpux.itux*"</span>
+DDL 环境重配（删除就是<span class="token number">1</span><span class="token operator">-</span><span class="token number">5</span>，<span class="token number">12</span>，去掉参数中的DDL）:
+<span class="token number">1</span><span class="token punctuation">.</span>停止所有的OGG ex<span class="token operator">/</span>pump<span class="token operator">/</span>rp 进程
+<span class="token number">2</span><span class="token punctuation">.</span><span class="token variable">@ddl_disable.sql</span>
+<span class="token number">3</span><span class="token punctuation">.</span><span class="token variable">@ddl_remove.sql</span>
+<span class="token number">4</span><span class="token punctuation">.</span><span class="token variable">@marker_remove.sql</span>
+<span class="token number">5</span><span class="token punctuation">.</span><span class="token variable">@marker_setup.sql</span>
+<span class="token number">6</span><span class="token punctuation">.</span><span class="token variable">@ddl_setup.sql</span>
+<span class="token number">7</span><span class="token punctuation">.</span><span class="token variable">@role_setup.sql</span>
+<span class="token number">8</span><span class="token punctuation">.</span><span class="token keyword">GRANT</span> GGS_GGSUSER_ROLE <span class="token keyword">TO</span> goldengate<span class="token punctuation">;</span>
+<span class="token number">9</span><span class="token punctuation">.</span><span class="token variable">@ddl_enable.sql</span>
+<span class="token number">10</span><span class="token punctuation">.</span><span class="token variable">@$ORACLE_HOME</span><span class="token operator">/</span>rdbms<span class="token operator">/</span>admin<span class="token operator">/</span>dbmspool<span class="token punctuation">.</span>sql
+<span class="token number">11</span><span class="token punctuation">.</span><span class="token variable">@ddl_pin.sql</span> goldengate
+<span class="token number">12</span><span class="token punctuation">.</span>运行所有的OGG ex<span class="token operator">/</span>pump<span class="token operator">/</span>rp 进程
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2-加密"><a href="#2-2-加密" class="headerlink" title="2.2 加密"></a>2.2 加密</h3><ul>
+<li>1.生成加密的KEY </li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token punctuation">[</span>oracle<span class="token variable">@orcl</span>:<span class="token operator">/</span>u01<span class="token operator">/</span>ggs<span class="token punctuation">]</span>$keygen <span class="token number">256</span> <span class="token number">1</span>
+0x1673D6197E05DA1009B1451420A73134BDF868246D6AC878FBFC69193231C355
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>2.将KEY存到本地指定文件</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token punctuation">[</span>oracle<span class="token variable">@orcl</span>:<span class="token operator">/</span>u01<span class="token operator">/</span>ggs<span class="token punctuation">]</span>$cat ENCKEYS 
+KYLE_KEY 0xE9E07156ACC2411F97E78D117B55C444E935E27A034CBD389CF2F432F8B5F417
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>3.设置登录用的的KEY</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">
+GGSCI <span class="token punctuation">(</span>orcl<span class="token punctuation">)</span> <span class="token number">109</span><span class="token operator">></span> ENCRYPT PASSWORD goldengate AES256 ENCRYPTKEY KYLE_KEY
+Encrypted password:  AADAAAAAAAAAAAKABIXBCASDGBHCGFNGMHJIFFMDXFGBRCLHTGJGVIECPCGEUAJEXDSEFBUCGATGKGUGBGCCVFKBBENDYBSAPDZBACQCQILIRHYH
+<span class="token keyword">Algorithm</span> used:  AES256
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>添加KEY到相应文件</li>
+</ul>
+<pre class="line-numbers language-sql"><code class="language-sql">extract eitpux01
+DDL INCLUDE <span class="token keyword">ALL</span>
+DDLOPTIONS ADDTRANDATA<span class="token punctuation">,</span>REPORT
+userid goldengate<span class="token punctuation">,</span>password AADAAAAAAAAAAAKACAHHWIRDTBQDNBUJYFUCXCGEVBCDHBCEGFOIQFSEGFKCBGLDPGUGAIIHZDJATJSJYBPBSJSJUFSBJCUBYCXBFBPJPDSBVGBJ<span class="token punctuation">,</span>AES256<span class="token punctuation">,</span>ENCRYPTKEY KYLE_KEY
+exttrail <span class="token punctuation">.</span><span class="token operator">/</span>dirdat<span class="token operator">/</span>eitpux01<span class="token operator">/</span>ex
+tranlogoptions excludeuser goldengate
+tranlogoptions convertucs2clobs
+warnlongtrans 12h<span class="token punctuation">,</span>checkinterval 30m
+discardfile <span class="token punctuation">.</span><span class="token operator">/</span>dirrpt<span class="token operator">/</span>eitpux01<span class="token operator">/</span>eitpux01<span class="token punctuation">.</span>dsc<span class="token punctuation">,</span>append<span class="token punctuation">,</span>megabytes <span class="token number">200</span>
+<span class="token keyword">TABLE</span> itpux<span class="token punctuation">.</span><span class="token operator">*</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--TABLE itpux01.*;</span>
+<span class="token comment" spellcheck="true">--TABLE itpux02.*;</span>
+<span class="token comment" spellcheck="true">--TABLE itpux03.*;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/oracle/oracle-goldengate-fu-zhi-yu-rong-zai-shi-shi-shou-ce/">https://gin.sh/oracle/oracle-goldengate-fu-zhi-yu-rong-zai-shi-shi-shou-ce/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Oracle/">
+                                    <span class="chip bg-color">Oracle</span>
+                                </a>
+                            
+                                <a href="/tags/GoldenGate/">
+                                    <span class="chip bg-color">GoldenGate</span>
+                                </a>
+                            
+                                <a href="/tags/%E5%A4%87%E4%BB%BD%E5%AE%B9%E7%81%BE/">
+                                    <span class="chip bg-color">备份容灾</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/oracle/oracle-goldengate-fu-zhi-yu-rong-zai-shi-shi-shou-ce/';
+        this.page.identifier = '/oracle/oracle-goldengate-fu-zhi-yu-rong-zai-shi-shi-shou-ce/';
+        this.page.title = 'Oracle Goldengate数据库复制与容灾实施';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/laravel/laravel-jian-dan-fen-zu-tong-ji/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/14.jpg" class="responsive-img" alt="Laravel简单的分组统计">
+                        
+                        <span class="card-title">Laravel简单的分组统计</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-09-07
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Laravel/" class="post-category">
+                                    Laravel
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/PHP/">
+                        <span class="chip bg-color">PHP</span>
+                    </a>
+                    
+                    <a href="/tags/Laravel/">
+                        <span class="chip bg-color">Laravel</span>
+                    </a>
+                    
+                    <a href="/tags/MySQL/">
+                        <span class="chip bg-color">MySQL</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/sql/json-merge-patch/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/16.jpg" class="responsive-img" alt="JSON Merge Patch">
+                        
+                        <span class="card-title">JSON Merge Patch</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-09-07
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/SQL/" class="post-category">
+                                    SQL
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/SQL/">
+                        <span class="chip bg-color">SQL</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

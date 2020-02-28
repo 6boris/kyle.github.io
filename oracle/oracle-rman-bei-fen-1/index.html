@@ -1,0 +1,1744 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Oracle Rman 备份1, Gin Bar">
+    <meta name="description" content="这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>Oracle Rman 备份1 | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/medias/featureimages/19.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Oracle Rman 备份1</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Oracle/">
+                                <span class="chip bg-color">Oracle</span>
+                            </a>
+                        
+                            <a href="/tags/RMAN/">
+                                <span class="chip bg-color">RMAN</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Oracle/" class="post-category">
+                                Oracle
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2018-10-04
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    36 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="Oracle-Rman-的备份-（基础）"><a href="#Oracle-Rman-的备份-（基础）" class="headerlink" title="Oracle Rman 的备份 （基础）"></a>Oracle Rman 的备份 （基础）</h1><p> <a href="https://docs.oracle.com/cd/E11882_01/backup.112/e10643/preface.htm#RCMRF89959" target="_blank" rel="noopener">Oracle 11G R2 官方文档</a> </p>
+<h2 id="1-RMAN作用与体系架构"><a href="#1-RMAN作用与体系架构" class="headerlink" title="1. RMAN作用与体系架构"></a>1. RMAN作用与体系架构</h2><h2 id="2-nocatalog-余catalog-的介绍与catalog的配置"><a href="#2-nocatalog-余catalog-的介绍与catalog的配置" class="headerlink" title="2. nocatalog 余catalog 的介绍与catalog的配置"></a>2. nocatalog 余catalog 的介绍与catalog的配置</h2><h3 id="2-1-nocatalog介绍"><a href="#2-1-nocatalog介绍" class="headerlink" title="2.1 nocatalog介绍"></a>2.1 nocatalog介绍</h3><blockquote>
+<p>&emsp;&emsp;nocatalog方式 就是用control file作为catalog，每一次备份都要往控制文件里面写好多备份信息，控制文件里面会有越来越多的备份信息。因此，当使用rman nocatalog方式备份时，备份controlfile是非常重要的。</p>
+</blockquote>
+<blockquote>
+<p>&emsp;&emsp;由于nocatalog时利用controlfile存放备份信息，建议将oracle参数文件中的control_file_record_keep_time值加大（缺省为7天）, 参数在$oracle_home/dbs/initsid.ora中，该参数control_file__record_keep_time设置备份信息保存时间，到规定时间就自动清除以前的备份信息。</p>
+</blockquote>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token comment" spellcheck="true">--查看参数</span>
+<span class="token keyword">show</span> parameter control
+<span class="token comment" spellcheck="true">--修改时间为半个月</span>
+<span class="token keyword">alter</span> system <span class="token keyword">set</span> control_file_record_keep_time<span class="token operator">=</span><span class="token number">14</span> scope<span class="token operator">=</span>both<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--查看参数</span>
+<span class="token keyword">select</span> name<span class="token punctuation">,</span><span class="token keyword">value</span><span class="token punctuation">,</span>issys_modifiable <span class="token keyword">from</span> v$parameter <span class="token keyword">where</span> name<span class="token operator">=</span><span class="token string">'control_file_record_keep_time'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="2-2-catalog介绍"><a href="#2-2-catalog介绍" class="headerlink" title="2.2 catalog介绍"></a>2.2 catalog介绍</h3><blockquote>
+<p>&emsp;&emsp;恢复目录存储的是与rman 备份有关的元数据。在某种意义上，恢复目录可以看做是保存rman备份和恢复所需的相关信息的副本。<br>&emsp;&emsp;我们可以在oracle 数据库中在用户模式下创建恢复目录，这个恢复目录仅仅是一些数据包，表，索引和视图。<br>&emsp;&emsp;rman中的再同步命令会使得目标数据库控制文件中的内容刷新这些表中的数据。当然，区别在于恢复目录可以包含企业中所有数据库的信息，而控制文件只包含关于它自己的数据库的信息。</p>
+</blockquote>
+<h3 id="2-3-catalog恢复目录的配置过程"><a href="#2-3-catalog恢复目录的配置过程" class="headerlink" title="2.3 catalog恢复目录的配置过程"></a>2.3 catalog恢复目录的配置过程</h3><ul>
+<li><p>创建时需要的表空间</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">create</span> <span class="token keyword">tablespace</span> rman_tbs 
+  datafile <span class="token string">'/u01/app/oracle/oradata/orcl/rman_tbs.dbf'</span>
+  size 1G 
+  autoextend <span class="token keyword">off</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li><p>创建用户并授权<br><code>`</code>sql<br>create user rman<br>  identified by rman<br>  default tablespace rman_tbs;</p>
+</li>
+</ul>
+<p>grant connect,resource,recovery_catalog_owner to rman;</p>
+<pre><code>
+* 创建恢复目录
+```sql
+rman catalog rman/rman
+create catalog tablespace rman_tbs;
+--注意这里tablespace不能为rman
+</code></pre><ul>
+<li>配置rman 专用的监听<pre class="line-numbers language-sql"><code class="language-sql">rman <span class="token operator">=</span>
+  <span class="token punctuation">(</span>description <span class="token operator">=</span>
+      <span class="token punctuation">(</span>address_list <span class="token operator">=</span>
+          <span class="token punctuation">(</span>address <span class="token operator">=</span> <span class="token punctuation">(</span>protocol <span class="token operator">=</span> tcp<span class="token punctuation">)</span><span class="token punctuation">(</span>host <span class="token operator">=</span> orcl<span class="token punctuation">)</span><span class="token punctuation">(</span>port <span class="token operator">=</span> <span class="token number">1521</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+      <span class="token punctuation">)</span>
+      <span class="token punctuation">(</span>connect_data <span class="token operator">=</span>
+          <span class="token punctuation">(</span>sid <span class="token operator">=</span> orcl<span class="token punctuation">)</span>
+      <span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<h2 id="3-详解-RMAN-的使用"><a href="#3-详解-RMAN-的使用" class="headerlink" title="3. 详解 RMAN 的使用"></a>3. 详解 RMAN 的使用</h2><h3 id="3-1-设置环境变量"><a href="#3-1-设置环境变量" class="headerlink" title="3.1 设置环境变量"></a>3.1 设置环境变量</h3><blockquote>
+<p>&emsp;&emsp;  修改oracle用户环境变量为如下，在linux系统中还有一个rman命令不是oracle的，如果在win环境下，可以直接使用cmd。<br>path=$oracle_home/bin:/sbin:$path<br>才可以使用rman命令</p>
+</blockquote>
+<h3 id="3-2-rman命令的帮助"><a href="#3-2-rman命令的帮助" class="headerlink" title="3.2 rman命令的帮助"></a>3.2 rman命令的帮助</h3><pre class="line-numbers language-sql"><code class="language-sql">Argument     <span class="token keyword">Value</span>          Description
+<span class="token comment" spellcheck="true">-----------------------------------------------------------------------------</span>
+target       quoted<span class="token operator">-</span>string  <span class="token keyword">connect</span><span class="token operator">-</span>string <span class="token keyword">for</span> target <span class="token keyword">database</span>
+catalog      quoted<span class="token operator">-</span>string  <span class="token keyword">connect</span><span class="token operator">-</span>string <span class="token keyword">for</span> recovery catalog
+nocatalog    none           <span class="token keyword">if</span> specified<span class="token punctuation">,</span> <span class="token keyword">then</span> <span class="token keyword">no</span> recovery catalog
+cmdfile      quoted<span class="token operator">-</span>string  name <span class="token keyword">of</span> input command <span class="token keyword">file</span>
+log          quoted<span class="token operator">-</span>string  name <span class="token keyword">of</span> output message log <span class="token keyword">file</span>
+trace        quoted<span class="token operator">-</span>string  name <span class="token keyword">of</span> output debugging message log <span class="token keyword">file</span>
+append       none           <span class="token keyword">if</span> specified<span class="token punctuation">,</span> log <span class="token operator">is</span> opened <span class="token operator">in</span> append mode
+debug        optional<span class="token operator">-</span>args  activate debugging
+msgno        none           <span class="token keyword">show</span> RMAN<span class="token operator">-</span>nnnn prefix <span class="token keyword">for</span> <span class="token keyword">all</span> messages
+send         quoted<span class="token operator">-</span>string  send <span class="token number">a</span> command <span class="token keyword">to</span> the media manager
+pipe         string         building block <span class="token keyword">for</span> pipe names
+timeout      <span class="token keyword">integer</span>        number <span class="token keyword">of</span> seconds <span class="token keyword">to</span> wait <span class="token keyword">for</span> pipe input
+checksyntax  none           <span class="token keyword">check</span> the command <span class="token keyword">file</span> <span class="token keyword">for</span> syntax <span class="token keyword">errors</span>
+<span class="token comment" spellcheck="true">-----------------------------------------------------------------------------</span>
+Both single <span class="token operator">and</span> <span class="token keyword">double</span> quotes <span class="token punctuation">(</span>' <span class="token operator">or</span> "<span class="token punctuation">)</span> are accepted <span class="token keyword">for</span> <span class="token number">a</span> quoted<span class="token operator">-</span>string<span class="token punctuation">.</span>
+Quotes are <span class="token operator">not</span> required unless the string <span class="token keyword">contains</span> embedded white<span class="token operator">-</span>space<span class="token punctuation">.</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-3-rman连接信息介绍"><a href="#3-3-rman连接信息介绍" class="headerlink" title="3.3 rman连接信息介绍"></a>3.3 rman连接信息介绍</h3><ul>
+<li>连接到目标数据库<pre class="line-numbers language-sql"><code class="language-sql">rman<span class="token operator">></span><span class="token keyword">connect</span> target <span class="token keyword">user</span><span class="token operator">/</span>pwd<span class="token variable">@db_name</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</li>
+<li>注意<blockquote>
+<p>1、connect不能简写为conn<br>2、连接user必须具备sysdba权限<br>3、连接的db_name必须在tnsnames.ora中有配置，且有效(即通过sqlplus可以连接）<br>4、target database必须为archivelog 模式<br>5、如果是本地可以采用os认证，如果是远程需要使用密码文件认证。<br>6、rman工具版本与目标数据库必须是同一版本。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="3-4-在rman里执行操作系统命令"><a href="#3-4-在rman里执行操作系统命令" class="headerlink" title="3.4 在rman里执行操作系统命令"></a>3.4 在rman里执行操作系统命令</h3><pre class="line-numbers language-sql"><code class="language-sql">rman<span class="token operator">></span> run{host <span class="token string">"ls -artl"</span><span class="token punctuation">;</span>}
+rman<span class="token operator">></span> run{host <span class="token string">"ifconfig"</span><span class="token punctuation">;</span>}
+rman<span class="token operator">></span> run{host <span class="token string">"pwd"</span><span class="token punctuation">;</span>}
+<span class="token operator">/</span>home<span class="token operator">/</span>oracle
+host commandcomplete
+rman<span class="token operator">></span> run{host <span class="token string">"ls"</span><span class="token punctuation">;</span>}
+rman<span class="token operator">></span> <span class="token keyword">exit</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-5-在rman里执行数据库命令及sql语句"><a href="#3-5-在rman里执行数据库命令及sql语句" class="headerlink" title="3.5 在rman里执行数据库命令及sql语句"></a>3.5 在rman里执行数据库命令及sql语句</h3><pre class="line-numbers language-sql"><code class="language-sql">rman<span class="token operator">></span> <span class="token keyword">shutdown</span> immediate
+rman<span class="token operator">></span> startup
+rman<span class="token operator">></span> sql <span class="token string">'select * fromuser_tablespaces'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-6-在rman中保存脚本或执行脚本"><a href="#3-6-在rman中保存脚本或执行脚本" class="headerlink" title="3.6 在rman中保存脚本或执行脚本"></a>3.6 在rman中保存脚本或执行脚本</h3><blockquote>
+<p>在RMAN中，我们可以创建一个命令文件，里面包含rman命令，然后在RMAN的中调用这个文件。如：<br>Rman target usr/pwd cmdfile=backup.cmd<br>或者，也可以直接在RMAN 中直接运行</p>
+</blockquote>
+<ul>
+<li>创建存储的脚本<blockquote>
+<p>使用create script RMAN 命令可以在恢复目录中存储脚本。 创建每个存储的脚本时，都要为脚本指定一个名称。 可以创建执行数据库备份，恢复和维护操作的脚本。在脚本中，RMAN 允许使用comment 参数存储与存储脚本相关的注释。 注意： 必须连接到恢复目录。 如：</p>
+<pre class="line-numbers language-sql"><code class="language-sql">RMAN<span class="token operator">></span> <span class="token keyword">create</span> script my_backup_script
+<span class="token keyword">comment</span> <span class="token string">'itpux'</span>
+{
+  <span class="token keyword">backup</span> <span class="token keyword">database</span> plus archivelog<span class="token punctuation">;</span>
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+</li>
+<li>修改存储脚本<blockquote>
+<p>使用replace script 命令可以替换恢复目录中的存储脚本。</p>
+<pre class="line-numbers language-sql"><code class="language-sql">RMAN<span class="token operator">></span> replace script my_backup_script
+<span class="token keyword">comment</span> <span class="token string">'bl'</span>
+{
+  <span class="token keyword">backup</span> <span class="token keyword">database</span> plus archivelog <span class="token keyword">delete</span> input<span class="token punctuation">;</span>
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+</li>
+<li>删除存储脚本<blockquote>
+<p>使用delete script命令可以删除一个存储脚本。</p>
+<pre class="line-numbers language-sql"><code class="language-sql">RMAN<span class="token operator">></span> <span class="token keyword">Delete</span> script my_backup_script<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</blockquote>
+</li>
+<li><p>使用存储脚本</p>
+<blockquote>
+<p>创建一些存储过程脚本后，可以执行execute script命令来使用这些脚本。如：</p>
+<pre class="line-numbers language-sql"><code class="language-sql">run { <span class="token keyword">execute</span> script my_backup_script<span class="token punctuation">;</span> }
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</blockquote>
+</li>
+<li><p>打印存储的脚本</p>
+<pre class="line-numbers language-sql"><code class="language-sql">RMAN<span class="token operator">></span> <span class="token keyword">Print</span> script my_backup_script<span class="token punctuation">;</span>
+正在打印存储的脚本: my_backup_script
+{<span class="token keyword">backup</span> <span class="token keyword">database</span> plus archivelog<span class="token punctuation">;</span>}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</li>
+</ul>
+<blockquote>
+<p>还可以使用RC_STORED_SCRIPT_LINE恢复目录视图来显示存储的脚本的内容，如：<br><code>`</code>sql<br>SQL&gt; select script_name,text from rc_stored_script_line order by script_name,line;<br>SCRIPT_NAME TEXT</p>
+</blockquote>
+<hr>
+<p>my_backup_script {<br>    my_backup_script backup database plus archivelog delete input;<br>my_backup_script }</p>
+<pre><code>### 3.7 查看并修改单个参数
+```sql
+rman&gt; show all;
+using target database control file instead of recoverycatalog
+rman configuration parameters are:
+</code></pre><h3 id="3-8-查看并修改单个参数"><a href="#3-8-查看并修改单个参数" class="headerlink" title="3.8 查看并修改单个参数"></a>3.8 查看并修改单个参数</h3><pre class="line-numbers language-sql"><code class="language-sql">rman<span class="token operator">></span><span class="token keyword">show</span> retention policy<span class="token punctuation">;</span>
+rman<span class="token operator">></span><span class="token keyword">show</span> <span class="token keyword">backup</span> optimization<span class="token punctuation">;</span>
+rman<span class="token operator">></span><span class="token keyword">show</span> controlfile autobackup<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">-----查看当前参数的值，是off。</span>
+rman<span class="token operator">></span>configure controlfile autobackup <span class="token keyword">on</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">--修改为on，自动备份控制文件</span>
+rman<span class="token operator">></span> <span class="token keyword">show</span> controlfile autobackup<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">---查看修改后的，已经修改成功。</span>
+rman<span class="token operator">></span> configurechannel <span class="token number">1</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> format <span class="token string">'/dbbak/bak_%d_%m_%d_%u'</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">--注释：配置数据文件的备份路径.</span>
+rman<span class="token operator">></span> configurecontrolfile autobackup format <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> <span class="token keyword">to</span> <span class="token string">'%f'</span><span class="token punctuation">;</span> 注释：配置控制文件的备份路径
+rman<span class="token operator">></span> <span class="token keyword">show</span> <span class="token keyword">all</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">------查看所有信息，看到已经更改了默认备份路径</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-8-备份文件的格式"><a href="#3-8-备份文件的格式" class="headerlink" title="3.8 备份文件的格式"></a>3.8 备份文件的格式</h3><pre class="line-numbers language-sql"><code class="language-sql">备份文件可定义的格式符号如下
+使用format参数时可使用的各种替换变量，如下（注意大小写）所示：
+<span class="token operator">%</span><span class="token number">a</span>：Oracle数据库的activation ID即RESETLOG_ID。
+<span class="token operator">%</span><span class="token number">c</span>：备份片段的复制数（从<span class="token number">1</span>开始编号，最大不超过<span class="token number">256</span>）。
+<span class="token operator">%</span><span class="token number">d</span>：Oracle数据库名称。
+<span class="token operator">%</span>D：当前时间中的日，格式为DD。
+<span class="token operator">%</span><span class="token number">e</span>：归档序号。
+<span class="token operator">%</span><span class="token number">f</span>：绝对文件编号。
+<span class="token operator">%</span>F：基于<span class="token string">"DBID+时间"</span>确定的唯一名称，格式的形式为<span class="token number">c</span><span class="token operator">-</span>IIIIIIIIII<span class="token operator">-</span>YYYYMMDD<span class="token operator">-</span>QQ<span class="token punctuation">,</span>其中IIIIIIIIII 为该数据库的DBID，YYYYMMDD为日期，QQ是一个<span class="token number">1</span>～<span class="token number">256</span>的序列。
+<span class="token operator">%</span>h：归档日志线程号。
+<span class="token operator">%</span>I：Oracle数据库的DBID。
+<span class="token operator">%</span>M：当前时间中的月，格式为MM。
+<span class="token operator">%</span>N：表空间名称。
+<span class="token operator">%</span>n：数据库名称，并且会在右侧用x字符进行填充，使其保持长度为<span class="token number">8</span>。比如数据库名JSSBOOK，则生成的名称则是JSSBOOKx。
+<span class="token operator">%</span>p：备份集中备份片段的编号，从<span class="token number">1</span>开始。
+<span class="token operator">%</span>s：备份集号。
+<span class="token operator">%</span>t：备份集时间戳。
+<span class="token operator">%</span>T：当前时间的年月日格式（YYYYMMDD）。
+<span class="token operator">%</span>u：是一个由备份集编号和建立时间压缩后组成的<span class="token number">8</span>字符名称。利用<span class="token operator">%</span>u可以为每个备份集生成一个唯一的名称。
+<span class="token operator">%</span>U：默认是<span class="token operator">%</span>u_<span class="token operator">%</span>p_<span class="token operator">%</span><span class="token number">c</span>的简写形式，利用它可以为每一个备份片段（即磁盘文件）
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="3-9-详解整个rman全备案例"><a href="#3-9-详解整个rman全备案例" class="headerlink" title="3.9 详解整个rman全备案例"></a>3.9 详解整个rman全备案例</h3><blockquote>
+<p>执行rman备份必须开启数据的归档功能：</p>
+<pre class="line-numbers language-sql"><code class="language-sql">sql<span class="token operator">></span> <span class="token keyword">shutdown</span> immediate <span class="token comment" spellcheck="true">---关闭数据库</span>
+sql<span class="token operator">></span> startup mount<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">----启动数据库到mount状态</span>
+sql<span class="token operator">></span> <span class="token keyword">alter</span> <span class="token keyword">database</span> archivelog<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">---开启归档功能</span>
+<span class="token keyword">database</span> altered<span class="token punctuation">.</span>
+sql<span class="token operator">></span> archivelog list<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">---查看归档状态</span>
+<span class="token keyword">database</span> logmode archive mode <span class="token comment" spellcheck="true">---归档已经打开</span>
+automatic archival enabled
+archive destination use_db_recovery_file_dest
+oldest online logsequence <span class="token number">8</span>
+<span class="token keyword">next</span> log sequence toarchive <span class="token number">10</span>
+<span class="token keyword">current</span> log sequence <span class="token number">10</span>
+sql<span class="token operator">></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+<h2 id="4-详解-RMAN的常用命令及日常维护"><a href="#4-详解-RMAN的常用命令及日常维护" class="headerlink" title="4. 详解 RMAN的常用命令及日常维护"></a>4. 详解 RMAN的常用命令及日常维护</h2><h3 id="4-1-rman所备份的数据库信息查看"><a href="#4-1-rman所备份的数据库信息查看" class="headerlink" title="4.1 rman所备份的数据库信息查看"></a>4.1 rman所备份的数据库信息查看</h3><ul>
+<li><ol>
+<li>list incarnation<blockquote>
+<p>概述可用的备份<br>b 表示backup<br>a 表示archivelog、 f 表示full backup、 0,1,2 表示incremental level备份<br>a 表示可用avaliable、 x 表示expired</p>
+</blockquote>
+</li>
+</ol>
+</li>
+</ul>
+<blockquote>
+<p>这个命令可以派生出很多类似命令，例如<br>list backup of database summary<br>list backup of archivelog all summary<br>list backup of tablespace users summary;<br>list backup of datafile n,n,n summary</p>
+<ul>
+<li><ol start="2">
+<li>list backup summary;<br>列出过期的备份文件</li>
+</ol>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li><ol start="3">
+<li>list backup by file;<blockquote>
+<p>按照文件类型分别列出<br>分别为：数据文件列表、归档日志列表、控制文件列表、spfile列表</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><ol start="4">
+<li>list backup<blockquote>
+<p>这个命令列出已有备份集的详细信息。</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><ol start="5">
+<li>list expired backup;<blockquote>
+<p>列出过期的备份文件</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><ol start="6">
+<li>list copy;<blockquote>
+<p>列出copy文件</p>
+<pre class="line-numbers language-sql"><code class="language-sql">list copy <span class="token keyword">of</span> <span class="token keyword">database</span><span class="token punctuation">;</span>
+list copy <span class="token keyword">of</span> controlfile<span class="token punctuation">;</span>
+list copy <span class="token keyword">of</span> <span class="token keyword">tablespace</span> users<span class="token punctuation">;</span>
+list copy <span class="token keyword">of</span> datafile n<span class="token punctuation">,</span>n<span class="token punctuation">,</span>n<span class="token punctuation">;</span>
+list copy <span class="token keyword">of</span> archivelog <span class="token keyword">all</span><span class="token punctuation">;</span>
+list copy <span class="token keyword">of</span> archivelog <span class="token keyword">from</span> scn <span class="token number">10000</span><span class="token punctuation">;</span>
+list copy <span class="token keyword">of</span> archivelog until sequence <span class="token number">12</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><ol start="7">
+<li>list backup of spfile;<blockquote>
+<p>服务器参数文件</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><ol start="8">
+<li>list backup of controlfile;<blockquote>
+<p>控制文件</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><ol start="9">
+<li>list backup of datafle n,n,n,n;<blockquote>
+<p>数据文件</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><ol start="10">
+<li>list backup of tablespace tablespace_name;<blockquote>
+<p>表空间对应的backup</p>
+</blockquote>
+</li>
+</ol>
+</li>
+<li><ol start="11">
+<li>归档日志<pre class="line-numbers language-sql"><code class="language-sql">list <span class="token keyword">backup</span> <span class="token keyword">of</span> archivelog {<span class="token keyword">all</span><span class="token punctuation">,</span> <span class="token keyword">from</span><span class="token punctuation">,</span> high<span class="token punctuation">,</span> <span class="token operator">like</span><span class="token punctuation">,</span> logseq<span class="token punctuation">,</span> low<span class="token punctuation">,</span> scn<span class="token punctuation">,</span> sequence<span class="token punctuation">,</span> time<span class="token punctuation">,</span> until}<span class="token punctuation">;</span>
+list <span class="token keyword">backup</span> <span class="token keyword">of</span> archivelog <span class="token keyword">all</span><span class="token punctuation">;</span>
+list <span class="token keyword">backup</span> <span class="token keyword">of</span> archivelog until time <span class="token string">'sysdate-1'</span><span class="token punctuation">;</span>
+list <span class="token keyword">backup</span> <span class="token keyword">of</span> archivelog <span class="token keyword">from</span> sequence <span class="token number">10</span><span class="token punctuation">;</span>
+list <span class="token keyword">backup</span> <span class="token keyword">of</span> archivelog until sequence <span class="token number">10</span><span class="token punctuation">;</span>
+list <span class="token keyword">backup</span> <span class="token keyword">of</span> archivelog <span class="token keyword">from</span> scn <span class="token number">10000</span><span class="token punctuation">;</span>
+list <span class="token keyword">backup</span> <span class="token keyword">of</span> archivelog until scn <span class="token number">200000</span><span class="token punctuation">;</span>
+list archivelog <span class="token keyword">from</span> scn <span class="token number">1000</span><span class="token punctuation">;</span>
+list archivelog until scn <span class="token number">2000</span><span class="token punctuation">;</span>
+list archivelog <span class="token keyword">from</span> sequence <span class="token number">10</span><span class="token punctuation">;</span>
+list archivelog until sequence <span class="token number">12</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="4-2-report常用命令"><a href="#4-2-report常用命令" class="headerlink" title="4.2 report常用命令"></a>4.2 report常用命令</h3><blockquote>
+<p>report用于判断数据库当前可恢复状态、以及数据库已有备份的信息。</p>
+</blockquote>
+<ul>
+<li><p>01.report schema</p>
+<blockquote>
+<p>报告数据库模式</p>
+</blockquote>
+</li>
+<li><p>02.report obsolete;</p>
+<blockquote>
+<p>报告已丢弃的备份集(配置了保留策略)。</p>
+</blockquote>
+</li>
+<li><p>03.report unrecoverable;</p>
+<blockquote>
+<p>报告当前数据库中不可恢复的数据文件(即没有这个数据文件的备份、或者该数据文件的备份已经过期)</p>
+</blockquote>
+</li>
+<li><p>04.report need backup;</p>
+<blockquote>
+<p>报告需要备份的数据文件(根据条件不同)</p>
+<pre class="line-numbers language-sql"><code class="language-sql">report need <span class="token keyword">backup</span> days<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--最近三天没有备份的数据文件(如果出问题的话，这些数据文件将需要最近3天的归档日志才能恢复)</span>
+report need <span class="token keyword">backup</span> incremental<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--需要多少个增量备份文件才能恢复的数据文件。(如果出问题，这些数据文件将需要3个增量备份才能恢复)</span>
+report need <span class="token keyword">backup</span> redundancy<span class="token operator">=</span><span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--报告出冗余次数小于3的数据文件</span>
+<span class="token comment" spellcheck="true">--例如数据文件中包含2个数据文件system01.dbf和users01.dbf.</span>
+<span class="token comment" spellcheck="true">--在3次或都3次以上备份中都包含system01.dbf这个数据文件，而users01.dbf则小于3次</span>
+<span class="token comment" spellcheck="true">--那么，报告出来的数据文件就是users01.dbf</span>
+<span class="token comment" spellcheck="true">--即，报告出数据库中冗余次数小于 n 的数据文件</span>
+report need <span class="token keyword">backup</span> recovery window <span class="token keyword">of</span> <span class="token number">2</span> days<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--报告出恢复需要2天归档日志的数据文件</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+</li>
+</ul>
+<h3 id="4-3-backup常用命令"><a href="#4-3-backup常用命令" class="headerlink" title="4.3 backup常用命令"></a>4.3 backup常用命令</h3><h4 id="4-3-1-基本使用"><a href="#4-3-1-基本使用" class="headerlink" title="4.3.1 基本使用"></a>4.3.1 基本使用</h4><ul>
+<li><p>01.设置备份标记</p>
+</li>
+<li><p>01.设置备份集大小(一次备份的所有结果为一个备份集，要注意备份集大小)</p>
+</li>
+<li><p>01.设置备份片大小(磁带或文件系统限制)</p>
+</li>
+<li><p>01.备份集的保存策略</p>
+</li>
+<li><p>01.重写configure exclude命令</p>
+</li>
+<li><p>01.检查数据库错误</p>
+</li>
+<li><p>01.跳过脱机，不可存取或只读文件</p>
+</li>
+</ul>
+<ul>
+<li><p>01.强制备份</p>
+</li>
+<li><p>01.基于上次备份时间备份数据文件</p>
+</li>
+<li><p>01.备份操作期间检查逻辑错误</p>
+</li>
+<li><p>01.生成备份副本</p>
+</li>
+<li><p>01.备份控制文件和参数文件</p>
+</li>
+<li><p>01.跳过脱机的，不可读取的或者只读的数据文件</p>
+</li>
+<li><p>01.数据库备份</p>
+</li>
+<li><p>01.表空间备份</p>
+</li>
+<li><p>01.数据文件备份</p>
+</li>
+<li><p>01.归档的重做日志备份</p>
+</li>
+<li><p>01.数据库，表空间和数据文件的映像副本</p>
+</li>
+<li><p>01.控制文件副本</p>
+</li>
+<li><p>01.Archivelog 映像副本</p>
+</li>
+<li><p>01.差异备份与增量备份</p>
+</li>
+</ul>
+<h4 id="4-3-1-差异备份与增量备份"><a href="#4-3-1-差异备份与增量备份" class="headerlink" title="4.3.1 差异备份与增量备份"></a>4.3.1 差异备份与增量备份</h4><ul>
+<li>块更改跟踪文件<blockquote>
+<p>&emsp;&emsp;默认情况下，当执行增量备份时，发生任何更改的所有数据文件都将备份。 这可能使增量备份花费更长的时间，并且会增加增量备份的大小。 10g中RMAN 提供了只备份更改过的数据块的功能。 这就可以加快增量数据库备份的速度并减少其大小。 执行alter database enable block change tracking 命令可以启用块更改跟踪。<br>&emsp;&emsp;如果使用Oracle管理文件（OMF），Oracle 将会创建块更改跟踪文件。 如果没有使用OMF，则必须定义块更改跟踪文件的位置和名称。 如：<br>Alter database enable block change tracking using file ‘/oracle/backup/block.fil’;<br>&emsp;&emsp;如果跟踪文件已经存在，可以使用reuse参数：<br>Alter database enable block change tracking using file ‘/oracle/backup/block.fil’ reuse;<br>&emsp;&emsp;使用alter database block change tracking 命令可以禁用块更改跟踪。 块更改跟踪文件的大小通常预先分片且与数据库大小和重做日志线程的数量有关。 块更改跟踪文件的大小一般是数据库大小的1/30000。 块更改跟踪文件可能会以10MB为增量增长。 块更改跟踪文件的最小尺寸是每个数据文件320k，如果有许多数据文件，则块更改跟踪文件就会较大。 Oracle 会在块更改跟踪文件中存储足够的信息，从而允许最多8天的增量备份。 显而易见，如果增量备份超过8天，则将不使用块跟踪更改跟踪文件，并且无法利用块跟踪文件的有点。<br>&emsp;&emsp;可以通过检查v$block_change_tracking 视图来确定是否启用了块更改跟踪。 Status 指示了是否启用了块更改跟踪，filename 包含块更改跟踪文件的文件名。可以通过alter database rename file 命令来转移块更改跟踪文件。<br><code>`</code>sql<br>SQL&gt; select status,filename from v$block_change_tracking;<br>STATUS FILENAME</p>
+</blockquote>
+</li>
+</ul>
+<hr>
+<p>ENABLED /oracle/BACKUP/BLOCK.FIL</p>
+<pre><code>* 基本备份
+&gt;&amp;emsp;&amp;emsp;执行增量备份操作时，首先需要的是增量基本备份（incremental base backup）,以后所有的增量备份都基于这个基本备份。 每次执行数据库备份操作时，都可以通过backup 命令的incremental 参数来为备份指定一个增量级别标识符。 基本备份的增量级别为0，并且必须有基本备份才能够执行其他类型的增量备份操作。 如果没有生成基本备份就尝试执行增量备份操作，RMAN会自动执行基本备份操作。 示例：
+```sql
+Backup incremental level=0 database;
+</code></pre><ul>
+<li>差异备份<blockquote>
+<p>&emsp;&emsp;差异备份是RMAN生成的增量备份的默认类型，对于差异备份来说，RMAN会备份自上次同级或者低级差异增量备份以来所发生变化的数据块</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">backup</span> incremental level<span class="token operator">=</span><span class="token number">1</span> <span class="token keyword">database</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</blockquote>
+</li>
+<li>累积备份<blockquote>
+<p>&emsp;&emsp;累积备份可以使备份集备份前面所有级别的备份以及此次要备份的所有发生变化的数据块。 累积备份是一个可选的备份方法，并要求在backup 命令中使用cumulative 关键字。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">backup</span> incremental level <span class="token operator">=</span><span class="token number">2</span> cumulative <span class="token keyword">database</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</blockquote>
+</li>
+<li>增量备份选项<blockquote>
+<p>&emsp;&emsp;Oracle 不仅允许执行数据库的增量备份，还允许执行表空间，数据文件以及数据库文件副本的增量备份操作。 控制文件，归档重做日志以及备份集都不能生成增量备份。 此外，还可以在执行增量备份操作时同时备份归档的重做日志。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">Backup</span> incremental level<span class="token operator">=</span><span class="token number">0</span> <span class="token keyword">tablespace</span> users<span class="token punctuation">;</span>
+<span class="token keyword">Backup</span> incremental level<span class="token operator">=</span><span class="token number">1</span> <span class="token keyword">tablespace</span> users<span class="token punctuation">;</span>
+<span class="token keyword">Backup</span> incremental level<span class="token operator">=</span><span class="token number">0</span> datafile <span class="token number">4</span><span class="token punctuation">;</span>
+<span class="token keyword">Backup</span> incremental level<span class="token operator">=</span><span class="token number">1</span> datafile <span class="token number">4</span><span class="token punctuation">;</span>
+<span class="token keyword">Backup</span> incremental level<span class="token operator">=</span><span class="token number">1</span> <span class="token keyword">database</span> plus archivelog<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+</li>
+<li>增量备份更新备份<blockquote>
+<p>RMAN 提供了增量备份更新备份。 这种备份避免了采用数据文件的完整映像副本进行备份的开销，并且具有与映像副本相同的恢复特性。 从某种意义上来说，这种备份类似与使用映像副本的增量备份。</p>
+<pre class="line-numbers language-sql"><code class="language-sql">Run{
+Recover copy <span class="token keyword">of</span> <span class="token keyword">database</span> <span class="token keyword">with</span> tag <span class="token string">'Orcl'</span><span class="token punctuation">;</span>
+<span class="token keyword">Backup</span> incremental level <span class="token number">1</span> <span class="token keyword">for</span> recover <span class="token keyword">of</span> copy <span class="token keyword">with</span> tag <span class="token string">'Orcl'</span> <span class="token keyword">database</span><span class="token punctuation">;</span>
+}
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;示例中的recover of copy database 命令并没有真正的恢复数据库，但它使RMAN将任何增量备份应用于与列出标记（Orcl）关联的数据文件副本。 第一次运行该命令时，它将没有任何效果，因为它没有任何可用的增量备份或数据文件副本。 这并不是很严重的问题，并且RMAN 将只显示一条警告消息。 第二次运行该命令时也没有任何效果，因为没有任何增量备份可用。<br>&emsp;&emsp;执行recover 命令后，就会产生一个增量备份，这个备份第一次运行时，它会创建一个基本备份（如果没有的话）。这实际上增量为1的备份。 第二次执行这个run代码块时，将通过backup 命令执行第一个增量备份。<br>&emsp;&emsp;一旦该命令运行了2次，第三次执行和后面的执行就能够将前面的增量备份应用与数据文件副本。 注意，recover 和backup命令中将标记赋予相同的名称非常重要。</p>
+</blockquote>
+</li>
+</ul>
+<h3 id="4-4-configure常用命令"><a href="#4-4-configure常用命令" class="headerlink" title="4.4 configure常用命令"></a>4.4 configure常用命令</h3><ul>
+<li><ol>
+<li>显示当前的配置信息<pre class="line-numbers language-sql"><code class="language-sql">rman<span class="token operator">></span> <span class="token keyword">show</span> <span class="token keyword">all</span><span class="token punctuation">;</span>
+rman 配置参数为:
+configure retention policy <span class="token keyword">to</span> redundancy <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure <span class="token keyword">backup</span> optimization <span class="token keyword">off</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure <span class="token keyword">default</span> device <span class="token keyword">type</span> <span class="token keyword">to</span> <span class="token keyword">disk</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure controlfile autobackup <span class="token keyword">off</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure controlfile autobackup format <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> <span class="token keyword">to</span> <span class="token string">'%f'</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure device <span class="token keyword">type</span> <span class="token keyword">disk</span> parallelism <span class="token number">1</span> <span class="token keyword">backup</span> <span class="token keyword">type</span> <span class="token keyword">to</span> backupset<span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure datafile <span class="token keyword">backup</span> copies <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> <span class="token keyword">to</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure archivelog <span class="token keyword">backup</span> copies <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> <span class="token keyword">to</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure maxsetsize <span class="token keyword">to</span> unlimited<span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure encryption <span class="token keyword">for</span> <span class="token keyword">database</span> <span class="token keyword">off</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure encryption <span class="token keyword">algorithm</span> <span class="token string">'aes128'</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure archivelog deletion policy <span class="token keyword">to</span> none<span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure <span class="token keyword">snapshot</span> controlfile name <span class="token keyword">to</span> <span class="token string">'/oracle/product/11.2.0/db_1/database/sncfitpuxdb.ora'</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+configure retention policy <span class="token keyword">to</span> redundancy <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：配置redundancy配置需要保留几份备份文件，默认是<span class="token number">1</span>。也可以改变为其它非零的正整数值。
+configure <span class="token keyword">backup</span> optimization <span class="token keyword">off</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：设备备份优化打开，如果表空间是只读状态，那么在做备份的时候只是第一次会备份，以后不备份。有两个选项<span class="token keyword">off</span>关闭和<span class="token keyword">on</span>打开
+configure <span class="token keyword">default</span> device <span class="token keyword">type</span> <span class="token keyword">to</span> <span class="token keyword">disk</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：配置默认备份设备可以是sbt（磁带），<span class="token keyword">disk</span>（硬盘）；默认是硬盘
+configure controlfile autobackup <span class="token keyword">off</span><span class="token punctuation">;</span><span class="token comment" spellcheck="true"># default</span>
+注释：配置在备份的时候是否将控制文件一并备份，两个选项<span class="token punctuation">,</span>默认是<span class="token keyword">off</span>不备份，也可以是<span class="token keyword">on</span>备份、。
+configure controlfile autobackupformat <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> <span class="token keyword">to</span> <span class="token string">'%f'</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：配置control <span class="token keyword">file</span>自动备份的路径和文件格式
+configure device <span class="token keyword">type</span> <span class="token keyword">disk</span> parallelism1 <span class="token keyword">backup</span> <span class="token keyword">type</span> <span class="token keyword">to</span> backupset<span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：配置磁盘备份的类型，默认是备份集方式（backupset）或镜像拷贝也叫文件拷贝<span class="token punctuation">(</span>copy<span class="token punctuation">)</span>。
+镜像拷贝值适用于磁盘备份，磁带只支持备份集。一般用备份集更多，其效率会更高
+configure datafile backupcopies <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> <span class="token keyword">to</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：配置生成备份集的个数，默认是<span class="token number">1</span>；备份集内会包括（数据文件，控制文件，参数文件）
+configure archivelog backupcopies <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> <span class="token keyword">to</span> <span class="token number">1</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：配置归档日志默认的备份路径
+configure maxsetsize <span class="token keyword">to</span> unlimited<span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：配置单个备份集大小，缺省是不限制，我们可以配置成1g<span class="token operator">/</span>100m<span class="token operator">/</span>1024k <span class="token operator">or</span> other
+configure encryption <span class="token keyword">for</span> <span class="token keyword">database</span> <span class="token keyword">off</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：配置备份数据加密，是10gr2推出来的新功能，设置为<span class="token keyword">on</span>后。
+可以<span class="token keyword">set</span> encryption <span class="token keyword">on</span> identifyed <span class="token keyword">by</span> youpassword only<span class="token punctuation">;</span>加密备份，还原的时候需要提供密码。
+configureencryption <span class="token keyword">algorithm</span> <span class="token string">'aes128'</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：指定备份数据加密的类型。
+configure archivelogdeletion policy <span class="token keyword">to</span> none<span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：配置归档日志在备份后自动删除
+configure <span class="token keyword">snapshot</span> controlfile name <span class="token keyword">to</span> <span class="token string">'/oracle/product/10.2.0/db_1/dbs/snapcf_itpuxdb.f'</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true"># default</span>
+注释：配置控制文件快照，可以有效的提高控制文件的恢复性。
+查询rman设置中非默认值:
+sql<span class="token operator">></span> <span class="token keyword">select</span> name<span class="token punctuation">,</span><span class="token keyword">value</span> <span class="token keyword">from</span> v$rman_configuration<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>保存策略 (retention policy)<pre class="line-numbers language-sql"><code class="language-sql">configure retention policy <span class="token keyword">to</span> recovery window <span class="token keyword">of</span> <span class="token number">7</span> days<span class="token punctuation">;</span>
+configure retention policy <span class="token keyword">to</span> redundancy <span class="token number">5</span><span class="token punctuation">;</span>
+configure retention policy clear<span class="token punctuation">;</span>
+configure retention policy <span class="token keyword">to</span> none<span class="token punctuation">;</span>
+第一种recover window是保持所有足够的备份，可以将数据库系统恢复到最近七天内的任意时刻。任何超过最近七天的数据库备份将被标记为obsolete。
+第二种redundancy 是为了保持可以恢复的最新的<span class="token number">5</span>份数据库备份，任何超过最新<span class="token number">5</span>份的备份都将被标记为redundancy。它的默认值是<span class="token number">1</span>份。
+第三、四：none 可以把使备份保持策略失效，clear 将恢复默认的保持策略
+一般最安全的方法是采用第二种保持策略。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>备份优化 backup optimization<pre class="line-numbers language-sql"><code class="language-sql">configure <span class="token keyword">backup</span> optimization <span class="token keyword">on</span><span class="token punctuation">;</span>
+configure <span class="token keyword">backup</span> optimization <span class="token keyword">off</span><span class="token punctuation">;</span>
+configure <span class="token keyword">backup</span> optimization clear<span class="token punctuation">;</span>
+默认值为关闭，如果打开，rman将对备份的数据文件及归档等文件进行一种优化的算法。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>默认设备 default device type<pre class="line-numbers language-sql"><code class="language-sql">configure <span class="token keyword">default</span> device <span class="token keyword">type</span> <span class="token keyword">to</span> <span class="token keyword">disk</span><span class="token punctuation">;</span>
+configure <span class="token keyword">default</span> device <span class="token keyword">type</span> <span class="token keyword">to</span> stb<span class="token punctuation">;</span>
+configure <span class="token keyword">default</span> device <span class="token keyword">type</span> clear<span class="token punctuation">;</span>
+是指定所有i<span class="token operator">/</span>o操作的设备类型是硬盘或者磁带，默认值是硬盘
+磁带的设置是configure <span class="token keyword">default</span> device <span class="token keyword">type</span> <span class="token keyword">to</span> sbt<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>控制文件 controlfile<pre class="line-numbers language-sql"><code class="language-sql">configure controlfile autobackup <span class="token keyword">on</span><span class="token punctuation">;</span>
+configure controlfile autobackup format <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> <span class="token keyword">to</span> <span class="token string">'/oracle/backup/conf_%F'</span><span class="token punctuation">;</span>
+configure controlfile autobackup clear<span class="token punctuation">;</span>
+configrue controlfile autobackup format <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> clear<span class="token punctuation">;</span>
+CONFIGURE <span class="token keyword">SNAPSHOT</span> CONTROLFILE NAME <span class="token keyword">TO</span> <span class="token string">'/oracle/backup/scontrofile.snp'</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--是配置控制文件的快照文件的存放路径和文件名，这个快照文件是在备份期间产生的，用于控制文件的读一致性。</span>
+configure <span class="token keyword">snapshot</span> controlfile name clear<span class="token punctuation">;</span>
+强制数据库在备份文件或者执行改变数据库结构的命令之后将控制文件自动备份，默认值为关闭。这样可以避免控制文件和catalog丢失后，控制文件仍然可以恢复。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>并行数(通道数) device type disk|stb pallelism n;<pre class="line-numbers language-sql"><code class="language-sql">configure device <span class="token keyword">type</span> <span class="token keyword">disk</span><span class="token operator">|</span>stb parallelism <span class="token number">2</span><span class="token punctuation">;</span>
+configure device <span class="token keyword">type</span> <span class="token keyword">disk</span><span class="token operator">|</span>stb clear<span class="token punctuation">;</span> <span class="token comment" spellcheck="true">--用于清除上面的信道配置</span>
+configure channel device <span class="token keyword">type</span> <span class="token keyword">disk</span> format <span class="token string">'/oracle/backup/rman_%u'</span><span class="token punctuation">;</span>
+configure channel device <span class="token keyword">type</span> <span class="token keyword">disk</span> maxpiecesize 100m<span class="token punctuation">;</span>
+configure channel device <span class="token keyword">type</span> <span class="token keyword">disk</span> rate 1200k<span class="token punctuation">;</span>
+configure channel <span class="token number">1</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> format <span class="token string">'/oracle/backup/rman_%u'</span><span class="token punctuation">;</span>
+configure channel <span class="token number">2</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> format <span class="token string">'/oracle/backup/rman_%u'</span><span class="token punctuation">;</span>
+configure channel <span class="token number">1</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> maxpiecesize 100m<span class="token punctuation">;</span>
+配置数据库设备类型的并行度。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>生成备份副本 datafile|archivelog backup copies<pre class="line-numbers language-sql"><code class="language-sql">configure datafile <span class="token keyword">backup</span> copies <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span><span class="token operator">|</span>stb <span class="token keyword">to</span> <span class="token number">3</span><span class="token punctuation">;</span>
+configure archivelog <span class="token keyword">backup</span> copies <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span><span class="token operator">|</span>stb <span class="token keyword">to</span> <span class="token number">3</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--是设置数据库的归档日志的存放设备类型</span>
+configure datafile<span class="token operator">|</span>archivelog <span class="token keyword">backup</span> copies <span class="token keyword">for</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span><span class="token operator">|</span>stb clear
+<span class="token keyword">backup</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> <span class="token keyword">database</span> format <span class="token string">'/oracle/backup1/%u'</span><span class="token punctuation">,</span> <span class="token string">'/oracle/backup2/%u'</span><span class="token punctuation">,</span> <span class="token string">'/oracle/backup3/%u'</span><span class="token punctuation">;</span>
+是配置数据库的每次备份的copy数量，oracle的每一次备份都可以有多份完全相同的拷贝。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>排除选项 exclude<pre class="line-numbers language-sql"><code class="language-sql">configure exclude <span class="token keyword">for</span> <span class="token keyword">tablespace</span> USERS<span class="token punctuation">;</span>
+configure exclude <span class="token keyword">for</span> <span class="token keyword">tablespace</span> USERS clear<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+<li><ol>
+<li>备份集大小 maxsetsize<pre class="line-numbers language-sql"><code class="language-sql">configure maxsetsize <span class="token keyword">to</span> 1g<span class="token operator">|</span>1000m<span class="token operator">|</span>1000000k<span class="token operator">|</span>unlimited<span class="token punctuation">;</span>
+configure maxsetsize clear<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="4-5-set-命令"><a href="#4-5-set-命令" class="headerlink" title="4.5 set 命令"></a>4.5 set 命令</h3><blockquote>
+<p>&emsp;&emsp;使用set 命令可以定义只应用于当前RMAN会话的设置。 set 命令的设置不是永久的，根据实际需求，可以采用两种方式来使用set 命令。</p>
+<ul>
+<li>在run 代码块外，我们可是执行下面的操作：<pre class="line-numbers language-sql"><code class="language-sql">（<span class="token number">1</span>）使用<span class="token keyword">set</span> echo 命令在消息日志中显示RMAN 命令。
+（<span class="token number">2</span>）使用<span class="token keyword">set</span> dbid 命令指定一个数据库的数据库标识符（<span class="token keyword">database</span> identifier： dbid）。
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+</li>
+</ul>
+</blockquote>
+<ul>
+<li>某些set 命令只能在run代码块的限定范围内使用，常见的有：<blockquote>
+<p>（1）set newname 命令：用于执行表空间时间点恢复（TSPITR）或者数据库复制操作。 该命令允许指定新的数据库数据文件名。 将数据库移动到新的系统中并且文件系统名不同时，我们可以使用这个命令。使用set newname 命令时还需要使用switch 命令。<br>（2）set maxcorrupt for datafile: 使用该命令可以定义RMAN操作失败前锁允许的数据块讹误的最大数据。<br>（3）set archivelog destination: 使用该命令可以修改存储归档的重做日志的archive_log_dest_1 目标。<br>（4）set 命令和until 子句： 使用set命令和set 命令的until 子句可以定义数据库时间点恢复操作锁使用的具体时间点，SCN 或日志序列号。<br>（5）set backup copies命令： 使用该命令可以定义为备份集中的每个备份片应当创建的副本数。<br>（6）set command id: 使用该命令可以关联给定的服务器会话和给定的通道。<br>（7）set controlfile autoback format for device type: 使用该命令可以修改用于控制文件自动备份操作的默认格式。</p>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p>&emsp;&emsp;例如： 要执行一个为每个备份片创建两个副本的被操作，并且允许数据文件的最大讹误数为10. 脚本如下：</p>
+</blockquote>
+<pre class="line-numbers language-sql"><code class="language-sql">run{
+    <span class="token keyword">set</span> maxcorrupt <span class="token keyword">for</span> datafile <span class="token number">3</span> <span class="token keyword">to</span> <span class="token number">5</span><span class="token punctuation">;</span>
+    <span class="token keyword">set</span> <span class="token keyword">backup</span> copies<span class="token operator">=</span><span class="token number">2</span><span class="token punctuation">;</span>
+    <span class="token keyword">backup</span> <span class="token keyword">database</span><span class="token punctuation">;</span>
+}
+<span class="token keyword">set</span> until time <span class="token string">"to_date('2016-6-28 17:04:00','yyyy-mm-dd hh24:mi:ss')"</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="4-5-crosscheck命令"><a href="#4-5-crosscheck命令" class="headerlink" title="4.5 crosscheck命令"></a>4.5 crosscheck命令</h3><ul>
+<li>交叉效验RMAN 备份<blockquote>
+<p>&emsp;&emsp;在RMAN目录和物理备份目的地不同步的情况下，我们可以使用crosscheck命令来效验控制文件或恢复目录中的RMAN信息是否与备份介质上的实际物理备份集片相同。<br>&emsp;&emsp;使用crosscheck 命令时，我们关心每个备份集或者副本的状态。 如果使用控制文件，用于备份集片的v$backup_set 视图和用于副本的v$databfile_copy 视图中的status列列出了每个备份集或副本的状态码；如果使用恢复目录，则在备份集片的RC_BACKUP_set和副本的RC_DATAFILE_COPY中列出了每个备份集或副本的状态码。 在不同的备份状态码中，我们关心以下两种状态：<br>&emsp;&emsp;（1）A（Available:可用）：RMAN 认定该项存在于备份介质上<br>&emsp;&emsp;（2）X（Expired:不可用）：这个备份集片或副本上存储的RMAN目录（即控制文件或恢复目录）中，但是并没有物理存在于备份介质上。<br>&emsp;&emsp;使用crosscheck 命令的目的是将RMAN目录的状态设置为AVAILABLE或者EXPIRED。 执行crosscheck时，RMAN检查目录中列出的每个备份集或副本并且判断他们是否存在与备份介质上。 如果备份集或副本不存在与备份介质上，它就会被标记为expired, 并且不能用于任何还原操作；如果备份集或副本存在与备份介质上，它就会维持available状态。 如果以前被标记为expired 的备份集或副本再次存在于备份介质上，crosscheck 命令就会将它标记回available。</p>
+<pre class="line-numbers language-sql"><code class="language-sql">crosscheck <span class="token keyword">backup</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>&emsp;&emsp;可以交叉效验数据文件备份，表空间备份，控制文件备份以及服务器参数文件备份。此外，可以通过识别与备份相关联的标记来选择要交叉效验和特定的备份。 基于使用的设备或者基于一个时间周期，我们甚至可以交叉效验所有的备份。 如：</p>
+<pre class="line-numbers language-sql"><code class="language-sql">crosscheck <span class="token keyword">backup</span> <span class="token keyword">of</span> datafile <span class="token number">1</span><span class="token punctuation">;</span>
+crosscheck <span class="token keyword">backup</span> <span class="token keyword">of</span> <span class="token keyword">tablespace</span> users<span class="token punctuation">;</span>
+crosscheck <span class="token keyword">backup</span> <span class="token keyword">of</span> controlfile<span class="token punctuation">;</span>
+crosscheck <span class="token keyword">backup</span> <span class="token keyword">of</span> spfile<span class="token punctuation">;</span>
+crosscheck <span class="token keyword">backup</span> tag<span class="token operator">=</span><span class="token string">'TEST'</span><span class="token punctuation">;</span>
+crosscheck <span class="token keyword">backup</span> completed <span class="token keyword">after</span> <span class="token string">'sysdate-2'</span><span class="token punctuation">;</span>
+crosscheck <span class="token keyword">backup</span> completed <span class="token operator">between</span> <span class="token string">'sysdate-5'</span> <span class="token operator">and</span> <span class="token string">'sysdate-2'</span><span class="token punctuation">;</span>
+crosscheck <span class="token keyword">backup</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+</li>
+<li>交叉验证归档日志示例：<pre class="line-numbers language-sql"><code class="language-sql">RMAN<span class="token operator">></span> crosscheck archivelog <span class="token keyword">all</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>&emsp;&emsp;我们可以基于一个号码或标准（包括时间，具体的或指定范围的SCN或日志序列号）来交叉效验归档的重做日志备份，甚至还可以使用like参数与通配符来交叉效验特定的归档日志备份。 如：</p>
+<pre class="line-numbers language-sql"><code class="language-sql">crosscheck archivelog <span class="token operator">like</span> <span class="token string">'ARC001.log'</span><span class="token punctuation">;</span>
+crosscheck archivelog <span class="token string">'/oracle/arch/itpuxdb/archivelog/2016_08_02/o1_mf_1_22_cszw2d4g_.arc'</span><span class="token punctuation">;</span>
+crosscheck archivelog <span class="token operator">like</span> <span class="token string">'%ARC00012.LOG'</span><span class="token punctuation">;</span>
+crosscheck archivelog <span class="token keyword">from</span> time <span class="token string">"to_date('2016-08-02','yyyy-mm-dd')"</span><span class="token punctuation">;</span>
+crosscheck archivelog until time <span class="token string">"to_date('2016-08-02','yyyy-mm-dd')"</span><span class="token punctuation">;</span>
+crosscheck archivelog <span class="token keyword">from</span> sequence <span class="token number">12</span><span class="token punctuation">;</span>
+crosscheck archivelog until sequence <span class="token number">522</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">--使用crosscheck copy命令还可以交叉效验副本。 包括数据文件副本，控制文件副本，归档重做日志副本以及磁盘上的归档的重做日志。 如：</span>
+crosscheck copy <span class="token keyword">of</span> datafile <span class="token number">5</span><span class="token punctuation">;</span>
+crosscheck datafilecopy '<span class="token operator">/</span>oracle<span class="token operator">/</span>oradata<span class="token operator">/</span>itpuxdb<span class="token operator">/</span>rman_tbs<span class="token number">.dbf</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+</li>
+</ul>
+<h3 id="4-6-RMAN-备份的验证validate"><a href="#4-6-RMAN-备份的验证validate" class="headerlink" title="4.6 RMAN 备份的验证validate"></a>4.6 RMAN 备份的验证validate</h3><blockquote>
+<p>&emsp;&emsp;RMAN 提供的validate命令允许查看给定的备份集和进行验证以确保这个备份集能够被还原。注意，validate 命令必须要获得主键ID。 这个可以用list backup summary命令获取</p>
+<pre class="line-numbers language-sql"><code class="language-sql">RMAN<span class="token operator">></span> list <span class="token keyword">backup</span> summary<span class="token punctuation">;</span>
+RMAN<span class="token operator">></span> validate backupset <span class="token number">206</span><span class="token punctuation">;</span>
+RMAN<span class="token operator">></span> validate backupset <span class="token number">206</span> <span class="token keyword">check</span> logical<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+<h3 id="4-7-change-命令"><a href="#4-7-change-命令" class="headerlink" title="4.7 change 命令"></a>4.7 change 命令</h3><blockquote>
+<p>&emsp;&emsp;change 命令允许用户修改备份的状态。我们可能会遇到备份介质设备在某个时间爱你段中无效的情况（如突然断电）。这时，我们就可以使用change 命令来指示这个设备上的备份是不可用的。<br>&emsp;&emsp;解决硬件故障和修复磁盘后，额可以再次执行change 命令，将备份改为可用的状态。也可以将备份修改为不可用的状态。在还原和恢复操作期间，不会考虑哪些不可用的备份，但在执行delete expired命令期间这些备份记录不会被删除。 相关示例：</p>
+<pre class="line-numbers language-sql"><code class="language-sql">change <span class="token keyword">backup</span> <span class="token keyword">of</span> <span class="token keyword">database</span> tag<span class="token operator">=</span><span class="token string">'TEST'</span> unavailable<span class="token punctuation">;</span>
+change <span class="token keyword">backup</span> <span class="token keyword">of</span> <span class="token keyword">database</span> <span class="token operator">like</span> <span class="token string">'%TEST%'</span> unavailable<span class="token punctuation">;</span>
+change backupset <span class="token number">206</span> unavailable<span class="token punctuation">;</span>
+change backupset <span class="token number">206</span> available<span class="token punctuation">;</span>
+change archivelog <span class="token string">'/archivelog/arc0001.log'</span> unavailable<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;可以使用change命令修改归档的重做日志备份的状态。如：将已经备份了指定次数的所有归档的重做日志备份修改为不可用的状态，也可以修改特定设备上的所有备份的状态。</p>
+<pre class="line-numbers language-sql"><code class="language-sql">change archivelog <span class="token keyword">all</span> backed up <span class="token number">5</span> times <span class="token keyword">to</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> unavailable<span class="token punctuation">;</span>
+change <span class="token keyword">backup</span> <span class="token keyword">of</span> <span class="token keyword">database</span> device <span class="token keyword">type</span> <span class="token keyword">disk</span> unavailable<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;可是使用带有delete 参数的change 命令删除备份集，即在备份介质上的物理删除，并且从控制文件和恢复目录中删除。 前提是要知道备份集关键字，可以使用list backup 或 list copy 命令查看。</p>
+<pre class="line-numbers language-sql"><code class="language-sql">RMAN<span class="token operator">></span> list <span class="token keyword">backup</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>删除备份集1：</p>
+<pre class="line-numbers language-sql"><code class="language-sql">RMAN<span class="token operator">></span> change backupset <span class="token number">206</span> <span class="token keyword">delete</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>使用通道 ORA_DISK_1<br><code>`</code>sql<br>备份片段列表<br>BP 关键字 BS 关键字 Pc# Cp# 状态 设备类型段名称</li>
+</ul>
+</blockquote>
+<hr>
+<p>1 1 1 1 AVAILABLE DISK /oracle/BACKUP/ITPUX_01LI7BSC_1_1.BAK<br>是否确定要删除以上对象 (输入 YES 或 NO)? yes<br>已删除备份片段<br>备份片段句柄=/oracle/BACKUP/ITPUX_01LI7BSC_1_1.BAK RECID=1 STAMP=723758988<br>1 对象已删除<br>在上面的这个示例中，我们删除了备份集和它关联的备份片。 也可以删除一些备份片。 通过 list backup命令我们可以看到备份片的名称，比如：段名:/oracle/BACKUP/ITPUX_01LI7BSC_1_1.BAK。<br>我们也可以查看备份片的号码，用catalog 用户连接数据库后，查看rc_backup_piece 表，SQL如下：<br>conn rman/rman<br>SQL&gt; select bs_key,bp_key,piece#,handle from rc_backup_piece;<br>BS_KEY BP_KEY PIECE# HANDLE</p>
+<hr>
+<p>52 55 1 /BACKUP/ORCL_02LI47UA_1_1<br>53 56 1 /BACKUP/ORCL_03LI47UF_1_1<br>75 82 1 /BACKUP/ORCL_04LI4816_1_1<br>删除备份片，我们可以用BP_KEY，也可以直接用段名（handle）,如：<br>RMAN&gt; change backuppiece ‘/oracle/BACKUP/ITPUX_02LI7BSK_1_1.BAK’ delete;<br>使用通道 ORA_DISK_1<br>备份片段列表<br>BP 关键字 BS 关键字 Pc# Cp# 状态 设备类型段名称</p>
+<hr>
+<p>2 2 1 1 AVAILABLE DISK /oracle/BACKUP/ITPUX_02LI7BSK_1_1.BAK<br>是否确定要删除以上对象 (输入 YES 或 NO)? yes<br>已删除备份片段<br>备份片段句柄=/oracle/BACKUP/ITPUX_02LI7BSK_1_1.BAK RECID=2<br>STAMP=723758997<br>1 对象已删除<br>使用备份集片，如：<br>change backuppiece 622 delete;<br>change archivelog until logseq=20 delete;<br>最后，可以使用change backuppiece uncataog命令从目录中删除备份集片。 如果删除最后剩余的备份集片，那么它也将删除备份集记录。如：<br>change backuppiece ‘/oracle/BACKUP/ITPUX_02LI7BSK_1_1.BAK’ uncatalog;</p>
+<pre><code>### 4.8 delete 命令
+&gt;&amp;emsp;&amp;emsp;备份集不是永远存在的。我们可以使用保存策略标记备份有效性和生存期的结束。但是，备份策略的实施不会从RMAN目录中删除备份，而只是将这些备份标记为丢弃状态。
+&gt;&amp;emsp;&amp;emsp;delete 命令对备份和副本的影响很大。通过delete命令，可以删除基于保存标准被标记为丢弃的任何备份，还可以将恢复目录或控制文件中的备份从expired状态变为
+
+* deleted状态
+```sql
+delete expired;
+delete obsolete;
+</code></pre><blockquote>
+<p>&emsp;&emsp;执行delete命令时，RMAN会请求用户确认这个删除命令，如果确认了这个删除命令，RMAN 就会完成delete操作。<br>&emsp;&emsp;注意： 如果一个备份被标记为deleted 状态，就不能恢复这个备份。 如果该备份物理可用，我们仍然可以使用dbms_backup_restore过程来恢复这个备份。</p>
+</blockquote>
+<h3 id="4-9-restore命令"><a href="#4-9-restore命令" class="headerlink" title="4.9 restore命令"></a>4.9 restore命令</h3><blockquote>
+<p>&emsp;&emsp;主要功能是从RMAN备份中还原文件，为恢复做准备。<br>使用restore 命令时，该命令会在没有认识提示的情况下重写已经存在的任何文件，除非使用set newname命令。<br><code>`</code>sql<br>set newname for datafile ‘/oracle/app/oradata/itpuxdb/itpux01.dbf’ to ‘E:/app/Administrator/oradata/orcl’;<br>restore database;</p>
+</blockquote>
+<p>restore controlfile from autobackup;<br>restore controlfile to ‘/backup/‘ from autobackup;<br>restore controlfile to ‘/backup’;<br>restore controlfile from autobackup until time “to_date(‘2016-6-27 13:25:00’,’yyyy-mm-dd hh24:mi:ss’)”;<br>restore controlfile from autobackup maxseq 200 maxdays 100;<br>restore spfile to pfile ‘/oracle/backup/spfile.restore’;<br>restore spfile to ‘/oracle/backup/spfile.restore’ from autobackup;<br>restore spfile from autobackup;<br>restore spfile from ‘/oracle/backup/c-1247395743-20160627-00’;<br>restore tablespace tablespace_name ;<br>restore datafile 5;<br>restore datafile ‘/oracle/app/oradata/itpuxdb/USERS01.DBF’;<br>restore database until time “to_date(‘2016-6-28 17:04:00’,’yyyy-mm-dd hh24:mi:ss’)”;<br>restore database until SCN 1000; –注意： 该示例可以将数据库还原到SCN 1000，但是不会包含SCN.<br>restore database until sequence 100 thread 1;</p>
+<p>restore archivelog all;<br>restore archivelog from logseq=20 thread=1;<br>restore archivelog from logseq=20 until logseq=30 thread=1;</p>
+<p>run<br>{<br>set archivelog destination to “d:/arch”;<br>restore archivelog all;<br>}</p>
+<p>restore database check readonly;<br>restore (datafile 5) from datafilecopy</p>
+<pre><code>### 4.10 recover命令
+&gt;&amp;emsp;&amp;emsp;recover 命令用于恢复数据库。该命令可以执行数据库的完全恢复或者时间点恢复。 Recover 命令确定需要哪些归档的重做日志，并且析取和应用他们。 一旦完成重做的应用，我们就只需要使用alter database open命令打开数据库即可。
+```sql
+recover database
+recover database noredo; -- 如果联机日志存在，可以用recover database代替
+recover tablespace tablespace_name ;
+recover datafile 3;
+recover datafile &#39;/oracle/app/oradata/itpuxdb/USERS01.DBF&#39;;
+set until time &quot;to_date(&#39;2016-07-05 14:02:00&#39;,&#39;yyyy-mm-dd hh24:mi:ss&#39;)&quot;;
+restore database;
+recover database;
+alter database open resetlogs;
+recover database until time &quot;to_date(&#39;2016-07-05 14:02:00&#39;,&#39;yyyy-mm-dd hh24:mi:ss&#39;)&quot;;
+recover database until SCN 1000;
+recover database until sequence 100 thread 1;
+</code></pre><h3 id="4-10-Switch-命令"><a href="#4-10-Switch-命令" class="headerlink" title="4.10 Switch 命令"></a>4.10 Switch 命令</h3><blockquote>
+<p>Switch 命令可以修改数据库控制文件中数据文件的位置，以反映Oracle数据库文件新的位置。</p>
+<pre class="line-numbers language-sql"><code class="language-sql">Switch datafile <span class="token keyword">all</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">-- 修改控制文件中数据文件位置</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+</blockquote>
+<h3 id="4-10-blockrecover"><a href="#4-10-blockrecover" class="headerlink" title="4.10 blockrecover"></a>4.10 blockrecover</h3><blockquote>
+<p>一般出现数据块错误时，都会有错误消息：<br>ORA-01578: ORACLE data block corrupted (file #18,block #88)<br>如果没有BMR时，我们必须从一个备份中恢复这个数据文件，在恢复过程中，用户不能使用该数据块文件中的所有数据。<br>用BMR恢复就很简单，只需要执行blockrecover命令即可：</p>
+<pre class="line-numbers language-sql"><code class="language-sql">blockrecover datafile <span class="token number">1</span> block <span class="token number">88</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如果有必要，可以同时恢复多个数据文件的多个数据块。如：</p>
+<pre class="line-numbers language-sql"><code class="language-sql">blockrecover datafile <span class="token number">18</span> block <span class="token number">16</span><span class="token punctuation">,</span><span class="token number">17</span><span class="token punctuation">,</span><span class="token number">88</span><span class="token punctuation">,</span><span class="token number">108</span><span class="token punctuation">;</span>
+blcokrecover datafile <span class="token number">18</span> block <span class="token number">88</span> datafile <span class="token number">19</span> blcok <span class="token number">188</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>&emsp;&emsp;查询v$database_block_corruption视图可以查看讹误数据块的详细信息。 如下所示，使用具有corruption list restore 参数的blockrecover命令可以方便地修正v$database_block_corruption 视图中的讹误数据块。<br>&emsp;&emsp;blockrecover corruption list restore until time ‘SYSDATE-5’;<br>这条命令将还原讹误列表中最近5天的所有讹误数据块。 在上面的命令中，还可以使用until time 和 until sequence.</p>
+</blockquote>
+<h3 id="4-10convert命令"><a href="#4-10convert命令" class="headerlink" title="4.10convert命令"></a>4.10convert命令</h3><blockquote>
+<p>&emsp;&emsp; Oracle 10g R2以后支持手工跨平台移动数据库，即使这些平台具有不同的尾数格式（endian format）。 尾数格式与字节排序有关，它有两种不同的格式，即大尾数和小尾数。 如果在不同尾数字节格式的平台之间移动数据库，就需要手工操作，并且使用RMAN的convert datafile 或者 convert tablespace命令来将传送的数据文件转换为正确的尾数格式。</p>
+<pre class="line-numbers language-sql"><code class="language-sql"><span class="token keyword">convert</span> <span class="token keyword">tablespace</span> ITPUX <span class="token keyword">to</span> platform<span class="token operator">=</span><span class="token string">'AIX-Based Systems (64-bit)'</span>
+db_file_name_convert<span class="token operator">=</span><span class="token string">'/oracle/app/oradata/itpux'</span><span class="token punctuation">,</span><span class="token string">'/oracle/itpux'</span><span class="token punctuation">;</span>
+<span class="token keyword">convert</span> datafile <span class="token string">'/oracle/app/oradata/itpux/itpux01.DBF'</span> <span class="token keyword">from</span> platform
+<span class="token string">'AIX-Based Systems (64-bit)'</span> db_file_name_convert <span class="token string">'/oracle/app/oradata/itpux'</span><span class="token punctuation">,</span><span class="token string">'/oracle/app/itpux'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+</blockquote>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/oracle/oracle-rman-bei-fen-1/">https://gin.sh/oracle/oracle-rman-bei-fen-1/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Oracle/">
+                                    <span class="chip bg-color">Oracle</span>
+                                </a>
+                            
+                                <a href="/tags/RMAN/">
+                                    <span class="chip bg-color">RMAN</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/oracle/oracle-rman-bei-fen-1/';
+        this.page.identifier = '/oracle/oracle-rman-bei-fen-1/';
+        this.page.title = 'Oracle Rman 备份1';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/oracle/oracle-rman-bei-fen-3/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/17.jpg" class="responsive-img" alt="Oracle Rman 备份3">
+                        
+                        <span class="card-title">Oracle Rman 备份3</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2018-10-04
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Oracle/" class="post-category">
+                                    Oracle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle/">
+                        <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                    <a href="/tags/RMAN/">
+                        <span class="chip bg-color">RMAN</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/oracle/oracle-rman-bei-fen-2/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/18.jpg" class="responsive-img" alt="Oracle Rman 备份2">
+                        
+                        <span class="card-title">Oracle Rman 备份2</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2018-10-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Oracle/" class="post-category">
+                                    Oracle
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Oracle/">
+                        <span class="chip bg-color">Oracle</span>
+                    </a>
+                    
+                    <a href="/tags/RMAN/">
+                        <span class="chip bg-color">RMAN</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

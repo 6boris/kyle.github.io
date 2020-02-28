@@ -1,0 +1,1364 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Golang, unsafe, 指针">
+    <meta name="description" content="这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>深度解密Go语言之unsafe | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/medias/featureimages/22.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">深度解密Go语言之unsafe</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Golang/">
+                                <span class="chip bg-color">Golang</span>
+                            </a>
+                        
+                            <a href="/tags/Forward/">
+                                <span class="chip bg-color">Forward</span>
+                            </a>
+                        
+                            <a href="/tags/unsafe/">
+                                <span class="chip bg-color">unsafe</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Golang/" class="post-category">
+                                Golang
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-06-03
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    15 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="深度解密Go语言之-unsafe"><a href="#深度解密Go语言之-unsafe" class="headerlink" title="深度解密Go语言之 unsafe"></a>深度解密Go语言之 unsafe</h1><p><a href="https://www.cnblogs.com/qcrao-2018/p/10964692.html" target="_blank" rel="noopener">原文地址</a><br><a href="">源码地址</a></p>
+<p>上一篇文章我们详细分析了 map 的底层实现，如果你也跟着阅读了源码，那一定对 unsafe.Pointer 不陌生，map 对 key 进行定位的时候，大量使用。</p>
+<p>unsafe.Pointer 位于 unsafe 包，这篇文章，我们来深入研究 unsafe 包。先说明一下，本文没有之前那么长了，你可以比较轻松地读完，这样的时候不是太多。</p>
+<p>上次发布文章的时候，包括代码超过 5w 字，后台编辑器的体验非常差，一度让我怀疑人生。我之前说过，像 map 那样的长文，估计能读完的不超过 1 %。像下面这几位同学的评价，并不多见。</p>
+<h2 id="指针类型"><a href="#指针类型" class="headerlink" title="指针类型"></a>指针类型</h2><p>在正式介绍 unsafe 包之前，需要着重介绍 Go 语言中的指针类型。</p>
+<p>我本科开始学编程的时候，第一门语言就是 C。之后又陆续学过 C++，Java，Python，这些语言都挺强大的，但是没了 C 语言那么“单纯”。直到我开始接触 Go 语言，又找到了那种感觉。Go 语言的作者之一 Ken Thompson 也是 C 语言的作者。所以，Go 可以看作 C 系语言，它的很多特性都和 C 类似，指针就是其中之一。</p>
+<p>然而，Go 语言的指针相比 C 的指针有很多限制。这当然是为了安全考虑，要知道像 Java/Python 这些现代语言，生怕程序员出错，哪有什么指针（这里指的是显式的指针）？更别说像 C/C++ 还需要程序员自己清理“垃圾”。所以对于 Go 来说，有指针已经很不错了，仅管它有很多限制。</p>
+<p>为什么需要指针类型呢？参考文献 go101.org 里举了这样一个例子：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token string">"fmt"</span>
+
+<span class="token keyword">func</span> <span class="token function">double</span><span class="token punctuation">(</span>x <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    x <span class="token operator">+=</span> x
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token number">3</span>
+    <span class="token function">double</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 3</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>非常简单，我想在 double 函数里将 a 翻倍，但是例子中的函数却做不到。为什么？因为 Go 语言的函数传参都是值传递。double 函数里的 x 只是实参 a 的一个拷贝，在函数内部对 x 的操作不能反馈到实参 a。</p>
+<p>如果这时，有一个指针就可以解决问题了！这也是我们常用的“伎俩”。</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token string">"fmt"</span>
+
+<span class="token keyword">func</span> <span class="token function">double</span><span class="token punctuation">(</span>x <span class="token operator">*</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token operator">*</span>x <span class="token operator">+=</span> <span class="token operator">*</span>x
+    x <span class="token operator">=</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> a <span class="token operator">=</span> <span class="token number">3</span>
+    <span class="token function">double</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>a<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 6</span>
+
+    p <span class="token operator">:=</span> <span class="token operator">&amp;</span>a
+    <span class="token function">double</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> p <span class="token operator">==</span> <span class="token boolean">nil</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 12 false</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>很常规的操作，不用多解释。唯一可能有些疑惑的在这一句：</p>
+<pre class="line-numbers language-go"><code class="language-go">x <span class="token operator">=</span> <span class="token boolean">nil</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这得稍微思考一下，才能得出这一行代码根本不影响的结论。因为是值传递，所以 x 也只是对 &amp;a 的一个拷贝。</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token operator">*</span>x <span class="token operator">+=</span> <span class="token operator">*</span>x
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>这一句把 x 指向的值（也就是 &amp;a 指向的值，即变量 a）变为原来的 2 倍。但是对 x 本身（一个指针）的操作却不会影响外层的 a，所以 x = nil 掀不起任何大风大浪。</p>
+<p>下面的这张图可以“自证清白”：</p>
+<p><img src="https://user-images.githubusercontent.com/7698088/58675362-96c72280-8386-11e9-89a6-f37204648b03.png" alt=""></p>
+<p>然而，相比于 C 语言中指针的灵活，Go 的指针多了一些限制。但这也算是 Go 的成功之处：既可以享受指针带来的便利，又避免了指针的危险性。</p>
+<ul>
+<li>限制一：Go 的指针不能进行数学运算。</li>
+</ul>
+<p>来看一个简单的例子：</p>
+<pre class="line-numbers language-go"><code class="language-go">a <span class="token operator">:=</span> <span class="token number">5</span>
+p <span class="token operator">:=</span> <span class="token operator">&amp;</span>a
+
+p<span class="token operator">++</span>
+p <span class="token operator">=</span> <span class="token operator">&amp;</span>a <span class="token operator">+</span> <span class="token number">3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面的代码将不能通过编译，会报编译错误：invalid operation，也就是说不能对指针做数学运算。</p>
+<ul>
+<li>限制二：不同类型的指针不能相互转换。<br>例如下面这个简短的例子：</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    a <span class="token operator">:=</span> <span class="token function">int</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span>
+    <span class="token keyword">var</span> f <span class="token operator">*</span><span class="token builtin">float64</span>
+
+    f <span class="token operator">=</span> <span class="token operator">&amp;</span>a
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也会报编译错误：</p>
+<pre class="line-numbers language-go"><code class="language-go">cannot use <span class="token operator">&amp;</span><span class="token function">a</span> <span class="token punctuation">(</span><span class="token keyword">type</span> <span class="token operator">*</span><span class="token builtin">int</span><span class="token punctuation">)</span> as <span class="token keyword">type</span> <span class="token operator">*</span><span class="token builtin">float64</span> in assignment
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>关于两个指针能否相互转换，参考资料中 go 101 相关文章里写得非常细，这里我不想展开。个人认为记住这些没有什么意义，有完美主义的同学可以去阅读原文。当然我也有完美主义，但我有时会克制，嘿嘿。</p>
+<ul>
+<li><p>限制三：不同类型的指针不能使用 == 或 != 比较。<br>只有在两个指针类型相同或者可以相互转换的情况下，才可以对两者进行比较。另外，指针可以通过 == 和 != 直接和 nil 作比较。</p>
+</li>
+<li><p>限制四：不同类型的指针变量不能相互赋值。<br>这一点同限制三。</p>
+</li>
+</ul>
+<h2 id="什么是-unsafe"><a href="#什么是-unsafe" class="headerlink" title="什么是 unsafe"></a>什么是 unsafe</h2><p>前面所说的指针是类型安全的，但它有很多限制。Go 还有非类型安全的指针，这就是 unsafe 包提供的 unsafe.Pointer。在某些情况下，它会使代码更高效，当然，也更危险。</p>
+<p>unsafe 包用于 Go 编译器，在编译阶段使用。从名字就可以看出来，它是不安全的，官方并不建议使用。我在用 unsafe 包的时候会有一种不舒服的感觉，可能这也是语言设计者的意图吧。</p>
+<p>但是高阶的 Gopher，怎么能不会使用 unsafe 包呢？它可以绕过 Go 语言的类型系统，直接操作内存。例如，一般我们不能操作一个结构体的未导出成员，但是通过 unsafe 包就能做到。unsafe 包让我可以直接读写内存，还管你什么导出还是未导出。</p>
+<h2 id="为什么有-unsafe"><a href="#为什么有-unsafe" class="headerlink" title="为什么有 unsafe"></a>为什么有 unsafe</h2><p>Go 语言类型系统是为了安全和效率设计的，有时，安全会导致效率低下。有了 unsafe 包，高阶的程序员就可以利用它绕过类型系统的低效。因此，它就有了存在的意义，阅读 Go 源码，会发现有大量使用 unsafe 包的例子。</p>
+<h2 id="unsafe-实现原理"><a href="#unsafe-实现原理" class="headerlink" title="unsafe 实现原理"></a>unsafe 实现原理</h2><p>我们来看源码：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> ArbitraryType <span class="token builtin">int</span>
+
+<span class="token keyword">type</span> Pointer <span class="token operator">*</span>ArbitraryType
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>从命名来看，<code>Arbitrary</code> 是任意的意思，也就是说 Pointer 可以指向任意类型，实际上它类似于 C 语言里的 <code>void*</code>。</p>
+<p>unsafe 包还有其他三个函数：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">Sizeof</span><span class="token punctuation">(</span>x ArbitraryType<span class="token punctuation">)</span> <span class="token builtin">uintptr</span>
+<span class="token keyword">func</span> <span class="token function">Offsetof</span><span class="token punctuation">(</span>x ArbitraryType<span class="token punctuation">)</span> <span class="token builtin">uintptr</span>
+<span class="token keyword">func</span> <span class="token function">Alignof</span><span class="token punctuation">(</span>x ArbitraryType<span class="token punctuation">)</span> <span class="token builtin">uintptr</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>Sizeof</code> 返回类型 x 所占据的字节数，但不包含 x 所指向的内容的大小。例如，对于一个指针，函数返回的大小为 8 字节（64位机上），一个 slice 的大小则为 slice header 的大小。</p>
+<p><code>Offsetof</code> 返回结构体成员在内存中的位置离结构体起始处的字节数，所传参数必须是结构体的成员。</p>
+<p><code>Alignof</code> 返回 m，m 是指当类型进行内存对齐时，它分配到的内存地址能整除 m。</p>
+<p>注意到以上三个函数返回的结果都是 uintptr 类型，这和 unsafe.Pointer 可以相互转换。三个函数都是在编译期间执行，它们的结果可以直接赋给 const 型变量。另外，因为三个函数执行的结果和操作系统、编译器相关，所以是不可移植的。</p>
+<blockquote>
+<p>综上所述，unsafe 包提供了 2 点重要的能力：</p>
+</blockquote>
+<ul>
+<li>任何类型的指针和 unsafe.Pointer 可以相互转换。</li>
+<li>uintptr 类型和 unsafe.Pointer 可以相互转换。</li>
+</ul>
+<p><img src="https://user-images.githubusercontent.com/7698088/58747453-1dbaee80-849e-11e9-8c75-2459f76792d2.png" alt=""></p>
+<p>pointer 不能直接进行数学运算，但可以把它转换成 uintptr，对 uintptr 类型进行数学运算，再转换成 pointer 类型。</p>
+<pre class="line-numbers language-go"><code class="language-go">pointer 不能直接进行数学运算，但可以把它转换成 <span class="token builtin">uintptr</span>，对 <span class="token builtin">uintptr</span> 类型进行数学运算，再转换成 pointer 类型。
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>还有一点要注意的是，uintptr 并没有指针的语义，意思就是 uintptr 所指向的对象会被 gc 无情地回收。而 unsafe.Pointer 有指针语义，可以保护它所指向的对象在“有用”的时候不会被垃圾回收。</p>
+<p>unsafe 包中的几个函数都是在编译期间执行完毕，毕竟，编译器对内存分配这些操作“了然于胸”。在 <code>/usr/local/go/src/cmd/compile/internal/gc/unsafe.go</code> 路径下，可以看到编译期间 Go 对 unsafe 包中函数的处理。</p>
+<p>更深层的原理需要去研究编译器的源码，这里就不去深究了。我们重点关注它的用法，接着往下看</p>
+<h2 id="unsafe-如何使用"><a href="#unsafe-如何使用" class="headerlink" title="unsafe 如何使用"></a>unsafe 如何使用</h2><h3 id="获取-slice-长度"><a href="#获取-slice-长度" class="headerlink" title="获取 slice 长度"></a>获取 slice 长度</h3><p>通过前面关于 slice 的文章，我们知道了 slice header 的结构体定义：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token comment" spellcheck="true">// runtime/slice.go</span>
+<span class="token keyword">type</span> slice <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    array unsafe<span class="token punctuation">.</span>Pointer <span class="token comment" spellcheck="true">// 元素指针</span>
+    <span class="token builtin">len</span>   <span class="token builtin">int</span> <span class="token comment" spellcheck="true">// 长度 </span>
+    <span class="token builtin">cap</span>   <span class="token builtin">int</span> <span class="token comment" spellcheck="true">// 容量</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>调用 make 函数新建一个 slice，底层调用的是 makeslice 函数，返回的是 slice 结构体：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">makeslice</span><span class="token punctuation">(</span>et <span class="token operator">*</span>_type<span class="token punctuation">,</span> <span class="token builtin">len</span><span class="token punctuation">,</span> <span class="token builtin">cap</span> <span class="token builtin">int</span><span class="token punctuation">)</span> slice
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>因此我们可以通过 unsafe.Pointer 和 uintptr 进行转换，得到 slice 的字段值。</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">)</span>
+    <span class="token keyword">var</span> Len <span class="token operator">=</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token function">uintptr</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">uintptr</span><span class="token punctuation">(</span><span class="token number">8</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>Len<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 9 9</span>
+
+    <span class="token keyword">var</span> Cap <span class="token operator">=</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token function">uintptr</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token function">uintptr</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>Cap<span class="token punctuation">,</span> <span class="token function">cap</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 20 20</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Len，cap 的转换流程如下：</p>
+<pre class="line-numbers language-go"><code class="language-go">Len<span class="token punctuation">:</span> <span class="token operator">&amp;</span>s <span class="token operator">=</span><span class="token operator">></span> pointer <span class="token operator">=</span><span class="token operator">></span> <span class="token builtin">uintptr</span> <span class="token operator">=</span><span class="token operator">></span> pointer <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">*</span><span class="token builtin">int</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token builtin">int</span>
+Cap<span class="token punctuation">:</span> <span class="token operator">&amp;</span>s <span class="token operator">=</span><span class="token operator">></span> pointer <span class="token operator">=</span><span class="token operator">></span> <span class="token builtin">uintptr</span> <span class="token operator">=</span><span class="token operator">></span> pointer <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">*</span><span class="token builtin">int</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token builtin">int</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="获取-map-长度"><a href="#获取-map-长度" class="headerlink" title="获取 map 长度"></a>获取 map 长度</h3><p>再来看一下上篇文章我们讲到的 map：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> hmap <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    count     <span class="token builtin">int</span>
+    flags     <span class="token builtin">uint8</span>
+    B         <span class="token builtin">uint8</span>
+    noverflow <span class="token builtin">uint16</span>
+    hash0     <span class="token builtin">uint32</span>
+
+    buckets    unsafe<span class="token punctuation">.</span>Pointer
+    oldbuckets unsafe<span class="token punctuation">.</span>Pointer
+    nevacuate  <span class="token builtin">uintptr</span>
+
+    extra <span class="token operator">*</span>mapextra
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>和 slice 不同的是，makemap 函数返回的是 hmap 的指针，注意是指针：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">makemap</span><span class="token punctuation">(</span>t <span class="token operator">*</span>maptype<span class="token punctuation">,</span> hint <span class="token builtin">int64</span><span class="token punctuation">,</span> h <span class="token operator">*</span>hmap<span class="token punctuation">,</span> bucket unsafe<span class="token punctuation">.</span>Pointer<span class="token punctuation">)</span> <span class="token operator">*</span>hmap
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>我们依然能通过 unsafe.Pointer 和 uintptr 进行转换，得到 hamp 字段的值，只不过，现在 count 变成二级指针了：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    mp <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+    mp<span class="token punctuation">[</span><span class="token string">"qcrao"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">100</span>
+    mp<span class="token punctuation">[</span><span class="token string">"stefno"</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">18</span>
+
+    count <span class="token operator">:=</span> <span class="token operator">*</span><span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token operator">*</span><span class="token builtin">int</span><span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>mp<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>count<span class="token punctuation">,</span> <span class="token function">len</span><span class="token punctuation">(</span>mp<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 2 2</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>count 的转换过程：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token operator">&amp;</span>mp <span class="token operator">=</span><span class="token operator">></span> pointer <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">*</span><span class="token operator">*</span><span class="token builtin">int</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token builtin">int</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="map-源码中的应用"><a href="#map-源码中的应用" class="headerlink" title="map 源码中的应用"></a>map 源码中的应用</h3><p>在 map 源码中，mapaccess1、mapassign、mapdelete 函数中，需要定位 key 的位置，会先对 key 做哈希运算。</p>
+<p>例如：</p>
+<pre class="line-numbers language-go"><code class="language-go">b <span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token operator">*</span>bmap<span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token function">uintptr</span><span class="token punctuation">(</span>h<span class="token punctuation">.</span>buckets<span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token punctuation">(</span>hash<span class="token operator">&amp;</span>m<span class="token punctuation">)</span><span class="token operator">*</span><span class="token function">uintptr</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span>bucketsize<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>h.buckets</code> 是一个 <code>unsafe.Pointer</code>，将它转换成 <code>uintptr</code>，然后加上 (<code>hash&amp;m)*uintptr(t.bucketsize)</code>，二者相加的结果再次转换成 <code>unsafe.Pointer</code>，最后，转换成 <code>bmap</code> 指针，得到 <code>key</code> 所落入的 <code>bucket</code> 位置。如果不熟悉这个公式，可以看看上一篇文章，浅显易懂。</p>
+<p>上面举的例子相对简单，来看一个关于赋值的更难一点的例子：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token comment" spellcheck="true">// store new key/value at insert position</span>
+<span class="token keyword">if</span> t<span class="token punctuation">.</span>indirectkey <span class="token punctuation">{</span>
+    kmem <span class="token operator">:=</span> <span class="token function">newobject</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span>key<span class="token punctuation">)</span>
+    <span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">*</span>unsafe<span class="token punctuation">.</span>Pointer<span class="token punctuation">)</span><span class="token punctuation">(</span>insertk<span class="token punctuation">)</span> <span class="token operator">=</span> kmem
+    insertk <span class="token operator">=</span> kmem
+<span class="token punctuation">}</span>
+<span class="token keyword">if</span> t<span class="token punctuation">.</span>indirectvalue <span class="token punctuation">{</span>
+    vmem <span class="token operator">:=</span> <span class="token function">newobject</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span>elem<span class="token punctuation">)</span>
+    <span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">*</span>unsafe<span class="token punctuation">.</span>Pointer<span class="token punctuation">)</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span> <span class="token operator">=</span> vmem
+<span class="token punctuation">}</span>
+
+<span class="token function">typedmemmove</span><span class="token punctuation">(</span>t<span class="token punctuation">.</span>key<span class="token punctuation">,</span> insertk<span class="token punctuation">,</span> key<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这段代码是在找到了 key 要插入的位置后，进行“赋值”操作。insertk 和 val 分别表示 key 和 value 所要“放置”的地址。如果 t.indirectkey 为真，说明 bucket 中存储的是 key 的指针，因此需要将 insertk 看成指针的指针，这样才能将 bucket 中的相应位置的值设置成指向真实 key 的地址值，也就是说 key 存放的是指针。</p>
+<p>下面这张图展示了设置 key 的全部操作：</p>
+<p><img src="https://user-images.githubusercontent.com/7698088/58756044-c1e67900-8522-11e9-9dda-72ba2a731acf.png" alt=""></p>
+<p>obj 是真实的 key 存放的地方。第 4 号图，obj 表示执行完 typedmemmove 函数后，被成功赋值。</p>
+<h3 id="Offsetof-获取成员偏移量"><a href="#Offsetof-获取成员偏移量" class="headerlink" title="Offsetof 获取成员偏移量"></a>Offsetof 获取成员偏移量</h3><p>对于一个结构体，通过 offset 函数可以获取结构体成员的偏移量，进而获取成员的地址，读写该地址的内存，就可以达到改变成员值的目的。</p>
+<p>这里有一个内存分配相关的事实：结构体会被分配一块连续的内存，结构体的地址也代表了第一个成员的地址。</p>
+<p>我们来看一个例子：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"fmt"</span>
+    <span class="token string">"unsafe"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">type</span> Programmer <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    name <span class="token builtin">string</span>
+    language <span class="token builtin">string</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    p <span class="token operator">:=</span> Programmer<span class="token punctuation">{</span><span class="token string">"stefno"</span><span class="token punctuation">,</span> <span class="token string">"go"</span><span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span>
+
+    name <span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>p<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token operator">*</span>name <span class="token operator">=</span> <span class="token string">"qcrao"</span>
+
+    lang <span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token function">uintptr</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>p<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> unsafe<span class="token punctuation">.</span><span class="token function">Offsetof</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>language<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token operator">*</span>lang <span class="token operator">=</span> <span class="token string">"Golang"</span>
+
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行代码，输出：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token punctuation">{</span>stefno <span class="token keyword">go</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span>qcrao Golang<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>name 是结构体的第一个成员，因此可以直接将 &amp;p 解析成 *string。这一点，在前面获取 map 的 count 成员时，用的是同样的原理。</p>
+<p>对于结构体的私有成员，现在有办法可以通过 unsafe.Pointer 改变它的值了。</p>
+<p>我把 Programmer 结构体升级，多加一个字段：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> Programmer <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    name <span class="token builtin">string</span>
+    age <span class="token builtin">int</span>
+    language <span class="token builtin">string</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>并且放在其他包，这样在 main 函数中，它的三个字段都是私有成员变量，不能直接修改。但我通过 unsafe.Sizeof() 函数可以获取成员大小，进而计算出成员的地址，直接修改内存。</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    p <span class="token operator">:=</span> Programmer<span class="token punctuation">{</span><span class="token string">"stefno"</span><span class="token punctuation">,</span> <span class="token number">18</span><span class="token punctuation">,</span> <span class="token string">"go"</span><span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span>
+
+    lang <span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token function">uintptr</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>p<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> unsafe<span class="token punctuation">.</span><span class="token function">Sizeof</span><span class="token punctuation">(</span><span class="token function">int</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">+</span> unsafe<span class="token punctuation">.</span><span class="token function">Sizeof</span><span class="token punctuation">(</span><span class="token function">string</span><span class="token punctuation">(</span><span class="token string">""</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token operator">*</span>lang <span class="token operator">=</span> <span class="token string">"Golang"</span>
+
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>p<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>输出：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token punctuation">{</span>stefno <span class="token number">18</span> <span class="token keyword">go</span><span class="token punctuation">}</span>
+<span class="token punctuation">{</span>stefno <span class="token number">18</span> Golang<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h3 id="string-和-slice-的相互转换"><a href="#string-和-slice-的相互转换" class="headerlink" title="string 和 slice 的相互转换"></a>string 和 slice 的相互转换</h3><p>这是一个非常精典的例子。实现字符串和 bytes 切片之间的转换，要求是 zero-copy。想一下，一般的做法，都需要遍历字符串或 bytes 切片，再挨个赋值。</p>
+<p>完成这个任务，我们需要了解 slice 和 string 的底层数据结构：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> StringHeader <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Data <span class="token builtin">uintptr</span>
+    Len  <span class="token builtin">int</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">type</span> SliceHeader <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Data <span class="token builtin">uintptr</span>
+    Len  <span class="token builtin">int</span>
+    Cap  <span class="token builtin">int</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>上面是反射包下的结构体，路径：src/reflect/value.go。只需要共享底层 []byte 数组就可以实现 zero-copy。</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">string2bytes</span><span class="token punctuation">(</span>s <span class="token builtin">string</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span> <span class="token punctuation">{</span>
+    stringHeader <span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token operator">*</span>reflect<span class="token punctuation">.</span>StringHeader<span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    bh <span class="token operator">:=</span> reflect<span class="token punctuation">.</span>SliceHeader<span class="token punctuation">{</span>
+        Data<span class="token punctuation">:</span> stringHeader<span class="token punctuation">.</span>Data<span class="token punctuation">,</span>
+        Len<span class="token punctuation">:</span>  stringHeader<span class="token punctuation">.</span>Len<span class="token punctuation">,</span>
+        Cap<span class="token punctuation">:</span>  stringHeader<span class="token punctuation">.</span>Len<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>bh<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">bytes2string</span><span class="token punctuation">(</span>b <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">byte</span><span class="token punctuation">)</span> <span class="token builtin">string</span><span class="token punctuation">{</span>
+    sliceHeader <span class="token operator">:=</span> <span class="token punctuation">(</span><span class="token operator">*</span>reflect<span class="token punctuation">.</span>SliceHeader<span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>b<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+    sh <span class="token operator">:=</span> reflect<span class="token punctuation">.</span>StringHeader<span class="token punctuation">{</span>
+        Data<span class="token punctuation">:</span> sliceHeader<span class="token punctuation">.</span>Data<span class="token punctuation">,</span>
+        Len<span class="token punctuation">:</span>  sliceHeader<span class="token punctuation">.</span>Len<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">return</span> <span class="token operator">*</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token builtin">string</span><span class="token punctuation">)</span><span class="token punctuation">(</span>unsafe<span class="token punctuation">.</span><span class="token function">Pointer</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>sh<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>代码比较简单，不作详细解释。通过构造 slice header 和 string header，来完成 string 和 byte slice 之间的转换。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>unsafe 包绕过了 Go 的类型系统，达到直接操作内存的目的，使用它有一定的风险性。但是在某些场景下，使用 unsafe 包提供的函数会提升代码的效率，Go 源码中也是大量使用 unsafe 包。</p>
+<p>unsafe 包定义了 Pointer 和三个函数：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> ArbitraryType <span class="token builtin">int</span>
+<span class="token keyword">type</span> Pointer <span class="token operator">*</span>ArbitraryType
+
+<span class="token keyword">func</span> <span class="token function">Sizeof</span><span class="token punctuation">(</span>x ArbitraryType<span class="token punctuation">)</span> <span class="token builtin">uintptr</span>
+<span class="token keyword">func</span> <span class="token function">Offsetof</span><span class="token punctuation">(</span>x ArbitraryType<span class="token punctuation">)</span> <span class="token builtin">uintptr</span>
+<span class="token keyword">func</span> <span class="token function">Alignof</span><span class="token punctuation">(</span>x ArbitraryType<span class="token punctuation">)</span> <span class="token builtin">uintptr</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过三个函数可以获取变量的大小、偏移、对齐等信息。</p>
+<p>uintptr 可以和 unsafe.Pointer 进行相互转换，uintptr 可以进行数学运算。这样，通过 uintptr 和 unsafe.Pointer 的结合就解决了 Go 指针不能进行数学运算的限制。</p>
+<p>通过 unsafe 相关函数，可以获取结构体私有成员的地址，进而对其做进一步的读写操作，突破 Go 的类型安全限制。关于 unsafe 包，我们更多关注它的用法。</p>
+<p>顺便说一句，unsafe 包用多了之后，也不觉得它的名字有多么地不“美观”了。相反，因为使用了官方并不提倡的东西，反而觉得有点酷炫。这就是叛逆的感觉吧。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>【飞雪无情的博客】<a href="https://www.flysnow.org/2017/07/06/go-in-action-unsafe-pointer.html" target="_blank" rel="noopener">https://www.flysnow.org/2017/07/06/go-in-action-unsafe-pointer.html</a></p>
+<p>【译文 unsafe包详解】<a href="https://gocn.vip/question/371" target="_blank" rel="noopener">https://gocn.vip/question/371</a></p>
+<p>【官方文档】<a href="https://golang.org/pkg/unsafe/" target="_blank" rel="noopener">https://golang.org/pkg/unsafe/</a></p>
+<p>【例子】<a href="http://www.opscoder.info/golang_unsafe.html" target="_blank" rel="noopener">http://www.opscoder.info/golang_unsafe.html</a></p>
+<p>【煎鱼大佬的博客】<a href="https://segmentfault.com/a/1190000017389782" target="_blank" rel="noopener">https://segmentfault.com/a/1190000017389782</a></p>
+<p>【go语言圣经】<a href="https://www.kancloud.cn/wizardforcel/gopl-zh/106477" target="_blank" rel="noopener">https://www.kancloud.cn/wizardforcel/gopl-zh/106477</a></p>
+<p>【pointer and system calls】<a href="https://blog.gopheracademy.com/advent-2017/unsafe-pointer-and-system-calls/" target="_blank" rel="noopener">https://blog.gopheracademy.com/advent-2017/unsafe-pointer-and-system-calls/</a></p>
+<p>【pointer and uintptr】<a href="https://my.oschina.net/xinxingegeya/blog/729673" target="_blank" rel="noopener">https://my.oschina.net/xinxingegeya/blog/729673</a></p>
+<p>【unsafe.pointer】<a href="https://go101.org/article/unsafe.html" target="_blank" rel="noopener">https://go101.org/article/unsafe.html</a></p>
+<p>【go 指针类型】<a href="https://go101.org/article/pointer.html" target="_blank" rel="noopener">https://go101.org/article/pointer.html</a></p>
+<p>【码洞 快学Go语言 unsafe】<a href="https://juejin.im/post/5c189dce5188256b2e71e79b" target="_blank" rel="noopener">https://juejin.im/post/5c189dce5188256b2e71e79b</a></p>
+<p>【官方文档】<a href="https://golang.org/pkg/unsafe/" target="_blank" rel="noopener">https://golang.org/pkg/unsafe/</a></p>
+<p>【jasper 的小窝】<a href="http://www.opscoder.info/golang_unsafe.html" target="_blank" rel="noopener">http://www.opscoder.info/golang_unsafe.html</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/golang/depth-decrypting-the-unsafe-of-the-go-language/">https://gin.sh/golang/depth-decrypting-the-unsafe-of-the-go-language/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Golang/">
+                                    <span class="chip bg-color">Golang</span>
+                                </a>
+                            
+                                <a href="/tags/Forward/">
+                                    <span class="chip bg-color">Forward</span>
+                                </a>
+                            
+                                <a href="/tags/unsafe/">
+                                    <span class="chip bg-color">unsafe</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/golang/depth-decrypting-the-unsafe-of-the-go-language/';
+        this.page.identifier = '/golang/depth-decrypting-the-unsafe-of-the-go-language/';
+        this.page.title = '深度解密Go语言之unsafe';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/golang/a-strange-problem-about-gorm/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/23.jpg" class="responsive-img" alt="一个关于GORM的奇怪问题">
+                        
+                        <span class="card-title">一个关于GORM的奇怪问题</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            记录一个关于使用GORM的奇怪问题
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-06-04
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Golang/" class="post-category">
+                                    Golang
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                    <a href="/tags/GROM/">
+                        <span class="chip bg-color">GROM</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/golang/depth-decrypting-the-map-of-the-go-language/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/20.jpg" class="responsive-img" alt="深度解密Go语言之 map">
+                        
+                        <span class="card-title">深度解密Go语言之 map</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-05-22
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Golang/" class="post-category">
+                                    Golang
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                    <a href="/tags/Forward/">
+                        <span class="chip bg-color">Forward</span>
+                    </a>
+                    
+                    <a href="/tags/map/">
+                        <span class="chip bg-color">map</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

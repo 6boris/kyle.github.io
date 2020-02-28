@@ -1,0 +1,1795 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Golang, Go, context, 并发, 线程, 协程">
+    <meta name="description" content="这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>深度解密Go语言之context | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/medias/featureimages/7.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">深度解密Go语言之context</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #toc-content .is-active-link::before {
+        background-color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Golang/">
+                                <span class="chip bg-color">Golang</span>
+                            </a>
+                        
+                            <a href="/tags/Context/">
+                                <span class="chip bg-color">Context</span>
+                            </a>
+                        
+                            <a href="/tags/Forward/">
+                                <span class="chip bg-color">Forward</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Golang/" class="post-category">
+                                Golang
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-06-12
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    32 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="深度解密Go语言之context"><a href="#深度解密Go语言之context" class="headerlink" title="深度解密Go语言之context"></a>深度解密Go语言之context</h1><p><a href="https://www.cnblogs.com/qcrao-2018/p/11007503.html" target="_blank" rel="noopener">原文地址</a><br><a href="https://github.com/golang/go/blob/master/src/context/context.go" target="_blank" rel="noopener">源码地址</a></p>
+<p>Go 语言的 context 包短小精悍，非常适合新手学习。不论是它的源码还是实际使用，都值得投入时间去学习。</p>
+<p>这篇文章依然想尝试全面、深入地去研究。文章相比往期而言，整体不长，希望你看完可以有所收获！</p>
+<h2 id="什么是-context"><a href="#什么是-context" class="headerlink" title="什么是 context"></a>什么是 context</h2><p>Go 1.7 标准库引入 context，中文译作“上下文”，准确说它是 goroutine 的上下文，包含 goroutine 的运行状态、环境、现场等信息。</p>
+<p>context 主要用来在 goroutine 之间传递上下文信息，包括：取消信号、超时时间、截止时间、k-v 等。</p>
+<p>随着 context 包的引入，标准库中很多接口因此加上了 context 参数，例如 database/sql 包。context 几乎成为了并发控制和超时控制的标准做法。</p>
+<blockquote>
+<p>context.Context 类型的值可以协调多个 groutine 中的代码执行“取消”操作，并且可以存储键值对。最重要的是它是并发安全的。</p>
+</blockquote>
+<blockquote>
+<p>与它协作的 API 都可以由外部控制执行“取消”操作，例如：取消一个 HTTP 请求的执行。</p>
+</blockquote>
+<p>没看懂？没关系，先往后看。</p>
+<h2 id="为什么有-Context"><a href="#为什么有-Context" class="headerlink" title="为什么有 Context"></a>为什么有 Context</h2><p>Go 常用来写后台服务，通常只需要几行代码，就可以搭建一个 http server。</p>
+<p>在 Go 的 server 里，通常每来一个请求都会启动若干个 goroutine 同时工作：有些去数据库拿数据，有些调用下游接口获取相关数据……</p>
+<p><img src="https://s.gin.sh/blog/images/2019/context_request_goroutine_1.png" alt="Request请求流程"></p>
+<p>这些 goroutine 需要共享这个请求的基本数据，例如登陆的 token，处理请求的最大超时时间（如果超过此值再返回数据，请求方因为超时接收不到）等等。当请求被取消或是处理时间太长，这有可能是使用者关闭了浏览器或是已经超过了请求方规定的超时时间，请求方直接放弃了这次请求结果。这时，所有正在为这个请求工作的 goroutine 需要快速退出，因为它们的“工作成果”不再被需要了。在相关联的 goroutine 都退出后，系统就可以回收相关的资源。</p>
+<p>再多说一点，Go 语言中的 server 实际上是一个“协程模型”，也就是说一个协程处理一个请求。例如在业务的高峰期，某个下游服务的响应变慢，而当前系统的请求又没有超时控制，或者超时时间设置地过大，那么等待下游服务返回数据的协程就会越来越多。而我们知道，协程是要消耗系统资源的，后果就是协程数激增，内存占用飙涨，甚至导致服务不可用。更严重的会导致雪崩效应，整个服务对外表现为不可用，这肯定是 P0 级别的事故。这时，肯定有人要背锅了。</p>
+<p>其实前面描述的 P0 级别事故，通过设置“允许下游最长处理时间”就可以避免。例如，给下游设置的 timeout 是 50 ms，如果超过这个值还没有接收到返回数据，就直接向客户端返回一个默认值或者错误。例如，返回商品的一个默认库存数量。注意，这里设置的超时时间和创建一个 http client 设置的读写超时时间不一样，这里不详细展开。可以去看看参考资料【Go 在今日头条的实践】一文，有很精彩的论述。</p>
+<p>context 包就是为了解决上面所说的这些问题而开发的：在 一组 goroutine 之间传递共享的值、取消信号、deadline……</p>
+<p><img src="https://s.gin.sh/blog/images/2019/context_request_goroutine_2.png" alt=""></p>
+<p>用简练一些的话来说，在Go 里，我们不能直接杀死协程，协程的关闭一般会用 <code>channel+select</code> 方式来控制。但是在某些场景下，例如处理一个请求衍生了很多协程，这些协程之间是相互关联的：需要共享一些全局变量、有共同的 deadline 等，而且可以同时被关闭。再用 <code>channel+select</code> 就会比较麻烦，这时就可以通过 context 来实现。</p>
+<p>一句话：context 用来解决 goroutine 之间退出通知、元数据传递的功能</p>
+<h2 id="context-底层实现原理"><a href="#context-底层实现原理" class="headerlink" title="context 底层实现原理"></a>context 底层实现原理</h2><p>我们分析的 Go 版本依然是 1.9.2。</p>
+<h3 id="整体概览"><a href="#整体概览" class="headerlink" title="整体概览"></a>整体概览</h3><p>context 包的代码并不长，context.go 文件总共不到 500 行，其中还有很多大段的注释，代码可能也就 200 行左右的样子，是一个非常值得研究的代码库。</p>
+<p>先给大家看一张整体的图：</p>
+<p><img src="https://s.gin.sh/blog/images/2019/context_func.png" alt=""></p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">名称</th>
+<th style="text-align:center">类型</th>
+<th style="text-align:center">作用</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">Context</td>
+<td style="text-align:center">接口</td>
+<td style="text-align:center">定义了 Context 接口的四个方法</td>
+</tr>
+<tr>
+<td style="text-align:center">emptyCtx</td>
+<td style="text-align:center">结构体</td>
+<td style="text-align:center">实现了 Context 接口，它其实是个空的 context</td>
+</tr>
+<tr>
+<td style="text-align:center">CancelFunc</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">取消函数</td>
+</tr>
+<tr>
+<td style="text-align:center">canceler</td>
+<td style="text-align:center">短文本</td>
+<td style="text-align:center">context 取消接口，定义了两个方法</td>
+</tr>
+<tr>
+<td style="text-align:center">cancelCtx</td>
+<td style="text-align:center">结构体</td>
+<td style="text-align:center">可以被取消</td>
+</tr>
+<tr>
+<td style="text-align:center">timerCtx</td>
+<td style="text-align:center">结构体</td>
+<td style="text-align:center">超时会被取消</td>
+</tr>
+<tr>
+<td style="text-align:center">valueCtx</td>
+<td style="text-align:center">结构体</td>
+<td style="text-align:center">可以存储 k-v 对</td>
+</tr>
+<tr>
+<td style="text-align:center">Background</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">返回一个空的 context，常作为根 context</td>
+</tr>
+<tr>
+<td style="text-align:center">TODO</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">返回一个空的 context，常用于重构时期，没有合适的 context 可用</td>
+</tr>
+<tr>
+<td style="text-align:center">WithCancel</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">基于父 context，生成一个可以取消的 context</td>
+</tr>
+<tr>
+<td style="text-align:center">newCancelCtx</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">创建一个可取消的 context</td>
+</tr>
+<tr>
+<td style="text-align:center">propagateCancel</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">向下传递 context 节点间的取消关系</td>
+</tr>
+<tr>
+<td style="text-align:center">parentCancelCtx</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">找到第一个可取消的父节点</td>
+</tr>
+<tr>
+<td style="text-align:center">removeChild</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">去掉父节点的孩子节点</td>
+</tr>
+<tr>
+<td style="text-align:center">init</td>
+<td style="text-align:center">短文本</td>
+<td style="text-align:center">包初始化</td>
+</tr>
+<tr>
+<td style="text-align:center">WithDeadline</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">创建一个有 deadline 的 context</td>
+</tr>
+<tr>
+<td style="text-align:center">WithTimeout</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">创建一个有 timeout 的 context</td>
+</tr>
+<tr>
+<td style="text-align:center">WithValue</td>
+<td style="text-align:center">函数</td>
+<td style="text-align:center">创建一个存储 k-v 对的 context</td>
+</tr>
+</tbody>
+</table>
+<p>上面这张表展示了 context 的所有函数、接口、结构体，可以纵览全局，可以在读完文章后，再回头细看。</p>
+<p>整体类图如下：</p>
+<p><img src="https://s.gin.sh/blog/images/2019/context_structure.png" alt=""></p>
+<h3 id="接口"><a href="#接口" class="headerlink" title="接口"></a>接口</h3><h4 id="Context"><a href="#Context" class="headerlink" title="Context"></a>Context</h4><p>现在可以直接看源码：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> Context <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 当 context 被取消或者到了 deadline，返回一个被关闭的 channel</span>
+    <span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 在 channel Done 关闭后，返回 context 取消原因</span>
+    <span class="token function">Err</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">error</span>
+
+    <span class="token comment" spellcheck="true">// 返回 context 是否会被取消以及自动取消时间（即 deadline）</span>
+    <span class="token function">Deadline</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>deadline time<span class="token punctuation">.</span>Time<span class="token punctuation">,</span> ok <span class="token builtin">bool</span><span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true">// 获取 key 对应的 value</span>
+    <span class="token function">Value</span><span class="token punctuation">(</span>key <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Context</code> 是一个接口，定义了 4 个方法，它们都是幂等的。也就是说连续多次调用同一个方法，得到的结果都是相同的。</p>
+<p><code>Done()</code> 返回一个 channel，可以表示 context 被取消的信号：当这个 channel 被关闭时，说明 context 被取消了。注意，这是一个只读的channel。 我们又知道，读一个关闭的 channel 会读出相应类型的零值。并且源码里没有地方会向这个 channel 里面塞入值。换句话说，这是一个 receive-only 的 channel。因此在子协程里读这个 channel，除非被关闭，否则读不出来任何东西。也正是利用了这一点，子协程从 channel 里读出了值（零值）后，就可以做一些收尾工作，尽快退出。</p>
+<p><code>Err()</code> 返回一个错误，表示 channel 被关闭的原因。例如是被取消，还是超时。</p>
+<p><code>Deadline()</code> 返回 context 的截止时间，通过此时间，函数就可以决定是否进行接下来的操作，如果时间太短，就可以不往下做了，否则浪费系统资源。当然，也可以用这个 deadline 来设置一个 I/O 操作的超时时间。</p>
+<p><code>Value()</code> 获取之前设置的 key 对应的 value。</p>
+<h4 id="canceler"><a href="#canceler" class="headerlink" title="canceler"></a>canceler</h4><p>再来看另外一个接口：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> canceler <span class="token keyword">interface</span> <span class="token punctuation">{</span>
+    <span class="token function">cancel</span><span class="token punctuation">(</span>removeFromParent <span class="token builtin">bool</span><span class="token punctuation">,</span> err <span class="token builtin">error</span><span class="token punctuation">)</span>
+    <span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>实现了上面定义的两个方法的 Context，就表明该 Context 是可取消的。源码中有两个类型实现了 canceler 接口：<em>cancelCtx 和 </em>timerCtx。注意是加了 * 号的，是这两个结构体的指针实现了 canceler 接口。</p>
+<p>Context 接口设计成这个样子的原因：</p>
+<ul>
+<li><p>“取消”操作应该是建议性，而非强制性<br>caller 不应该去关心、干涉 callee 的情况，决定如何以及何时 return 是 callee 的责任。caller 只需发送“取消”信息，callee 根据收到的信息来做进一步的决策，因此接口并没有定义 cancel 方法。</p>
+</li>
+<li><p>“取消”操作应该可传递<br>“取消”某个函数时，和它相关联的其他函数也应该“取消”。因此，Done() 方法返回一个只读的 channel，所有相关函数监听此 channel。一旦 channel 关闭，通过 channel 的“广播机制”，所有监听者都能收到。</p>
+</li>
+</ul>
+<h3 id="构体"><a href="#构体" class="headerlink" title="构体"></a>构体</h3><h4 id="emptyCtx"><a href="#emptyCtx" class="headerlink" title="emptyCtx"></a>emptyCtx</h4><p>源码中定义了 Context 接口后，并且给出了一个实现：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> emptyCtx <span class="token builtin">int</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span><span class="token operator">*</span>emptyCtx<span class="token punctuation">)</span> <span class="token function">Deadline</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>deadline time<span class="token punctuation">.</span>Time<span class="token punctuation">,</span> ok <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span><span class="token operator">*</span>emptyCtx<span class="token punctuation">)</span> <span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span><span class="token operator">*</span>emptyCtx<span class="token punctuation">)</span> <span class="token function">Err</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">error</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span><span class="token operator">*</span>emptyCtx<span class="token punctuation">)</span> <span class="token function">Value</span><span class="token punctuation">(</span>key <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>看这段源码，非常 happy。因为每个函数都实现的异常简单，要么是直接返回，要么是返回 nil。</p>
+<p>所以，这实际上是一个空的 context，永远不会被 cancel，没有存储值，也没有 deadline。</p>
+<p>它被包装成：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> <span class="token punctuation">(</span>
+    background <span class="token operator">=</span> <span class="token function">new</span><span class="token punctuation">(</span>emptyCtx<span class="token punctuation">)</span>
+    todo       <span class="token operator">=</span> <span class="token function">new</span><span class="token punctuation">(</span>emptyCtx<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>通过下面两个导出的函数（首字母大写）对外公开：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">Background</span><span class="token punctuation">(</span><span class="token punctuation">)</span> Context <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> background
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">TODO</span><span class="token punctuation">(</span><span class="token punctuation">)</span> Context <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> todo
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>background 通常用在 main 函数中，作为所有 context 的根节点。</p>
+<p>todo 通常用在并不知道传递什么 context的情形。例如，调用一个需要传递 context 参数的函数，你手头并没有其他 context 可以传递，这时就可以传递 todo。这常常发生在重构进行中，给一些函数添加了一个 Context 参数，但不知道要传什么，就用 todo “占个位子”，最终要换成其他 context。</p>
+<h4 id="cancelCtx"><a href="#cancelCtx" class="headerlink" title="cancelCtx"></a>cancelCtx</h4><p>再来看一个重要的 context：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> cancelCtx <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Context
+
+    <span class="token comment" spellcheck="true">// 保护之后的字段</span>
+    mu       sync<span class="token punctuation">.</span>Mutex
+    done     <span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    children <span class="token keyword">map</span><span class="token punctuation">[</span>canceler<span class="token punctuation">]</span><span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+    err      <span class="token builtin">error</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这是一个可以取消的 Context，实现了 canceler 接口。它直接将接口 Context 作为它的一个匿名字段，这样，它就可以被看成一个 Context。</p>
+<p>先来看 <code>Done()</code> 方法的实现：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>cancelCtx<span class="token punctuation">)</span> <span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">{</span>
+    c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> c<span class="token punctuation">.</span>done <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        c<span class="token punctuation">.</span>done <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    d <span class="token operator">:=</span> c<span class="token punctuation">.</span>done
+    c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> d
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>c.done 是“懒汉式”创建，只有调用了 Done() 方法的时候才会被创建。再次说明，函数返回的是一个只读的 channel，而且没有地方向这个 channel 里面写数据。所以，直接调用读这个 channel，协程会被 block 住。一般通过搭配 select 来使用。一旦关闭，就会立即读出零值。</p>
+<p>Err() 和 String() 方法比较简单，不多说。推荐看源码，非常简单。</p>
+<p>接下来，我们重点关注 cancel() 方法的实现：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>cancelCtx<span class="token punctuation">)</span> <span class="token function">cancel</span><span class="token punctuation">(</span>removeFromParent <span class="token builtin">bool</span><span class="token punctuation">,</span> err <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 必须要传 err</span>
+    <span class="token keyword">if</span> err <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"context: internal error: missing cancel error"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> c<span class="token punctuation">.</span>err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">return</span> <span class="token comment" spellcheck="true">// 已经被其他协程取消</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 给 err 字段赋值</span>
+    c<span class="token punctuation">.</span>err <span class="token operator">=</span> err
+    <span class="token comment" spellcheck="true">// 关闭 channel，通知其他协程</span>
+    <span class="token keyword">if</span> c<span class="token punctuation">.</span>done <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        c<span class="token punctuation">.</span>done <span class="token operator">=</span> closedchan
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token function">close</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>done<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 遍历它的所有子节点</span>
+    <span class="token keyword">for</span> child <span class="token operator">:=</span> <span class="token keyword">range</span> c<span class="token punctuation">.</span>children <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 递归地取消所有子节点</span>
+        child<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 将子节点置空</span>
+    c<span class="token punctuation">.</span>children <span class="token operator">=</span> <span class="token boolean">nil</span>
+    c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> removeFromParent <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 从父节点中移除自己 </span>
+        <span class="token function">removeChild</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> c<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>总体来看，cancel() 方法的功能就是关闭 channel：c.done；递归地取消它的所有子节点；从父节点从删除自己。达到的效果是通过关闭 channel，将取消信号传递给了它的所有子节点。goroutine 接收到取消信号的方式就是 select 语句中的读 c.done 被选中。</p>
+<p>我们再来看创建一个可取消的 Context 的方法：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">WithCancel</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">)</span> <span class="token punctuation">(</span>ctx Context<span class="token punctuation">,</span> cancel CancelFunc<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    c <span class="token operator">:=</span> <span class="token function">newCancelCtx</span><span class="token punctuation">(</span>parent<span class="token punctuation">)</span>
+    <span class="token function">propagateCancel</span><span class="token punctuation">(</span>parent<span class="token punctuation">,</span> <span class="token operator">&amp;</span>c<span class="token punctuation">)</span>
+    <span class="token keyword">return</span> <span class="token operator">&amp;</span>c<span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> c<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">,</span> Canceled<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">newCancelCtx</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">)</span> cancelCtx <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> cancelCtx<span class="token punctuation">{</span>Context<span class="token punctuation">:</span> parent<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这是一个暴露给用户的方法，传入一个父 Context（这通常是一个 background，作为根节点），返回新建的 context，新 context 的 done channel 是新建的（前文讲过）。</p>
+<p>当 WithCancel 函数返回的 CancelFunc 被调用或者是父节点的 done channel 被关闭（父节点的 CancelFunc 被调用），此 context（子节点） 的 done channel 也会被关闭。</p>
+<p>注意传给 WithCancel 方法的参数，前者是 true，也就是说取消的时候，需要将自己从父节点里删除。第二个参数则是一个固定的取消错误类型：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> Canceled <span class="token operator">=</span> errors<span class="token punctuation">.</span><span class="token function">New</span><span class="token punctuation">(</span><span class="token string">"context canceled"</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>还注意到一点，调用子节点 cancel 方法的时候，传入的第一个参数 removeFromParent 是 false。</p>
+<p>两个问题需要回答：1. 什么时候会传 true？2. 为什么有时传 true，有时传 false？</p>
+<p>当 removeFromParent 为 true 时，会将当前节点的 context 从父节点 context 中删除：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">removeChild</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">,</span> child canceler<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    p<span class="token punctuation">,</span> ok <span class="token operator">:=</span> <span class="token function">parentCancelCtx</span><span class="token punctuation">(</span>parent<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span>ok <span class="token punctuation">{</span>
+        <span class="token keyword">return</span>
+    <span class="token punctuation">}</span>
+    p<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> p<span class="token punctuation">.</span>children <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token function">delete</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>children<span class="token punctuation">,</span> child<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    p<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>最关键的一行：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token function">delete</span><span class="token punctuation">(</span>p<span class="token punctuation">.</span>children<span class="token punctuation">,</span> child<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>什么时候会传 true 呢？答案是调用 WithCancel() 方法的时候，也就是新创建一个可取消的 context 节点时，返回的 cancelFunc 函数会传入 true。这样做的结果是：当调用返回的 cancelFunc 时，会将这个 context 从它的父节点里“除名”，因为父节点可能有很多子节点，你自己取消了，所以我要和你断绝关系，对其他人没影响。</p>
+<p>在取消函数内部，我知道，我所有的子节点都会因为我的一：c.children = nil 而化为灰烬。我自然就没有必要再多做这一步，最后我所有的子节点都会和我断绝关系，没必要一个个做。另外，如果遍历子节点的时候，调用 child.cancel 函数传了 true，还会造成同时遍历和删除一个 map 的境地，会有问题的。</p>
+<p><img src="https://user-images.githubusercontent.com/7698088/59315867-37ee9b00-8cee-11e9-8c19-9a4cf7606d14.png" alt=""></p>
+<p>如上左图，代表一棵 context 树。当调用左图中标红 context 的 cancel 方法后，该 context 从它的父 context 中去除掉了：实线箭头变成了虚线。且虚线圈框出来的 context 都被取消了，圈内的 context 间的父子关系都荡然无存了。</p>
+<p>重点看 propagateCancel()：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">propagateCancel</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">,</span> child canceler<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 父节点是个空节点</span>
+    <span class="token keyword">if</span> parent<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token comment" spellcheck="true">// parent is never canceled</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 找到可以取消的父 context</span>
+    <span class="token keyword">if</span> p<span class="token punctuation">,</span> ok <span class="token operator">:=</span> <span class="token function">parentCancelCtx</span><span class="token punctuation">(</span>parent<span class="token punctuation">)</span><span class="token punctuation">;</span> ok <span class="token punctuation">{</span>
+        p<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token keyword">if</span> p<span class="token punctuation">.</span>err <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 父节点已经被取消了，本节点（子节点）也要取消</span>
+            child<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> p<span class="token punctuation">.</span>err<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 父节点未取消</span>
+            <span class="token keyword">if</span> p<span class="token punctuation">.</span>children <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+                p<span class="token punctuation">.</span>children <span class="token operator">=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span>canceler<span class="token punctuation">]</span><span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+            <span class="token comment" spellcheck="true">// "挂到"父节点上</span>
+            p<span class="token punctuation">.</span>children<span class="token punctuation">[</span>child<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+        p<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 如果没有找到可取消的父 context。新启动一个协程监控父节点或子节点取消信号</span>
+        <span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token keyword">select</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token operator">&lt;-</span>parent<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                child<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> parent<span class="token punctuation">.</span><span class="token function">Err</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+            <span class="token keyword">case</span> <span class="token operator">&lt;-</span>child<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这个方法的作用就是向上寻找可以“挂靠”的“可取消”的 context，并且“挂靠”上去。这样，调用上层 cancel 方法的时候，就可以层层传递，将那些挂靠的子 context 同时“取消”。</p>
+<p>这里着重解释下为什么会有 else 描述的情况发生。else 是指当前节点 context 没有向上找到可以取消的父节点，那么就要再启动一个协程监控父节点或者子节点的取消动作。</p>
+<p>这里就有疑问了，既然没找到可以取消的父节点，那 case &lt;-parent.Done() 这个 case 就永远不会发生，所以可以忽略这个 case；而 case &lt;-child.Done() 这个 case 又啥事不干。那这个 else 不就多余了吗？</p>
+<p>其实不然。我们来看 parentCancelCtx 的代码：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">parentCancelCtx</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token operator">*</span>cancelCtx<span class="token punctuation">,</span> <span class="token builtin">bool</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">{</span>
+        <span class="token keyword">switch</span> c <span class="token operator">:=</span> parent<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token keyword">type</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token operator">*</span>cancelCtx<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> c<span class="token punctuation">,</span> <span class="token boolean">true</span>
+        <span class="token keyword">case</span> <span class="token operator">*</span>timerCtx<span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token operator">&amp;</span>c<span class="token punctuation">.</span>cancelCtx<span class="token punctuation">,</span> <span class="token boolean">true</span>
+        <span class="token keyword">case</span> <span class="token operator">*</span>valueCtx<span class="token punctuation">:</span>
+            parent <span class="token operator">=</span> c<span class="token punctuation">.</span>Context
+        <span class="token keyword">default</span><span class="token punctuation">:</span>
+            <span class="token keyword">return</span> <span class="token boolean">nil</span><span class="token punctuation">,</span> <span class="token boolean">false</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这里只会识别三种 Context 类型：cancelCtx，timerCtx，*valueCtx。若是把 Context 内嵌到一个类型里，就识别不出来了。</p>
+<p>由于 context 包的代码并不多，所以我直接把它 copy 出来了，然后在 else 语句里加上了几条打印语句，来验证上面的说法：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> MyContext <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 这里的 Context 是我 copy 出来的，所以前面不用加 context.</span>
+    Context
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    childCancel <span class="token operator">:=</span> <span class="token boolean">true</span>
+
+    parentCtx<span class="token punctuation">,</span> parentFunc <span class="token operator">:=</span> <span class="token function">WithCancel</span><span class="token punctuation">(</span><span class="token function">Background</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    mctx <span class="token operator">:=</span> MyContext<span class="token punctuation">{</span>parentCtx<span class="token punctuation">}</span>
+
+    childCtx<span class="token punctuation">,</span> childFun <span class="token operator">:=</span> <span class="token function">WithCancel</span><span class="token punctuation">(</span>mctx<span class="token punctuation">)</span>
+
+    <span class="token keyword">if</span> childCancel <span class="token punctuation">{</span>
+        <span class="token function">childFun</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token function">parentFunc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>parentCtx<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>mctx<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>childCtx<span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true">// 防止主协程退出太快，子协程来不及打印 </span>
+    time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span><span class="token number">10</span> <span class="token operator">*</span> time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>我自已在 else 里添加的打印语句我就不贴出来了，感兴趣的可以自己动手实验下。我们看下三个 context 的打印结果：</p>
+<pre class="line-numbers language-go"><code class="language-go">context<span class="token punctuation">.</span>Background<span class="token punctuation">.</span>WithCancel
+<span class="token punctuation">{</span>context<span class="token punctuation">.</span>Background<span class="token punctuation">.</span>WithCancel<span class="token punctuation">}</span>
+<span class="token punctuation">{</span>context<span class="token punctuation">.</span>Background<span class="token punctuation">.</span>WithCancel<span class="token punctuation">}</span><span class="token punctuation">.</span>WithCancel
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>果然，mctx，childCtx 和正常的 parentCtx 不一样，因为它是一个自定义的结构体类型。</p>
+<p>else 这段代码说明，如果把 ctx 强行塞进一个结构体，并用它作为父节点，调用 WithCancel 函数构建子节点 context 的时候，Go 会新启动一个协程来监控取消信号，明显有点浪费嘛。</p>
+<p>再来说一下，select 语句里的两个 case 其实都不能删。</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">select</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token operator">&lt;-</span>parent<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+        child<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> parent<span class="token punctuation">.</span><span class="token function">Err</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">case</span> <span class="token operator">&lt;-</span>child<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第一个 case 说明当父节点取消，则取消子节点。如果去掉这个 case，那么父节点取消的信号就不能传递到子节点。</p>
+<p>第二个 case 是说如果子节点自己取消了，那就退出这个 select，父节点的取消信号就不用管了。如果去掉这个 case，那么很可能父节点一直不取消，这个 goroutine 就泄漏了。当然，如果父节点取消了，就会重复让子节点取消，不过，这也没什么影响嘛。</p>
+<h4 id="timerCtx"><a href="#timerCtx" class="headerlink" title="timerCtx"></a>timerCtx</h4><p>timerCtx 基于 cancelCtx，只是多了一个 time.Timer 和一个 deadline。Timer 会在 deadline 到来时，自动取消 context。</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> timerCtx <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    cancelCtx
+    timer <span class="token operator">*</span>time<span class="token punctuation">.</span>Timer <span class="token comment" spellcheck="true">// Under cancelCtx.mu.</span>
+
+    deadline time<span class="token punctuation">.</span>Time
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>timerCtx 首先是一个 cancelCtx，所以它能取消。看下 cancel() 方法：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>timerCtx<span class="token punctuation">)</span> <span class="token function">cancel</span><span class="token punctuation">(</span>removeFromParent <span class="token builtin">bool</span><span class="token punctuation">,</span> err <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 直接调用 cancelCtx 的取消方法</span>
+    c<span class="token punctuation">.</span>cancelCtx<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> removeFromParent <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 从父节点中删除子节点</span>
+        <span class="token function">removeChild</span><span class="token punctuation">(</span>c<span class="token punctuation">.</span>cancelCtx<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> c<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> c<span class="token punctuation">.</span>timer <span class="token operator">!=</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 关掉定时器，这样，在deadline 到来时，不会再次取消</span>
+        c<span class="token punctuation">.</span>timer<span class="token punctuation">.</span><span class="token function">Stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        c<span class="token punctuation">.</span>timer <span class="token operator">=</span> <span class="token boolean">nil</span>
+    <span class="token punctuation">}</span>
+    c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>创建 timerCtx 的方法：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">WithTimeout</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">,</span> timeout time<span class="token punctuation">.</span>Duration<span class="token punctuation">)</span> <span class="token punctuation">(</span>Context<span class="token punctuation">,</span> CancelFunc<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token function">WithDeadline</span><span class="token punctuation">(</span>parent<span class="token punctuation">,</span> time<span class="token punctuation">.</span><span class="token function">Now</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Add</span><span class="token punctuation">(</span>timeout<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>WithTimeout</code> 函数直接调用了 <code>WithDeadline</code>，传入的 deadline 是当前时间加上 <code>timeout</code> 的时间，也就是从现在开始再经过 <code>timeout</code> 时间就算超时。也就是说，<code>WithDeadline</code> 需要用的是绝对时间。重点来看它：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">WithDeadline</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">,</span> deadline time<span class="token punctuation">.</span>Time<span class="token punctuation">)</span> <span class="token punctuation">(</span>Context<span class="token punctuation">,</span> CancelFunc<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> cur<span class="token punctuation">,</span> ok <span class="token operator">:=</span> parent<span class="token punctuation">.</span><span class="token function">Deadline</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> ok <span class="token operator">&amp;&amp;</span> cur<span class="token punctuation">.</span><span class="token function">Before</span><span class="token punctuation">(</span>deadline<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 如果父节点 context 的 deadline 早于指定时间。直接构建一个可取消的 context。</span>
+        <span class="token comment" spellcheck="true">// 原因是一旦父节点超时，自动调用 cancel 函数，子节点也会随之取消。</span>
+        <span class="token comment" spellcheck="true">// 所以不用单独处理子节点的计时器时间到了之后，自动调用 cancel 函数</span>
+        <span class="token keyword">return</span> <span class="token function">WithCancel</span><span class="token punctuation">(</span>parent<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment" spellcheck="true">// 构建 timerCtx</span>
+    c <span class="token operator">:=</span> <span class="token operator">&amp;</span>timerCtx<span class="token punctuation">{</span>
+        cancelCtx<span class="token punctuation">:</span> <span class="token function">newCancelCtx</span><span class="token punctuation">(</span>parent<span class="token punctuation">)</span><span class="token punctuation">,</span>
+        deadline<span class="token punctuation">:</span>  deadline<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// 挂靠到父节点上</span>
+    <span class="token function">propagateCancel</span><span class="token punctuation">(</span>parent<span class="token punctuation">,</span> c<span class="token punctuation">)</span>
+
+    <span class="token comment" spellcheck="true">// 计算当前距离 deadline 的时间</span>
+    d <span class="token operator">:=</span> time<span class="token punctuation">.</span><span class="token function">Until</span><span class="token punctuation">(</span>deadline<span class="token punctuation">)</span>
+    <span class="token keyword">if</span> d <span class="token operator">&lt;=</span> <span class="token number">0</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// 直接取消</span>
+        c<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">,</span> DeadlineExceeded<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// deadline has already passed</span>
+        <span class="token keyword">return</span> c<span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> c<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">,</span> Canceled<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Lock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">defer</span> c<span class="token punctuation">.</span>mu<span class="token punctuation">.</span><span class="token function">Unlock</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> c<span class="token punctuation">.</span>err <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token comment" spellcheck="true">// d 时间后，timer 会自动调用 cancel 函数。自动取消</span>
+        c<span class="token punctuation">.</span>timer <span class="token operator">=</span> time<span class="token punctuation">.</span><span class="token function">AfterFunc</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            c<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">,</span> DeadlineExceeded<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> c<span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> c<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">,</span> Canceled<span class="token punctuation">)</span> <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也就是说仍然要把子节点挂靠到父节点，一旦父节点取消了，会把取消信号向下传递到子节点，子节点随之取消。</p>
+<p>有一个特殊情况是，如果要创建的这个子节点的 deadline 比父节点要晚，也就是说如果父节点是时间到自动取消，那么一定会取消这个子节点，导致子节点的 deadline 根本不起作用，因为子节点在 deadline 到来之前就已经被父节点取消了。</p>
+<p>这个函数的最核心的一句是：</p>
+<pre class="line-numbers language-go"><code class="language-go">c<span class="token punctuation">.</span>timer <span class="token operator">=</span> time<span class="token punctuation">.</span><span class="token function">AfterFunc</span><span class="token punctuation">(</span>d<span class="token punctuation">,</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    c<span class="token punctuation">.</span><span class="token function">cancel</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">,</span> DeadlineExceeded<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>c.timer 会在 d 时间间隔后，自动调用 cancel 函数，并且传入的错误就是 <code>DeadlineExceeded：</code></p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> DeadlineExceeded <span class="token builtin">error</span> <span class="token operator">=</span> deadlineExceededError<span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">type</span> deadlineExceededError <span class="token keyword">struct</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>deadlineExceededError<span class="token punctuation">)</span> <span class="token function">Error</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span>   <span class="token punctuation">{</span> <span class="token keyword">return</span> <span class="token string">"context deadline exceeded"</span> <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也就是超时错误。</p>
+<h4 id="valueCtx"><a href="#valueCtx" class="headerlink" title="valueCtx"></a>valueCtx</h4><pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> valueCtx <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    Context
+    key<span class="token punctuation">,</span> val <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>它实现了两个方法：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>valueCtx<span class="token punctuation">)</span> <span class="token function">String</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> fmt<span class="token punctuation">.</span><span class="token function">Sprintf</span><span class="token punctuation">(</span><span class="token string">"%v.WithValue(%#v, %#v)"</span><span class="token punctuation">,</span> c<span class="token punctuation">.</span>Context<span class="token punctuation">,</span> c<span class="token punctuation">.</span>key<span class="token punctuation">,</span> c<span class="token punctuation">.</span>val<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>valueCtx<span class="token punctuation">)</span> <span class="token function">Value</span><span class="token punctuation">(</span>key <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> c<span class="token punctuation">.</span>key <span class="token operator">==</span> key <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> c<span class="token punctuation">.</span>val
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> c<span class="token punctuation">.</span>Context<span class="token punctuation">.</span><span class="token function">Value</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由于它直接将 Context 作为匿名字段，因此仅管它只实现了 2 个方法，其他方法继承自父 context。但它仍然是一个 Context，这是 Go 语言的一个特点。</p>
+<p>创建 valueCtx 的函数：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">WithValue</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">,</span> key<span class="token punctuation">,</span> val <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> Context <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> key <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        <span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"nil key"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">if</span> <span class="token operator">!</span>reflect<span class="token punctuation">.</span><span class="token function">TypeOf</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">Comparable</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"key is not comparable"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> <span class="token operator">&amp;</span>valueCtx<span class="token punctuation">{</span>parent<span class="token punctuation">,</span> key<span class="token punctuation">,</span> val<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>对 key 的要求是可比较，因为之后需要通过 key 取出 context 中的值，可比较是必须的。</p>
+<p>通过层层传递 context，最终形成这样一棵树：</p>
+<p><img src="https://user-images.githubusercontent.com/7698088/59154893-5e72c300-8aaf-11e9-9b78-3c34b5e73a45.png" alt=""></p>
+<p>和链表有点像，只是它的方向相反：Context 指向它的父节点，链表则指向下一个节点。通过 WithValue 函数，可以创建层层的 valueCtx，存储 goroutine 间可以共享的变量。</p>
+<p>取值的过程，实际上是一个递归查找的过程：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token punctuation">(</span>c <span class="token operator">*</span>valueCtx<span class="token punctuation">)</span> <span class="token function">Value</span><span class="token punctuation">(</span>key <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> c<span class="token punctuation">.</span>key <span class="token operator">==</span> key <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> c<span class="token punctuation">.</span>val
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> c<span class="token punctuation">.</span>Context<span class="token punctuation">.</span><span class="token function">Value</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>它会顺着链路一直往上找，比较当前节点的 key<br>是否是要找的 key，如果是，则直接返回 value。否则，一直顺着 context 往前，最终找到根节点（一般是 emptyCtx），直接返回一个 nil。所以用 Value 方法的时候要判断结果是否为 nil。</p>
+<p>因为查找方向是往上走的，所以，父节点没法获取子节点存储的值，子节点却可以获取父节点的值。</p>
+<p>WithValue 创建 context 节点的过程实际上就是创建链表节点的过程。两个节点的 key 值是可以相等的，但它们是两个不同的 context 节点。查找的时候，会向上查找到最后一个挂载的 context 节点，也就是离得比较近的一个父节点 context。所以，整体上而言，用 WithValue 构造的其实是一个低效率的链表。</p>
+<p>如果你接手过项目，肯定经历过这样的窘境：在一个处理过程中，有若干子函数、子协程。各种不同的地方会向 context 里塞入各种不同的 k-v 对，最后在某个地方使用。</p>
+<p>你根本就不知道什么时候什么地方传了什么值？这些值会不会被“覆盖”（底层是两个不同的 context 节点，查找的时候，只会返回一个结果）？你肯定会崩溃的。</p>
+<p>而这也是 context.Value 最受争议的地方。很多人建议尽量不要通过 context 传值。</p>
+<h2 id="如何使用-context"><a href="#如何使用-context" class="headerlink" title="如何使用 context"></a>如何使用 context</h2><p>context 使用起来非常方便。源码里对外提供了一个创建根节点 context 的函数：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">Background</span><span class="token punctuation">(</span><span class="token punctuation">)</span> Context
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>background 是一个空的 context， 它不能被取消，没有值，也没有超时时间。</p>
+<p>有了根节点 context，又提供了四个函数创建子节点 context：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">WithCancel</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">)</span> <span class="token punctuation">(</span>ctx Context<span class="token punctuation">,</span> cancel CancelFunc<span class="token punctuation">)</span>
+<span class="token keyword">func</span> <span class="token function">WithDeadline</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">,</span> deadline time<span class="token punctuation">.</span>Time<span class="token punctuation">)</span> <span class="token punctuation">(</span>Context<span class="token punctuation">,</span> CancelFunc<span class="token punctuation">)</span>
+<span class="token keyword">func</span> <span class="token function">WithTimeout</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">,</span> timeout time<span class="token punctuation">.</span>Duration<span class="token punctuation">)</span> <span class="token punctuation">(</span>Context<span class="token punctuation">,</span> CancelFunc<span class="token punctuation">)</span>
+<span class="token keyword">func</span> <span class="token function">WithValue</span><span class="token punctuation">(</span>parent Context<span class="token punctuation">,</span> key<span class="token punctuation">,</span> val <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> Context
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>context 会在函数传递间传递。只需要在适当的时间调用 cancel 函数向 goroutines 发出取消信号或者调用 Value 函数取出 context 中的值。</p>
+<p>在官方博客里，对于使用 context 提出了几点建议：</p>
+<ul>
+<li>Do not store Contexts inside a struct type; instead, pass a Context explicitly to each function that needs it. The Context should be the first parameter, typically named ctx.</li>
+<li>Do not pass a nil Context, even if a function permits it. Pass context.TODO if you are unsure about which Context to use.</li>
+<li>Use context Values only for request-scoped data that transits processes and APIs, not for passing optional parameters to functions.</li>
+<li>The same Context may be passed to functions running in different goroutines; Contexts are safe for simultaneous use by multiple goroutines.</li>
+</ul>
+<p>我翻译一下：</p>
+<ul>
+<li>不要将 Context 塞到结构体里。直接将 Context 类型作为函数的第一参数，而且一般都命名为 ctx。</li>
+<li>不要向函数传入一个 nil 的 context，如果你实在不知道传什么，标准库给你准备好了一个 context：todo。</li>
+<li>不要把本应该作为函数参数的类型塞到 context 中，context 存储的应该是一些共同的数据。例如：登陆的 session、cookie 等。</li>
+<li>同一个 context 可能会被传递到多个 goroutine，别担心，context 是并发安全的。</li>
+</ul>
+<h3 id="传递共享的数据"><a href="#传递共享的数据" class="headerlink" title="传递共享的数据"></a>传递共享的数据</h3><p>对于 Web 服务端开发，往往希望将一个请求处理的整个过程串起来，这就非常依赖于 Thread Local（对于 Go 可理解为单个协程所独有） 的变量，而在 Go 语言中并没有这个概念，因此需要在函数调用的时候传递 context。</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">package</span> main
+
+<span class="token keyword">import</span> <span class="token punctuation">(</span>
+    <span class="token string">"context"</span>
+    <span class="token string">"fmt"</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    ctx <span class="token operator">:=</span> context<span class="token punctuation">.</span><span class="token function">Background</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token function">process</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span>
+
+    ctx <span class="token operator">=</span> context<span class="token punctuation">.</span><span class="token function">WithValue</span><span class="token punctuation">(</span>ctx<span class="token punctuation">,</span> <span class="token string">"traceId"</span><span class="token punctuation">,</span> <span class="token string">"qcrao-2019"</span><span class="token punctuation">)</span>
+    <span class="token function">process</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">process</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    traceId<span class="token punctuation">,</span> ok <span class="token operator">:=</span> ctx<span class="token punctuation">.</span><span class="token function">Value</span><span class="token punctuation">(</span><span class="token string">"traceId"</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span>
+    <span class="token keyword">if</span> ok <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"process over. trace_id=%s\n"</span><span class="token punctuation">,</span> traceId<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"process over. no trace_id\n"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>运行结果：</p>
+<pre class="line-numbers language-go"><code class="language-go">process over<span class="token punctuation">.</span> no trace_id
+process over<span class="token punctuation">.</span> trace_id<span class="token operator">=</span>qcrao<span class="token number">-2019</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>第一次调用 process 函数时，ctx 是一个空的 context，自然取不出来 traceId。第二次，通过 WithValue 函数创建了一个 context，并赋上了 traceId 这个 key，自然就能取出来传入的 value 值。</p>
+<p>当然，现实场景中可能是从一个 HTTP 请求中获取到的 Request-ID。所以，下面这个样例可能更适合：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">const</span> requestIDKey <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">0</span>
+
+<span class="token keyword">func</span> <span class="token function">WithRequestID</span><span class="token punctuation">(</span>next http<span class="token punctuation">.</span>Handler<span class="token punctuation">)</span> http<span class="token punctuation">.</span>Handler <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> http<span class="token punctuation">.</span><span class="token function">HandlerFunc</span><span class="token punctuation">(</span>
+        <span class="token keyword">func</span><span class="token punctuation">(</span>rw http<span class="token punctuation">.</span>ResponseWriter<span class="token punctuation">,</span> req <span class="token operator">*</span>http<span class="token punctuation">.</span>Request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+            <span class="token comment" spellcheck="true">// 从 header 中提取 request-id</span>
+            reqID <span class="token operator">:=</span> req<span class="token punctuation">.</span>Header<span class="token punctuation">.</span><span class="token function">Get</span><span class="token punctuation">(</span><span class="token string">"X-Request-ID"</span><span class="token punctuation">)</span>
+            <span class="token comment" spellcheck="true">// 创建 valueCtx。使用自定义的类型，不容易冲突</span>
+            ctx <span class="token operator">:=</span> context<span class="token punctuation">.</span><span class="token function">WithValue</span><span class="token punctuation">(</span>
+                req<span class="token punctuation">.</span><span class="token function">Context</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> requestIDKey<span class="token punctuation">,</span> reqID<span class="token punctuation">)</span>
+
+            <span class="token comment" spellcheck="true">// 创建新的请求</span>
+            req <span class="token operator">=</span> req<span class="token punctuation">.</span><span class="token function">WithContext</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span>
+
+            <span class="token comment" spellcheck="true">// 调用 HTTP 处理函数</span>
+            next<span class="token punctuation">.</span><span class="token function">ServeHTTP</span><span class="token punctuation">(</span>rw<span class="token punctuation">,</span> req<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token comment" spellcheck="true">// 获取 request-id</span>
+<span class="token keyword">func</span> <span class="token function">GetRequestID</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token builtin">string</span> <span class="token punctuation">{</span>
+    ctx<span class="token punctuation">.</span><span class="token function">Value</span><span class="token punctuation">(</span>requestIDKey<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token builtin">string</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">Handle</span><span class="token punctuation">(</span>rw http<span class="token punctuation">.</span>ResponseWriter<span class="token punctuation">,</span> req <span class="token operator">*</span>http<span class="token punctuation">.</span>Request<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment" spellcheck="true">// 拿到 reqId，后面可以记录日志等等</span>
+    reqID <span class="token operator">:=</span> <span class="token function">GetRequestID</span><span class="token punctuation">(</span>req<span class="token punctuation">.</span><span class="token function">Context</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token operator">...</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    handler <span class="token operator">:=</span> <span class="token function">WithRequestID</span><span class="token punctuation">(</span>http<span class="token punctuation">.</span><span class="token function">HandlerFunc</span><span class="token punctuation">(</span>Handle<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    http<span class="token punctuation">.</span><span class="token function">ListenAndServe</span><span class="token punctuation">(</span><span class="token string">"/"</span><span class="token punctuation">,</span> handler<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="取消-goroutine"><a href="#取消-goroutine" class="headerlink" title="取消 goroutine"></a>取消 goroutine</h3><p>我们先来设想一个场景：打开外卖的订单页，地图上显示外卖小哥的位置，而且是每秒更新 1 次。app 端向后台发起 websocket 连接（现实中可能是轮询）请求后，后台启动一个协程，每隔 1 秒计算 1 次小哥的位置，并发送给端。如果用户退出此页面，则后台需要“取消”此过程，退出 goroutine，系统回收资源。</p>
+<p>后端可能的实现如下：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">Perform</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">{</span>
+        <span class="token function">calculatePos</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token function">sendResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>如果需要实现“取消”功能，并且在不了解 context 功能的前提下，可能会这样做：给函数增加一个指针型的 bool 变量，在 for 语句的开始处判断 bool 变量是发由 true 变为 false，如果改变，则退出循环。</p>
+<p>上面给出的简单做法，可以实现想要的效果，没有问题，但是并不优雅，并且一旦协程数量多了之后，并且各种嵌套，就会很麻烦。优雅的做法，自然就要用到 context。</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">Perform</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> <span class="token punctuation">{</span>
+        <span class="token function">calculatePos</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+        <span class="token function">sendResult</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        <span class="token keyword">select</span> <span class="token punctuation">{</span>
+        <span class="token keyword">case</span> <span class="token operator">&lt;-</span>ctx<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true">// 被取消，直接返回</span>
+            <span class="token keyword">return</span>
+        <span class="token keyword">case</span> <span class="token operator">&lt;-</span>time<span class="token punctuation">.</span><span class="token function">After</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span><span class="token punctuation">:</span>
+            <span class="token comment" spellcheck="true">// block 1 秒钟 </span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>主流程可能是这样的：</p>
+<pre class="line-numbers language-go"><code class="language-go">ctx<span class="token punctuation">,</span> cancel <span class="token operator">:=</span> context<span class="token punctuation">.</span><span class="token function">WithTimeout</span><span class="token punctuation">(</span>context<span class="token punctuation">.</span><span class="token function">Background</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> time<span class="token punctuation">.</span>Hour<span class="token punctuation">)</span>
+<span class="token keyword">go</span> <span class="token function">Perform</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// ……</span>
+<span class="token comment" spellcheck="true">// app 端返回页面，调用cancel 函数</span>
+<span class="token function">cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>注意一个细节，WithTimeOut 函数返回的 context 和 cancelFun 是分开的。context 本身并没有取消函数，这样做的原因是取消函数只能由外层函数调用，防止子节点 context 调用取消函数，从而严格控制信息的流向：由父节点 context 流向子节点 context。<br>2</p>
+<p>####防止 goroutine 泄漏<br>前面那个例子里，goroutine 还是会自己执行完，最后返回，只不过会多浪费一些系统资源。这里改编一个“如果不用 context 取消，goroutine 就会泄漏的例子”，来自参考资料：【避免协程泄漏】。</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">gen</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+    ch <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">)</span>
+    <span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> n <span class="token builtin">int</span>
+        <span class="token keyword">for</span> <span class="token punctuation">{</span>
+            ch <span class="token operator">&lt;-</span> n
+            n<span class="token operator">++</span>
+            time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> ch
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>这是一个可以生成无限整数的协程，但如果我只需要它产生的前 5 个数，那么就会发生 goroutine 泄漏：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">for</span> n <span class="token operator">:=</span> <span class="token keyword">range</span> <span class="token function">gen</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">5</span> <span class="token punctuation">{</span>
+            <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// ……</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>当 n == 5 的时候，直接 break 掉。那么 gen 函数的协程就会执行无限循环，永远不会停下来。发生了 goroutine 泄漏。</p>
+<p>用 context 改进这个例子：</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">gen</span><span class="token punctuation">(</span>ctx context<span class="token punctuation">.</span>Context<span class="token punctuation">)</span> <span class="token operator">&lt;-</span><span class="token keyword">chan</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+    ch <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">)</span>
+    <span class="token keyword">go</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> n <span class="token builtin">int</span>
+        <span class="token keyword">for</span> <span class="token punctuation">{</span>
+            <span class="token keyword">select</span> <span class="token punctuation">{</span>
+            <span class="token keyword">case</span> <span class="token operator">&lt;-</span>ctx<span class="token punctuation">.</span><span class="token function">Done</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+                <span class="token keyword">return</span>
+            <span class="token keyword">case</span> ch <span class="token operator">&lt;-</span> n<span class="token punctuation">:</span>
+                n<span class="token operator">++</span>
+                time<span class="token punctuation">.</span><span class="token function">Sleep</span><span class="token punctuation">(</span>time<span class="token punctuation">.</span>Second<span class="token punctuation">)</span>
+            <span class="token punctuation">}</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">return</span> ch
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    ctx<span class="token punctuation">,</span> cancel <span class="token operator">:=</span> context<span class="token punctuation">.</span><span class="token function">WithCancel</span><span class="token punctuation">(</span>context<span class="token punctuation">.</span><span class="token function">Background</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token keyword">defer</span> <span class="token function">cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// 避免其他地方忘记 cancel，且重复调用不影响</span>
+
+    <span class="token keyword">for</span> n <span class="token operator">:=</span> <span class="token keyword">range</span> <span class="token function">gen</span><span class="token punctuation">(</span>ctx<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span>
+        <span class="token keyword">if</span> n <span class="token operator">==</span> <span class="token number">5</span> <span class="token punctuation">{</span>
+            <span class="token function">cancel</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+            <span class="token keyword">break</span>
+        <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+    <span class="token comment" spellcheck="true">// ……</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>增加一个 context，在 break 前调用 cancel 函数，取消 goroutine。gen 函数在接收到取消信号后，直接退出，系统回收资源。</p>
+<h2 id="context-真的这么好吗"><a href="#context-真的这么好吗" class="headerlink" title="context 真的这么好吗"></a>context 真的这么好吗</h2><p>读完全文，你一定有这种感觉：context 就是为 server 而设计的。说什么处理一个请求，需要启动多个 goroutine 并行地去处理，并且在这些 goroutine 之间还要传递一些共享的数据等等，这些都是写一个 server 要做的事。</p>
+<p>没错，Go 很适合写 server，但它终归是一门通用的语言。你在用 Go 做 Leetcode 上面的题目的时候，肯定不会认为它和一般的语言有什么差别。所以，很多特性好不好，应该从 Go 只是一门普通的语言，很擅长写 server 的角度来看。</p>
+<p>从这个角度来看，context 并没有那么美好。Go 官方建议我们把 Context 作为函数的第一个参数，甚至连名字都准备好了。这造成一个后果：因为我们想控制所有的协程的取消动作，所以需要在几乎所有的函数里加上一个 Context 参数。很快，我们的代码里，context 将像病毒一样扩散的到处都是。</p>
+<p>在参考资料【Go2 应该去掉 context】这篇英文博客里，作者甚至调侃说：如果要把 Go 标准库的大部分函数都加上 context 参数的话，例如下面这样：</p>
+<pre class="line-numbers language-go"><code class="language-go">n<span class="token punctuation">,</span> err <span class="token operator">:=</span> r<span class="token punctuation">.</span><span class="token function">Read</span><span class="token punctuation">(</span>context<span class="token punctuation">.</span><span class="token function">TODO</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span> p<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>就给我来一枪吧！</p>
+<p>原文是这样说的：put a bullet in my head, please.我当时看到这句话的时候，会心一笑。这可能就是陶渊明说的：每有会意，便欣然忘食。当然，我是在晚饭会看到这句话的。</p>
+<p>为了表达自己对 context 并没有什么好感，作者接着又说了一句：If you use ctx.Value in my (non-existent) company, you’re fired. 简直太幽默了，哈哈。</p>
+<p>另外，像 WithCancel、WithDeadline、WithTimeout、WithValue 这些创建函数，实际上是创建了一个个的链表结点而已。我们知道，对链表的操作，通常都是 O(n) 复杂度的，效率不高。</p>
+<p>那么，context 包到底解决了什么问题呢？答案是：cancelation。仅管它并不完美，但它确实很简洁地解决了问题。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>到这里，整个 context 包的内容就全部讲完了。源码非常短，很适合学习，一定要去读一下。</p>
+<p>context 包是 Go 1.7 引入的标准库，主要用于在 goroutine 之间传递取消信号、超时时间、截止时间以及一些共享的值等。它并不是太完美，但几乎成了并发控制和超时控制的标准做法。</p>
+<p>使用上，先创建一个根节点的 context，之后根据库提供的四个函数创建相应功能的子节点 context。由于它是并发安全的，所以可以放心地传递。</p>
+<p>当使用 context 作为函数参数时，直接把它放在第一个参数的位置，并且命名为 ctx。另外，不要把 context 嵌套在自定义的类型里。</p>
+<p>最后，大家下次在看到代码里有用到 context 的，观察下是怎么使用的，肯定逃不出我们讲的几种类型。熟悉之后会发现：context 可能并不完美，但它确实简洁高效地解决了问题。</p>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p>【context 官方博客】<a href="https://blog.golang.org/context" target="_blank" rel="noopener">https://blog.golang.org/context</a></p>
+<p>【今日头条构建Go的实践】<a href="https://zhuanlan.zhihu.com/p/26695984" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/26695984</a></p>
+<p>【飞雪无情的博客】<a href="https://www.flysnow.org/2017/05/12/go-in-action-go-context.html" target="_blank" rel="noopener">https://www.flysnow.org/2017/05/12/go-in-action-go-context.html</a></p>
+<p>【context 源码】<a href="https://juejin.im/post/5a6873fef265da3e317e55b6" target="_blank" rel="noopener">https://juejin.im/post/5a6873fef265da3e317e55b6</a></p>
+<p>【腾讯云源码阅读】<a href="https://cloud.tencent.com/developer/section/1140703" target="_blank" rel="noopener">https://cloud.tencent.com/developer/section/1140703</a></p>
+<p>【更宏观地一些思考，english】<a href="https://siadat.github.io/post/context" target="_blank" rel="noopener">https://siadat.github.io/post/context</a></p>
+<p>【避免协程泄漏】<a href="https://rakyll.org/leakingctx/" target="_blank" rel="noopener">https://rakyll.org/leakingctx/</a></p>
+<p>【应用分类】<a href="https://dreamerjonson.com/2019/05/09/golang-73-context/index.html" target="_blank" rel="noopener">https://dreamerjonson.com/2019/05/09/golang-73-context/index.html</a></p>
+<p>【官方文档示例翻译版】<a href="https://brantou.github.io/2017/05/19/go-concurrency-patterns-context/" target="_blank" rel="noopener">https://brantou.github.io/2017/05/19/go-concurrency-patterns-context/</a></p>
+<p>【例子，english】<a href="http://p.agnihotry.com/post/understanding_the_context_package_in_golang/" target="_blank" rel="noopener">http://p.agnihotry.com/post/understanding_the_context_package_in_golang/</a></p>
+<p>【Go2 应该去掉 context】<a href="https://faiface.github.io/post/context-should-go-away-go2/" target="_blank" rel="noopener">https://faiface.github.io/post/context-should-go-away-go2/</a></p>
+<p>【源码，比较详细】<a href="https://juejin.im/post/5c1514c86fb9a049b82a5acb" target="_blank" rel="noopener">https://juejin.im/post/5c1514c86fb9a049b82a5acb</a></p>
+<p>【Golang Context 是好的设计吗？】<a href="https://segmentfault.com/a/1190000017394302" target="_blank" rel="noopener">https://segmentfault.com/a/1190000017394302</a></p>
+<p>【今日头条的 Go 实践】<a href="https://36kr.com/p/5073181" target="_blank" rel="noopener">https://36kr.com/p/5073181</a></p>
+<p>【实例】<a href="https://zhuanlan.zhihu.com/p/60180409" target="_blank" rel="noopener">https://zhuanlan.zhihu.com/p/60180409</a></p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/golang/depth-decrypting-the-context-of-the-go-language/">https://gin.sh/golang/depth-decrypting-the-context-of-the-go-language/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Golang/">
+                                    <span class="chip bg-color">Golang</span>
+                                </a>
+                            
+                                <a href="/tags/Context/">
+                                    <span class="chip bg-color">Context</span>
+                                </a>
+                            
+                                <a href="/tags/Forward/">
+                                    <span class="chip bg-color">Forward</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/golang/depth-decrypting-the-context-of-the-go-language/';
+        this.page.identifier = '/golang/depth-decrypting-the-context-of-the-go-language/';
+        this.page.title = '深度解密Go语言之context';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/golang/depth-decrypting-the-time-of-the-go-language-by-gorm-marshaljson-and-unmarshaljson/">
+                    <div class="card-image">
+                        
+                        <img src="https://s.gin.sh/blog/images/2019/Golang_Swing_Background.jpeg" class="responsive-img" alt="深度解密Go语言之Time">
+                        
+                        <span class="card-title">深度解密Go语言之Time</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文由工作当中的一个关于时间戳的问题切入，来具体分析Golang中time包的允许机制。
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-06-22
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Golang/" class="post-category">
+                                    Golang,
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                    <a href="/tags/Gorm/">
+                        <span class="chip bg-color">Gorm</span>
+                    </a>
+                    
+                    <a href="/tags/Json/">
+                        <span class="chip bg-color">Json</span>
+                    </a>
+                    
+                    <a href="/tags/Time/">
+                        <span class="chip bg-color">Time</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/golang/a-strange-problem-about-gorm/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/23.jpg" class="responsive-img" alt="一个关于GORM的奇怪问题">
+                        
+                        <span class="card-title">一个关于GORM的奇怪问题</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            记录一个关于使用GORM的奇怪问题
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-06-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Golang/" class="post-category">
+                                    Golang
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                    <a href="/tags/GROM/">
+                        <span class="chip bg-color">GROM</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;TOC</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

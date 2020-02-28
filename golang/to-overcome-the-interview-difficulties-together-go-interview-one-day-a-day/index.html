@@ -1,0 +1,1273 @@
+<!DOCTYPE HTML>
+<html lang="">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Golang, 面试, interview, Goruntime, Channel">
+    <meta name="description" content="一起攻克面试难关：Go面试每日一题">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>一起攻克面试难关：Go面试每日一题 | Gin Bar</title>
+    <link rel="icon" type="image/x-icon, image/vnd.microsoft.icon" href="/favicon.ico">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+    
+    <script src="/libs/jquery/jquery.min.js"></script>
+    
+<meta name="generator" content="Hexo 4.2.0"><link rel="stylesheet" href="/css/prism-xonokai.css" type="text/css">
+<link rel="stylesheet" href="/css/prism-line-numbers.css" type="text/css"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper head-container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/favicon.ico" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Gin Bar</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>Index</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>Tags</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>Categories</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>Archives</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>About</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>Friends</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="Search" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/favicon.ico" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Gin Bar</div>
+        <div class="logo-desc">
+            
+            Dream big, work smart, deliver fast
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			Index
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			Tags
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			Categories
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			Archives
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			About
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			Friends
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/kylesliu" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/kylesliu" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('https://s.gin.sh/blog/images/2019/gin_exporter_v1.png')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">一起攻克面试难关：Go面试每日一题</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="container content">
+
+    
+    <!-- <link rel="stylesheet" href="https://xpnet-public.oss-cn-hangzhou.aliyuncs.com/hackfront/hack.css"> -->
+<link rel='stylesheet' href='//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.css'>
+<style>
+    code[class*="language-"],
+    pre[class*="language-"] {
+        font-family: Hack, monospace;
+    }
+    pre, code { font-family: Hack, monospace; }
+</style>
+
+<!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/Golang/">
+                                <span class="chip bg-color">Golang</span>
+                            </a>
+                        
+                            <a href="/tags/Interview/">
+                                <span class="chip bg-color">Interview</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Golang/" class="post-category">
+                                Golang
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>Publish Date:&nbsp;&nbsp;
+                    2019-10-21
+                </div>
+                
+
+                
+
+                
+
+                
+                <div class="info-break-policy">
+                    <i class="far fa-clock fa-fw"></i>Read Times:&nbsp;&nbsp;
+                    11 Min
+                </div>
+                
+				
+                
+                    <div id="busuanzi_container_page_pv" class="info-break-policy">
+                        <i class="far fa-eye fa-fw"></i>Read Count:&nbsp;&nbsp;
+                        <span id="busuanzi_value_page_pv"></span>
+                    </div>
+				
+            </div>
+            
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h1 id="一起攻克面试难关：Go-面试每天一篇"><a href="#一起攻克面试难关：Go-面试每天一篇" class="headerlink" title="一起攻克面试难关：Go 面试每天一篇"></a>一起攻克面试难关：Go 面试每天一篇</h1><h2 id="Day-1"><a href="#Day-1" class="headerlink" title="Day 1"></a>Day 1</h2><p><a href="https://mp.weixin.qq.com/s/8xcx0L89njD24iXo-FTSVw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/8xcx0L89njD24iXo-FTSVw</a></p>
+<h3 id="Question-1"><a href="#Question-1" class="headerlink" title="Question 1"></a>Question 1</h3><ul>
+<li>Question<br>下面这段代码输出的内容： </li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token function">defer_call</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">defer_call</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"打印前"</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"打印中"</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">defer</span> <span class="token keyword">func</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span> fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"打印后"</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    <span class="token function">panic</span><span class="token punctuation">(</span><span class="token string">"触发异常"</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>输出：</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go">打印后
+打印中
+打印前
+<span class="token builtin">panic</span><span class="token punctuation">:</span> 触发异常
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>参考解析：defer 的执行顺序是后进先出。当出现 panic 语句的时候，会先按照 defer 的后进先出的顺序执行，最后才会执行panic。</p>
+<h2 id="Day-2"><a href="#Day-2" class="headerlink" title="Day 2"></a>Day 2</h2><p><a href="https://mp.weixin.qq.com/s/Vwb-48SF19OaJr0zHOdfzg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/Vwb-48SF19OaJr0zHOdfzg</a></p>
+<h3 id="Question-1-1"><a href="#Question-1-1" class="headerlink" title="Question 1"></a>Question 1</h3><ul>
+<li>Question<br>下面这段代码输出什么，说明原因。 </li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    slice <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span>
+    m <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">for</span> key<span class="token punctuation">,</span> val <span class="token operator">:=</span> <span class="token keyword">range</span> slice <span class="token punctuation">{</span>
+        m<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">&amp;</span>val
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token operator">:=</span> <span class="token keyword">range</span> m <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>k<span class="token punctuation">,</span> <span class="token string">"->"</span><span class="token punctuation">,</span> <span class="token operator">*</span>v<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>输出：</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token number">0</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">3</span>
+<span class="token number">1</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">3</span>
+<span class="token number">2</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">3</span>
+<span class="token number">3</span> <span class="token operator">-</span><span class="token operator">></span> <span class="token number">3</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>参考解析：</strong>这是新手常会犯的错误写法，for range 循环的时候会创建每个元素的副本，而不是元素的引用，所以 m[key] = &amp;val 取的都是变量 val 的地址，所以最后 map 中的所有元素的值都是变量 val 的地址，因为最后 val 被赋值为3，所有输出都是3.</p>
+<p><strong>正确的写法：</strong></p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+
+    slice <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span>
+    m <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">int</span><span class="token punctuation">]</span><span class="token operator">*</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">for</span> key<span class="token punctuation">,</span> val <span class="token operator">:=</span> <span class="token keyword">range</span> slice <span class="token punctuation">{</span>
+        value <span class="token operator">:=</span> val
+        m<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token operator">&amp;</span>value
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">for</span> k<span class="token punctuation">,</span> v <span class="token operator">:=</span> <span class="token keyword">range</span> m <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>k<span class="token punctuation">,</span> <span class="token string">"===>"</span><span class="token punctuation">,</span> <span class="token operator">*</span>v<span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Day-3"><a href="#Day-3" class="headerlink" title="Day 3"></a>Day 3</h2><p><a href="https://mp.weixin.qq.com/s/V00k8vfNanjYRAra5cviog" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/V00k8vfNanjYRAra5cviog</a></p>
+<h3 id="Question-1-2"><a href="#Question-1-2" class="headerlink" title="Question 1"></a>Question 1</h3><ul>
+<li>Question<br>下面两段代码输出什么。</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token comment" spellcheck="true">//    1...</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span>
+    s <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span class="token comment" spellcheck="true">//    2...</span>
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    s <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+    s <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>两段代码分别输出：</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">0</span> <span class="token number">1</span> <span class="token number">2</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token number">1</span> <span class="token number">2</span> <span class="token number">3</span> <span class="token number">4</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><strong>参考解析：</strong>这道题考的是使用 append 向 slice 添加元素，第一段代码常见的错误是 [1 2 3]，需要注意。</p>
+<h3 id="Question-2"><a href="#Question-2" class="headerlink" title="Question 2"></a>Question 2</h3><ul>
+<li>Question<br>下面这段代码有什么缺陷</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">funcMui</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y <span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>sum <span class="token builtin">int</span><span class="token punctuation">,</span> <span class="token builtin">error</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> x <span class="token operator">+</span> y<span class="token punctuation">,</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>参考答案：第二个返回值没有命名。<br>在函数有多个返回值时，只要有一个返回值有命名，其他的也必须命名。如果有多个返回值必须加上括号()；如果只有一个返回值且命名也必须加上括号()。这里的第一个返回值有命名 sum，第二个没有命名，所以错误。</li>
+</ul>
+<h3 id="Question-3"><a href="#Question-3" class="headerlink" title="Question 3"></a>Question 3</h3><ul>
+<li><p>Question<br>new() 与 make() 的区别</p>
+</li>
+<li><p>Answer<br>new(T) 和 make(T,args) 是 Go 语言内建函数，用来分配内存，但适用的类型不同。</p>
+</li>
+</ul>
+<p>new(T) 会为 T 类型的新值分配已置零的内存空间，并返回地址（指针），即类型为 *T 的值。换句话说就是，返回一个指针，该指针指向新分配的、类型为 T 的零值。适用于值类型，如数组、结构体等。</p>
+<p>make(T,args) 返回初始化之后的 T 类型的值，这个值并不是 T 类型的零值，也不是指针 *T，是经过初始化之后的 T 的引用。make() 只适用于 slice、map 和 channel.</p>
+<h2 id="Day-4"><a href="#Day-4" class="headerlink" title="Day 4"></a>Day 4</h2><p><a href="https://mp.weixin.qq.com/s/BiIMh9QFNYuMa3ngTk-z-g" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/BiIMh9QFNYuMa3ngTk-z-g</a></p>
+<h3 id="Question-1-3"><a href="#Question-1-3" class="headerlink" title="Question 1"></a>Question 1</h3><ul>
+<li>Question<br>下面这段代码能否通过编译，不能的话原因是什么；如果能，输出什么。</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    list <span class="token operator">:=</span> <span class="token function">new</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span>
+    list <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>list<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>list<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>不能通过编译，new([]int) 之后的 list 是一个 *[]int 类型的指针，不能对指针执行 append 操作。可以使用 make() 初始化之后再用。同样的，map 和 channel 建议使用 make() 或字面量的方式初始化，不要用 new() 。</li>
+</ul>
+<h3 id="Question-2-1"><a href="#Question-2-1" class="headerlink" title="Question 2"></a>Question 2</h3><ul>
+<li>Question<br>下面这段代码能否通过编译，如果可以，输出什么？</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    s1 <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">}</span>
+    s2 <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">}</span>
+    s1 <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>s1<span class="token punctuation">,</span> s2<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>s1<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>不能通过编译。append() 的第二个参数不能直接使用 slice，需使用 … 操作符，将一个切片追加到另一个切片上：append(s1,s2…)。或者直接跟上元素，形如：append(s1,1,2,3)。</li>
+</ul>
+<h3 id="Question-3-1"><a href="#Question-3-1" class="headerlink" title="Question 3"></a>Question 3</h3><ul>
+<li>Question<br>下面这段代码能否通过编译，如果可以，输出什么？</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">var</span> <span class="token punctuation">(</span>
+    size     <span class="token operator">:=</span> <span class="token number">1024</span>
+    max_size <span class="token operator">=</span> size <span class="token operator">*</span> <span class="token number">2</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>size<span class="token punctuation">,</span> max_size<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>参考答案及解析：不能通过编译。这道题的主要知识点是变量声明的简短模式，形如：x := 100。但这种声明方式有限制：<ol>
+<li>必须使用显示初始化；</li>
+<li>不能提供数据类型，编译器会自动推导；</li>
+<li>只能在函数内部使用简短模式；</li>
+</ol>
+</li>
+</ul>
+<h2 id="Day-5"><a href="#Day-5" class="headerlink" title="Day 5"></a>Day 5</h2><p><a href="https://mp.weixin.qq.com/s/BiIMh9QFNYuMa3ngTk-z-g" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/BiIMh9QFNYuMa3ngTk-z-g</a></p>
+<h3 id="Question-1-4"><a href="#Question-1-4" class="headerlink" title="Question 1"></a>Question 1</h3><ul>
+<li><p>Question<br>下面这段代码能否通过编译？不能的话，原因是什么？如果通过，输出什么？</p>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  sn1 <span class="token operator">:=</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+      age  <span class="token builtin">int</span>
+      name <span class="token builtin">string</span>
+  <span class="token punctuation">}</span><span class="token punctuation">{</span>age<span class="token punctuation">:</span> <span class="token number">11</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">"qq"</span><span class="token punctuation">}</span>
+  sn2 <span class="token operator">:=</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+      age  <span class="token builtin">int</span>
+      name <span class="token builtin">string</span>
+  <span class="token punctuation">}</span><span class="token punctuation">{</span>age<span class="token punctuation">:</span> <span class="token number">11</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">"qq"</span><span class="token punctuation">}</span>
+
+  <span class="token keyword">if</span> sn1 <span class="token operator">==</span> sn2 <span class="token punctuation">{</span>
+      fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"sn1 == sn2"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  sm1 <span class="token operator">:=</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+      age <span class="token builtin">int</span>
+      m   <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+  <span class="token punctuation">}</span><span class="token punctuation">{</span>age<span class="token punctuation">:</span> <span class="token number">11</span><span class="token punctuation">,</span> m<span class="token punctuation">:</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">"a"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+  sm2 <span class="token operator">:=</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+      age <span class="token builtin">int</span>
+      m   <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span>
+  <span class="token punctuation">}</span><span class="token punctuation">{</span>age<span class="token punctuation">:</span> <span class="token number">11</span><span class="token punctuation">,</span> m<span class="token punctuation">:</span> <span class="token keyword">map</span><span class="token punctuation">[</span><span class="token builtin">string</span><span class="token punctuation">]</span><span class="token builtin">string</span><span class="token punctuation">{</span><span class="token string">"a"</span><span class="token punctuation">:</span> <span class="token string">"1"</span><span class="token punctuation">}</span><span class="token punctuation">}</span>
+
+  <span class="token keyword">if</span> sm1 <span class="token operator">==</span> sm2 <span class="token punctuation">{</span>
+      fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"sm1 == sm2"</span><span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+</li>
+<li>Answer</li>
+</ul>
+<p>编译不通过 invalid operation: sm1 == sm2<br>这道题目考的是结构体的比较，有几个需要注意的地方：<br>1.结构体只能比较是否相等，但是不能比较大小。<br>2.相同类型的结构体才能够进行比较，结构体是否相同不但与属性类型有关，还与属性顺序相关，sn3 与 sn1 就是不同的结构体；</p>
+<pre class="line-numbers language-go"><code class="language-go">sn3 <span class="token operator">:=</span> <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    name <span class="token builtin">string</span>
+    age  <span class="token builtin">int</span>
+<span class="token punctuation">}</span><span class="token punctuation">{</span>age<span class="token punctuation">:</span> <span class="token number">11</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">"qq"</span><span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>3.如果 struct 的所有成员都可以比较，则该 struct 就可以通过 == 或 != 进行比较是否相等，比较时逐个项进行比较，如果每一项都相等，则两个结构体才相等，否则不相等；</p>
+<blockquote>
+<p>那什么是可比较的呢，常见的有 bool、数值型、字符、指针、数组等，像切片、map、函数等是不能比较的。 具体可以参考 Go 说明文档。<a href="http://docs.studygolang.com/ref/spec#Comparison_operators" target="_blank" rel="noopener">http://docs.studygolang.com/ref/spec#Comparison_operators</a></p>
+</blockquote>
+<h2 id="Day-6"><a href="#Day-6" class="headerlink" title="Day 6"></a>Day 6</h2><p><a href="https://mp.weixin.qq.com/s/6UQ1JyYn_C0zL8U3aUMFLg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/6UQ1JyYn_C0zL8U3aUMFLg</a></p>
+<h3 id="Question-1-5"><a href="#Question-1-5" class="headerlink" title="Question 1"></a>Question 1</h3><ul>
+<li>Question<br>通过指针变量 p 访问其成员变量 name，有哪几种方式？</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go">A<span class="token punctuation">.</span>p<span class="token punctuation">.</span>name
+B<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">&amp;</span>p<span class="token punctuation">)</span><span class="token punctuation">.</span>name
+C<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token operator">*</span>p<span class="token punctuation">)</span><span class="token punctuation">.</span>name
+D<span class="token punctuation">.</span>p<span class="token operator">-</span><span class="token operator">></span>name
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>参考答案及解析：AC。&amp; 取址运算符，* 指针解引用。</li>
+</ul>
+<h3 id="Question-2-2"><a href="#Question-2-2" class="headerlink" title="Question 2"></a>Question 2</h3><ul>
+<li>Question<br>下面这段代码能否通过编译？如果通过，输出什么？</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> MyInt1 <span class="token builtin">int</span>
+<span class="token keyword">type</span> MyInt2 <span class="token operator">=</span> <span class="token builtin">int</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> i <span class="token builtin">int</span> <span class="token operator">=</span> <span class="token number">0</span>
+    <span class="token keyword">var</span> i1 MyInt1 <span class="token operator">=</span> i
+    <span class="token keyword">var</span> i2 MyInt2 <span class="token operator">=</span> i
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>i1<span class="token punctuation">,</span> i2<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>参考答案及解析：编译不通过，cannot use i (type int) as type MyInt1 in assignment。<br>这道题考的是类型别名与类型定义的区别。</li>
+</ul>
+<p>第 5 行代码是基于类型 int 创建了新类型 MyInt1，第 6 行代码是创建了 int 的类型别名 MyInt2，注意类型别名的定义时 = 。所以，第 10 行代码相当于是将 int 类型的变量赋值给 MyInt1 类型的变量，Go 是强类型语言，编译当然不通过；而 MyInt2 只是 int 的别名，本质上还是 int，可以赋值。<br>第 10 行代码的赋值可以使用强制类型转化 var i1 MyInt1 = MyInt1(i).</p>
+<h3 id="Question-3-2"><a href="#Question-3-2" class="headerlink" title="Question 3"></a>Question 3</h3><ul>
+<li>Question<br>以下代码输出什么？</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    a <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">7</span><span class="token punctuation">,</span> <span class="token number">8</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%+v\n"</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+    <span class="token function">ap</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%+v\n"</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+    <span class="token function">app</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Printf</span><span class="token punctuation">(</span><span class="token string">"%+v\n"</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">ap</span><span class="token punctuation">(</span>a <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    a <span class="token operator">=</span> <span class="token function">append</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">app</span><span class="token punctuation">(</span>a <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    a<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token number">7</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">]</span>
+<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">8</span><span class="token punctuation">,</span><span class="token number">9</span><span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="Day-7"><a href="#Day-7" class="headerlink" title="Day 7"></a>Day 7</h2><p><a href="https://mp.weixin.qq.com/s/OfauBwvdcjsxlJ6YvcV1rg" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/OfauBwvdcjsxlJ6YvcV1rg</a><br>关于字符串连接，下面语法正确的是？</p>
+<pre class="line-numbers language-go"><code class="language-go">A<span class="token punctuation">.</span> str <span class="token operator">:=</span> <span class="token string">'abc'</span> <span class="token operator">+</span> <span class="token string">'123'</span>
+B<span class="token punctuation">.</span> str <span class="token operator">:=</span> <span class="token string">"abc"</span> <span class="token operator">+</span> <span class="token string">"123"</span>
+C<span class="token punctuation">.</span> str <span class="token operator">:=</span> <span class="token string">'123'</span> <span class="token operator">+</span> <span class="token string">"abc"</span>
+D<span class="token punctuation">.</span> fmt<span class="token punctuation">.</span><span class="token function">Sprintf</span><span class="token punctuation">(</span><span class="token string">"abc%d"</span><span class="token punctuation">,</span> <span class="token number">123</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>参考答案及解析：BD。知识点：字符串连接。除了以上两种连接方式，还有 strings.Join()、buffer.WriteString()等。</li>
+</ul>
+<h3 id="Question-2-3"><a href="#Question-2-3" class="headerlink" title="Question 2"></a>Question 2</h3><ul>
+<li>Question<br>下面这段代码能否编译通过？如果可以，输出什么？</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">const</span> <span class="token punctuation">(</span>
+    x <span class="token operator">=</span> <span class="token boolean">iota</span>
+    <span class="token boolean">_</span>
+    y
+    z <span class="token operator">=</span> <span class="token string">"zz"</span>
+    k
+    p <span class="token operator">=</span> <span class="token boolean">iota</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">,</span> z<span class="token punctuation">,</span> k<span class="token punctuation">,</span> p<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>参考答案及解析：编译通过，输出：0 2 zz zz 5。知识点：iota 的使用。给大家贴篇文章，讲的很详细<br><a href="https://www.cnblogs.com/zsy/p/5370052.html" target="_blank" rel="noopener">https://www.cnblogs.com/zsy/p/5370052.html</a></li>
+</ul>
+<h3 id="Question-3-3"><a href="#Question-3-3" class="headerlink" title="Question 3"></a>Question 3</h3><ul>
+<li>Question<br>下面赋值正确的是</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go">A<span class="token punctuation">.</span> <span class="token keyword">var</span> x <span class="token operator">=</span> <span class="token boolean">nil</span>
+B<span class="token punctuation">.</span> <span class="token keyword">var</span> x <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token boolean">nil</span>
+C<span class="token punctuation">.</span> <span class="token keyword">var</span> x <span class="token builtin">string</span> <span class="token operator">=</span> <span class="token boolean">nil</span>
+D<span class="token punctuation">.</span> <span class="token keyword">var</span> x <span class="token builtin">error</span> <span class="token operator">=</span> <span class="token boolean">nil</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>参考答案及解析：BD。知识点：nil 值。nil 只能赋值给指针、chan、func、interface、map 或 slice 类型的变量。强调下 D 选项的 error 类型，它是一种内置接口类型，看下方贴出的源码就知道，所以 D 是对的。</li>
+</ul>
+<h2 id="Day-8"><a href="#Day-8" class="headerlink" title="Day 8"></a>Day 8</h2><p><a href="https://mp.weixin.qq.com/s/-uioKjs5J8n1zispE_2Hgw" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/-uioKjs5J8n1zispE_2Hgw</a></p>
+<h3 id="Question-1-6"><a href="#Question-1-6" class="headerlink" title="Question 1"></a>Question 1</h3><ul>
+<li>Question<br>关于init函数，下面说法正确的是</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go">A<span class="token punctuation">.</span> 一个包中，可以包含多个 init 函数；
+B<span class="token punctuation">.</span> 程序编译时，先执行依赖包的 init 函数，再执行 main 包内的 init 函数；
+C<span class="token punctuation">.</span> main 包中，不能有 init 函数；
+D<span class="token punctuation">.</span> init 函数可以被其他函数调用；
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer</li>
+</ul>
+<p>参考答案及解析：AB。关于 init() 函数有几个需要注意的地方：</p>
+<ol>
+<li>init() 函数是用于程序执行前做包的初始化的函数，比如初始化包里的变量等;</li>
+<li>一个包可以出线多个 init() 函数,一个源文件也可以包含多个 init() 函数；</li>
+<li>同一个包中多个 init() 函数的执行顺序没有明确定义，但是不同包的init函数是根据包导入的依赖关系决定的（看下图）;</li>
+<li>init() 函数在代码中不能被显示调用、不能被引用（赋值给函数变量），否则出现编译错误;</li>
+<li>一个包被引用多次，如 A import B,C import B,A import C，B 被引用多次，但 B 包只会初始化一次；</li>
+<li>引入包，不可出现死循坏。即 A import B,B import A，这种情况编译失败；</li>
+</ol>
+<p><img src="https://s.gin.sh/blog/golang/go_init_sequesce.jpg" alt="Golang init"></p>
+<h3 id="Question-2-4"><a href="#Question-2-4" class="headerlink" title="Question 2"></a>Question 2</h3><ul>
+<li>Question<br>下面这段代码输出什么以及原因</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">hello</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">string</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token boolean">nil</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    h <span class="token operator">:=</span> hello
+    <span class="token keyword">if</span> h <span class="token operator">==</span> <span class="token boolean">nil</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"nil"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span><span class="token string">"not nil"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers language-go"><code class="language-go">A<span class="token punctuation">.</span> <span class="token boolean">nil</span>
+B<span class="token punctuation">.</span> not <span class="token boolean">nil</span>
+C<span class="token punctuation">.</span> compilation <span class="token builtin">error</span>  
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>答案及解析：B。这道题目里面，是将 hello() 赋值给变量 h，而不是函数的返回值，所以输出 not nil。</li>
+</ul>
+<h3 id="Question-3-4"><a href="#Question-3-4" class="headerlink" title="Question 3"></a>Question 3</h3><ul>
+<li>Question<br>下面这段代码能否编译通过？如果可以，输出什么</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">GetValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token builtin">int</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token number">1</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    i <span class="token operator">:=</span> <span class="token function">GetValue</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    <span class="token keyword">switch</span> i<span class="token punctuation">.</span><span class="token punctuation">(</span><span class="token keyword">type</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token builtin">int</span><span class="token punctuation">:</span>
+        <span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"int"</span><span class="token punctuation">)</span>
+    <span class="token keyword">case</span> <span class="token builtin">string</span><span class="token punctuation">:</span>
+        <span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"string"</span><span class="token punctuation">)</span>
+    <span class="token keyword">case</span> <span class="token keyword">interface</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">:</span>
+        <span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"interface"</span><span class="token punctuation">)</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+        <span class="token function">println</span><span class="token punctuation">(</span><span class="token string">"unknown"</span><span class="token punctuation">)</span>
+    <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>参考答案及解析：编译失败。考点：类型选择，类型选择的语法形如：i.(type)，其中 i 是接口，type 是固定关键字，需要注意的是，只有接口类型才可以使用类型选择。看下关于接口的文章。</li>
+</ul>
+<h2 id="Day-9"><a href="#Day-9" class="headerlink" title="Day 9"></a>Day 9</h2><p><a href="https://mp.weixin.qq.com/s/ycVU9Jywq3Z9HhKHXP3GPQ" target="_blank" rel="noopener">https://mp.weixin.qq.com/s/ycVU9Jywq3Z9HhKHXP3GPQ</a></p>
+<h3 id="Question-1-7"><a href="#Question-1-7" class="headerlink" title="Question 1"></a>Question 1</h3><ul>
+<li>Question<br>关于channel，下面语法正确的是()</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go">A<span class="token punctuation">.</span> <span class="token keyword">var</span> ch <span class="token keyword">chan</span> <span class="token builtin">int</span>
+B<span class="token punctuation">.</span> ch <span class="token operator">:=</span> <span class="token function">make</span><span class="token punctuation">(</span><span class="token keyword">chan</span> <span class="token builtin">int</span><span class="token punctuation">)</span>
+C<span class="token punctuation">.</span> <span class="token operator">&lt;-</span> ch
+D<span class="token punctuation">.</span> ch <span class="token operator">&lt;-</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Answer<br>参考答案及解析：ABC。A、B都是声明 channel；C 读取 channel；写 channel 是必须带上值，所以 D 错误。</li>
+</ul>
+<h3 id="Question-2-5"><a href="#Question-2-5" class="headerlink" title="Question 2"></a>Question 2</h3><ul>
+<li>Question<br>关于channel，下面语法正确的是()</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">type</span> person <span class="token keyword">struct</span> <span class="token punctuation">{</span>
+    name <span class="token builtin">string</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> m <span class="token keyword">map</span><span class="token punctuation">[</span>person<span class="token punctuation">]</span><span class="token builtin">int</span>
+    p <span class="token operator">:=</span> person<span class="token punctuation">{</span><span class="token string">"mike"</span><span class="token punctuation">}</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>m<span class="token punctuation">[</span>p<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code>A.0
+B.1
+C.Compilation error 
+</code></pre><ul>
+<li>Answer<br>参考答案及解析：A。打印一个 map 中不存在的值时，返回元素类型的零值。这个例子中，m 的类型是 map[person]int，因为 m 中不存在 p，所以打印 int 类型的零值，即 0。</li>
+</ul>
+<h3 id="Question-3-5"><a href="#Question-3-5" class="headerlink" title="Question 3"></a>Question 3</h3><ul>
+<li>Question<br>关于channel，下面语法正确的是()</li>
+</ul>
+<pre class="line-numbers language-go"><code class="language-go"><span class="token keyword">func</span> <span class="token function">hello</span><span class="token punctuation">(</span>num <span class="token operator">...</span><span class="token builtin">int</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    num<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token number">18</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">func</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    i <span class="token operator">:=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token builtin">int</span><span class="token punctuation">{</span><span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">,</span> <span class="token number">7</span><span class="token punctuation">}</span>
+    <span class="token function">hello</span><span class="token punctuation">(</span>i<span class="token operator">...</span><span class="token punctuation">)</span>
+    fmt<span class="token punctuation">.</span><span class="token function">Println</span><span class="token punctuation">(</span>i<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<pre><code>A.18
+B.5
+C.Compilation error  
+</code></pre><ul>
+<li>Answer</li>
+</ul>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        Author:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh" rel="external nofollow noreferrer">Kyle Liu</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        Link:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://gin.sh/golang/to-overcome-the-interview-difficulties-together-go-interview-one-day-a-day/">https://gin.sh/golang/to-overcome-the-interview-difficulties-together-go-interview-one-day-a-day/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        Reprint policy:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    All articles in this blog are used except for special statements
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    reprint polocy. If reproduced, please indicate source
+                    <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>Copied successfully, please follow the reprint policy of this article</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">more</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/Golang/">
+                                    <span class="chip bg-color">Golang</span>
+                                </a>
+                            
+                                <a href="/tags/Interview/">
+                                    <span class="chip bg-color">Interview</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+
+<div id="article-share">
+    
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid="></script>
+    <div class="addthis_inline_share_toolbox"></div>
+    
+
+</div>
+
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+        <div class="disqus-card card" data-aos="fade-up">
+    <div id="disqus_thread" class="card-content">
+        <noscript>Please enable JavaScript to view the
+            <a href="https://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a>
+        </noscript>
+    </div>
+</div>
+
+<script type="text/javascript">
+    disqus_config = function () {
+        this.page.url = 'https://gin.sh/golang/to-overcome-the-interview-difficulties-together-go-interview-one-day-a-day/';
+        this.page.identifier = '/golang/to-overcome-the-interview-difficulties-together-go-interview-one-day-a-day/';
+        this.page.title = '一起攻克面试难关：Go面试每日一题';
+    };
+    let disqus_shortname = 'kyle-liu';
+
+    (function () { // DON'T EDIT BELOW THIS LINE
+        let d = document, s = d.createElement('script');
+        // 如：s.src = 'https://blinkfox.disqus.com/embed.js';
+        s.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;Previous</div>
+            <div class="card">
+                <a href="/golang/depth-decrypting-the-pprof-of-the-go-language/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="https://s.gin.sh/blog/medias/featureimages/9.jpg" class="responsive-img" alt="深度解密Go语言之pprof">
+                        
+                        <span class="card-title">深度解密Go语言之pprof</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            这是你自定义的文章摘要内容，如果这个属性有值，文章卡片摘要就显示这段文字，否则程序会自动截取文章的部分内容作为摘要
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-11-20
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Golang/" class="post-category">
+                                    Golang
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                    <a href="/tags/Forward/">
+                        <span class="chip bg-color">Forward</span>
+                    </a>
+                    
+                    <a href="/tags/map/">
+                        <span class="chip bg-color">map</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                Next&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/golang/depth-decrypting-the-time-of-the-go-language-by-gorm-marshaljson-and-unmarshaljson/">
+                    <div class="card-image">
+                        
+                        <img src="https://s.gin.sh/blog/images/2019/Golang_Swing_Background.jpeg" class="responsive-img" alt="深度解密Go语言之Time">
+                        
+                        <span class="card-title">深度解密Go语言之Time</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            本文由工作当中的一个关于时间戳的问题切入，来具体分析Golang中time包的允许机制。
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-06-22
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Golang/" class="post-category">
+                                    Golang,
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/Golang/">
+                        <span class="chip bg-color">Golang</span>
+                    </a>
+                    
+                    <a href="/tags/Gorm/">
+                        <span class="chip bg-color">Gorm</span>
+                    </a>
+                    
+                    <a href="/tags/Json/">
+                        <span class="chip bg-color">Json</span>
+                    </a>
+                    
+                    <a href="/tags/Time/">
+                        <span class="chip bg-color">Time</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+<script>
+    $('#articleContent').on('copy', function (e) {
+        // IE8 or earlier browser is 'undefined'
+        if (typeof window.getSelection === 'undefined') return;
+
+        var selection = window.getSelection();
+        // if the selection is short let's not annoy our users.
+        if (('' + selection).length < Number.parseInt('120')) {
+            return;
+        }
+
+        // create a div outside of the visible area and fill it with the selected text.
+        var bodyElement = document.getElementsByTagName('body')[0];
+        var newdiv = document.createElement('div');
+        newdiv.style.position = 'absolute';
+        newdiv.style.left = '-99999px';
+        bodyElement.appendChild(newdiv);
+        newdiv.appendChild(selection.getRangeAt(0).cloneContents());
+
+        // we need a <pre> tag workaround.
+        // otherwise the text inside "pre" loses all the line breaks!
+        if (selection.getRangeAt(0).commonAncestorContainer.nodeName === 'PRE') {
+            newdiv.innerHTML = "<pre>" + newdiv.innerHTML + "</pre>";
+        }
+
+        var url = document.location.href;
+        newdiv.innerHTML += '<br />'
+            + 'From: Gin Bar<br />'
+            + 'Author: Kyle Liu<br />'
+            + 'Link: <a href="' + url + '">' + url + '</a><br />'
+            + '本文章著作权归作者所有，任何形式的转载都请注明出处。';
+
+        selection.selectAllChildren(newdiv);
+        window.setTimeout(function () {bodyElement.removeChild(newdiv);}, 200);
+    });
+</script>
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+    
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+    
+
+</main>
+
+
+<script src="https://cdn.bootcss.com/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+<script>
+    MathJax.Hub.Config({
+        tex2jax: {inlineMath: [['$', '$'], ['\(', '\)']]}
+    });
+</script>
+
+
+    <footer class="page-footer bg-color">
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="https://gin.sh" target="_blank">Kyle Liu</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            &nbsp;<i class="fas fa-chart-area"></i>&nbsp;站点总字数:&nbsp;<span
+                class="white-color">150.4k</span>&nbsp;字
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+            <span id="icp"><img src="/medias/icp.png" style="vertical-align: text-bottom;" />
+                <a href="" target="_blank"></a>
+            </span>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/kylesliu" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:kyle.liu.cn@gmail.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;Search</span>
+            <input type="search" id="searchInput" name="s" placeholder="Please enter a search keyword"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/" + "search.xml", 'searchInput', 'searchResult');
+});
+</script>
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
